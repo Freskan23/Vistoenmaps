@@ -59,7 +59,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-6">
-            {categorias.slice(0, 4).map((cat) => (
+            {categorias.slice(0, 3).map((cat) => (
               <Link
                 key={cat.slug}
                 href={`/${cat.slug}`}
@@ -73,6 +73,17 @@ export default function Header({ variant = "solid" }: HeaderProps) {
                 {cat.nombre}
               </Link>
             ))}
+            <Link
+              href="/directorios"
+              className={cn(
+                "text-sm font-medium transition-colors",
+                isTransparent
+                  ? "text-white/70 hover:text-white"
+                  : "text-muted-foreground hover:text-primary"
+              )}
+            >
+              Directorios
+            </Link>
           </nav>
 
           {/* Mobile Menu */}
@@ -105,6 +116,12 @@ export default function Header({ variant = "solid" }: HeaderProps) {
                   </Link>
                 ))}
                 <div className="border-t border-border/50 my-3" />
+                <Link
+                  href="/directorios"
+                  className="block py-2.5 px-3 text-sm font-medium text-foreground hover:text-primary hover:bg-secondary rounded-xl transition-colors"
+                >
+                  Directorios
+                </Link>
                 <Link
                   href="/contacto"
                   className="block py-2.5 px-3 text-sm font-medium text-foreground hover:text-primary hover:bg-secondary rounded-xl transition-colors"

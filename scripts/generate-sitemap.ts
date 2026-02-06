@@ -31,6 +31,10 @@ const urls: { loc: string; priority: string; changefreq: string }[] = [];
 // Home
 urls.push({ loc: "/", priority: "1.0", changefreq: "weekly" });
 
+// Static pages
+urls.push({ loc: "/directorios", priority: "0.8", changefreq: "monthly" });
+urls.push({ loc: "/contacto", priority: "0.5", changefreq: "monthly" });
+
 // Categories
 for (const cat of categorias) {
   urls.push({

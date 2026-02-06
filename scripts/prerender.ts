@@ -131,6 +131,25 @@ generatePage({
 });
 count++;
 
+// Directorios
+generatePage({
+  route: "/directorios",
+  title: "Directorios de negocios en España | Visto en Maps",
+  description: "Los mejores directorios para dar de alta tu negocio en España. Directorios premium, gratuitos y plataformas de reseñas verificadas.",
+  canonical: `${BASE_URL}/directorios`,
+  schemaJson: [{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+      { "@type": "ListItem", position: 2, name: "Directorios", item: `${BASE_URL}/directorios` },
+    ],
+  }],
+  h1: "Directorios de negocios en España",
+  bodyText: "Guía completa de directorios donde dar de alta tu negocio en España. Directorios premium como Google Business, Páginas Amarillas, Cylex, QDQ. Plataformas de reseñas: Trustpilot, Yelp, TripAdvisor. Directorios de servicios: Cronoshare, Habitissimo. Mejora tu SEO local con citaciones NAP consistentes.",
+});
+count++;
+
 // Contacto
 generatePage({
   route: "/contacto",
