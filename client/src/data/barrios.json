@@ -1,0 +1,152 @@
+[
+  {
+    "slug": "retiro",
+    "nombre": "Retiro",
+    "ciudad_slug": "madrid",
+    "coordenadas": { "lat": 40.4085, "lng": -3.6838 }
+  },
+  {
+    "slug": "hortaleza",
+    "nombre": "Hortaleza",
+    "ciudad_slug": "madrid",
+    "coordenadas": { "lat": 40.4725, "lng": -3.6408 }
+  },
+  {
+    "slug": "chamberi",
+    "nombre": "Chamberí",
+    "ciudad_slug": "madrid",
+    "coordenadas": { "lat": 40.4350, "lng": -3.7038 }
+  },
+  {
+    "slug": "centro",
+    "nombre": "Centro",
+    "ciudad_slug": "madrid",
+    "coordenadas": { "lat": 40.4155, "lng": -3.7074 }
+  },
+  {
+    "slug": "salamanca",
+    "nombre": "Salamanca",
+    "ciudad_slug": "madrid",
+    "coordenadas": { "lat": 40.4290, "lng": -3.6790 }
+  },
+  {
+    "slug": "eixample",
+    "nombre": "Eixample",
+    "ciudad_slug": "barcelona",
+    "coordenadas": { "lat": 41.3888, "lng": 2.1614 }
+  },
+  {
+    "slug": "gracia",
+    "nombre": "Gràcia",
+    "ciudad_slug": "barcelona",
+    "coordenadas": { "lat": 41.4035, "lng": 2.1569 }
+  },
+  {
+    "slug": "sants-montjuic",
+    "nombre": "Sants-Montjuïc",
+    "ciudad_slug": "barcelona",
+    "coordenadas": { "lat": 41.3727, "lng": 2.1487 }
+  },
+  {
+    "slug": "ciutat-vella",
+    "nombre": "Ciutat Vella",
+    "ciudad_slug": "barcelona",
+    "coordenadas": { "lat": 41.3818, "lng": 2.1685 }
+  },
+  {
+    "slug": "sarria-sant-gervasi",
+    "nombre": "Sarrià-Sant Gervasi",
+    "ciudad_slug": "barcelona",
+    "coordenadas": { "lat": 41.4000, "lng": 2.1310 }
+  },
+  {
+    "slug": "ciutat-vella-valencia",
+    "nombre": "Ciutat Vella",
+    "ciudad_slug": "valencia",
+    "coordenadas": { "lat": 39.4737, "lng": -0.3756 }
+  },
+  {
+    "slug": "eixample-valencia",
+    "nombre": "Eixample",
+    "ciudad_slug": "valencia",
+    "coordenadas": { "lat": 39.4650, "lng": -0.3722 }
+  },
+  {
+    "slug": "ruzafa",
+    "nombre": "Ruzafa",
+    "ciudad_slug": "valencia",
+    "coordenadas": { "lat": 39.4600, "lng": -0.3700 }
+  },
+  {
+    "slug": "benimaclet",
+    "nombre": "Benimaclet",
+    "ciudad_slug": "valencia",
+    "coordenadas": { "lat": 39.4850, "lng": -0.3600 }
+  },
+  {
+    "slug": "patraix",
+    "nombre": "Patraix",
+    "ciudad_slug": "valencia",
+    "coordenadas": { "lat": 39.4580, "lng": -0.3900 }
+  },
+  {
+    "slug": "triana",
+    "nombre": "Triana",
+    "ciudad_slug": "sevilla",
+    "coordenadas": { "lat": 37.3828, "lng": -6.0066 }
+  },
+  {
+    "slug": "macarena",
+    "nombre": "Macarena",
+    "ciudad_slug": "sevilla",
+    "coordenadas": { "lat": 37.4020, "lng": -5.9870 }
+  },
+  {
+    "slug": "nervion",
+    "nombre": "Nervión",
+    "ciudad_slug": "sevilla",
+    "coordenadas": { "lat": 37.3880, "lng": -5.9700 }
+  },
+  {
+    "slug": "centro-sevilla",
+    "nombre": "Centro",
+    "ciudad_slug": "sevilla",
+    "coordenadas": { "lat": 37.3886, "lng": -5.9953 }
+  },
+  {
+    "slug": "los-remedios",
+    "nombre": "Los Remedios",
+    "ciudad_slug": "sevilla",
+    "coordenadas": { "lat": 37.3760, "lng": -6.0100 }
+  },
+  {
+    "slug": "centro-malaga",
+    "nombre": "Centro",
+    "ciudad_slug": "malaga",
+    "coordenadas": { "lat": 36.7213, "lng": -4.4214 }
+  },
+  {
+    "slug": "la-malagueta",
+    "nombre": "La Malagueta",
+    "ciudad_slug": "malaga",
+    "coordenadas": { "lat": 36.7180, "lng": -4.4100 }
+  },
+  {
+    "slug": "el-palo",
+    "nombre": "El Palo",
+    "ciudad_slug": "malaga",
+    "coordenadas": { "lat": 36.7210, "lng": -4.3700 }
+  },
+  {
+    "slug": "teatinos",
+    "nombre": "Teatinos",
+    "ciudad_slug": "malaga",
+    "coordenadas": { "lat": 36.7280, "lng": -4.4680 }
+  },
+  {
+    "slug": "huelin",
+    "nombre": "Huelin",
+    "ciudad_slug": "malaga",
+    "coordenadas": { "lat": 36.7120, "lng": -4.4400 }
+  }
+]
