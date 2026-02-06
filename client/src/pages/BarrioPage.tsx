@@ -302,7 +302,7 @@ export default function BarrioPage() {
             </button>
           </div>
           {showMap && (
-            <div className="rounded-lg overflow-hidden border-2 border-border">
+            <div className="rounded-xl overflow-hidden border border-border/60 shadow-sm">
               {hasApiKey ? (
                 <MapView
                   initialCenter={bar.coordenadas}
@@ -396,7 +396,7 @@ export default function BarrioPage() {
               {/* Advanced filters panel */}
               <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
                 <CollapsibleContent>
-                  <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-4">
+                  <div className="bg-secondary/50 border border-border rounded-xl p-4 space-y-4">
                     {/* Toggle filters row */}
                     <div className="flex flex-wrap gap-6">
                       <label className="flex items-center gap-2.5 cursor-pointer">
@@ -472,15 +472,16 @@ export default function BarrioPage() {
             </div>
 
             {/* Cards grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               {paginated.map((negocio, index) => (
                 <motion.div
                   key={negocio.slug}
                   ref={(el) => { cardRefs.current[negocio.slug] = el; }}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.08 }}
-                  className="transition-all duration-300 rounded-lg"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.4, delay: index * 0.06 }}
+                  className="transition-all duration-300 rounded-xl"
                 >
                   <NegocioCard negocio={negocio} />
                 </motion.div>
@@ -493,7 +494,7 @@ export default function BarrioPage() {
                 <button
                   onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
-                  className="px-3 py-1.5 text-sm font-medium rounded-md border border-border bg-card hover:bg-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="px-4 py-1.5 text-sm font-medium rounded-full border border-border/60 bg-card hover:bg-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   Anterior
                 </button>
@@ -501,10 +502,10 @@ export default function BarrioPage() {
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`w-8 h-8 text-sm font-medium rounded-md transition-colors ${
+                    className={`w-8 h-8 text-sm font-medium rounded-full transition-colors ${
                       page === currentPage
                         ? "bg-primary text-primary-foreground"
-                        : "border border-border bg-card hover:bg-secondary"
+                        : "border border-border/60 bg-card hover:bg-secondary"
                     }`}
                   >
                     {page}
@@ -513,7 +514,7 @@ export default function BarrioPage() {
                 <button
                   onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
-                  className="px-3 py-1.5 text-sm font-medium rounded-md border border-border bg-card hover:bg-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                  className="px-4 py-1.5 text-sm font-medium rounded-full border border-border/60 bg-card hover:bg-secondary disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                 >
                   Siguiente
                 </button>

@@ -258,7 +258,7 @@ export default function NegocioPage() {
           </div>
 
           {/* Info card */}
-          <div className="bg-card border-2 border-border rounded-lg p-6 mb-6">
+          <div className="bg-card border border-border/60 shadow-sm rounded-xl p-6 mb-6">
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 shrink-0 mt-0.5 text-primary" />
@@ -290,7 +290,7 @@ export default function NegocioPage() {
           </div>
 
           {/* Map */}
-          <div className="mb-6 rounded-lg overflow-hidden border-2 border-border">
+          <div className="mb-6 rounded-xl overflow-hidden border border-border/60 shadow-sm">
             {hasApiKey ? (
               <MapView
                 initialCenter={neg.coordenadas}
@@ -321,7 +321,7 @@ export default function NegocioPage() {
               {neg.servicios_destacados.map((servicio) => (
                 <span
                   key={servicio}
-                  className="text-sm bg-secondary text-secondary-foreground px-3 py-1 rounded-md font-medium"
+                  className="text-sm bg-secondary text-secondary-foreground px-3 py-1 rounded-full font-medium"
                 >
                   {servicio}
                 </span>
@@ -333,14 +333,14 @@ export default function NegocioPage() {
           <div className="flex flex-col sm:flex-row gap-3">
             <a
               href={`tel:${neg.telefono.replace(/\s/g, "")}`}
-              className="flex-1 flex items-center justify-center gap-2 bg-accent text-accent-foreground font-semibold py-3 rounded-lg hover:opacity-90 transition-opacity"
+              className="flex-1 flex items-center justify-center gap-2 bg-accent text-accent-foreground font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity"
             >
               <Phone className="w-5 h-5" />
               Llamar ahora
             </a>
             <button
               onClick={() => setShowPresupuesto(true)}
-              className="flex-1 flex items-center justify-center gap-2 bg-emerald-600 text-white font-semibold py-3 rounded-lg hover:bg-emerald-700 transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 bg-emerald-600 text-white font-semibold py-3 rounded-xl hover:bg-emerald-700 transition-colors"
             >
               <FileText className="w-5 h-5" />
               Pedir presupuesto
@@ -349,7 +349,7 @@ export default function NegocioPage() {
               href={neg.url_google_maps}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold py-3 rounded-lg hover:opacity-90 transition-opacity"
+              className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity"
             >
               <ExternalLink className="w-5 h-5" />
               Ver en Maps
@@ -387,7 +387,7 @@ export default function NegocioPage() {
                 value={formData.nombre}
                 onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
                 placeholder="Tu nombre"
-                className="mt-1 w-full text-sm bg-secondary border border-border rounded-md px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="mt-1 w-full text-sm bg-secondary border border-border rounded-full px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
               {formErrors.nombre && <p className="text-xs text-destructive mt-1">{formErrors.nombre}</p>}
             </div>
@@ -401,7 +401,7 @@ export default function NegocioPage() {
                 value={formData.telefono}
                 onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
                 placeholder="Tu teléfono de contacto"
-                className="mt-1 w-full text-sm bg-secondary border border-border rounded-md px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="mt-1 w-full text-sm bg-secondary border border-border rounded-full px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
               {formErrors.telefono && <p className="text-xs text-destructive mt-1">{formErrors.telefono}</p>}
             </div>
@@ -413,7 +413,7 @@ export default function NegocioPage() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="tu@email.com (opcional)"
-                className="mt-1 w-full text-sm bg-secondary border border-border rounded-md px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="mt-1 w-full text-sm bg-secondary border border-border rounded-full px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -426,7 +426,7 @@ export default function NegocioPage() {
                 onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
                 placeholder="Ej: Necesito cambiar la cerradura de mi puerta principal..."
                 rows={3}
-                className="mt-1 w-full text-sm bg-secondary border border-border rounded-md px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                className="mt-1 w-full text-sm bg-secondary border border-border rounded-full px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
               />
               {formErrors.descripcion && <p className="text-xs text-destructive mt-1">{formErrors.descripcion}</p>}
             </div>
@@ -436,7 +436,7 @@ export default function NegocioPage() {
               <select
                 value={formData.horario_contacto}
                 onChange={(e) => setFormData({ ...formData, horario_contacto: e.target.value })}
-                className="mt-1 w-full text-sm bg-secondary border border-border rounded-md px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="mt-1 w-full text-sm bg-secondary border border-border rounded-full px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="">Sin preferencia</option>
                 <option value="Mañanas (9:00-13:00)">Mañanas (9:00-13:00)</option>
@@ -449,14 +449,14 @@ export default function NegocioPage() {
             <div className="flex flex-col sm:flex-row gap-2 pt-2">
               <button
                 onClick={handleWhatsApp}
-                className="flex-1 flex items-center justify-center gap-2 bg-emerald-600 text-white font-semibold py-2.5 rounded-lg hover:bg-emerald-700 transition-colors text-sm"
+                className="flex-1 flex items-center justify-center gap-2 bg-emerald-600 text-white font-semibold py-2.5 rounded-xl hover:bg-emerald-700 transition-colors text-sm"
               >
                 <MessageCircle className="w-4 h-4" />
                 Enviar por WhatsApp
               </button>
               <button
                 onClick={handleEmail}
-                className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity text-sm"
+                className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold py-2.5 rounded-xl hover:opacity-90 transition-opacity text-sm"
               >
                 <FileText className="w-4 h-4" />
                 Enviar por Email

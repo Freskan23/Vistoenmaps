@@ -10,7 +10,7 @@ export default function NegocioCard({ negocio }: NegocioCardProps) {
   const negocioUrl = `/${negocio.categoria_slug}/${negocio.ciudad_slug}/${negocio.barrio_slug}/${negocio.slug}`;
 
   return (
-    <article className="bg-card border-2 border-border hover:border-primary/30 rounded-lg p-5 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 group">
+    <article className="bg-card border border-border/60 shadow-sm hover:shadow-lg rounded-xl p-5 transition-all duration-300 hover:scale-[1.01] group">
       {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <Link href={negocioUrl}>
@@ -46,7 +46,7 @@ export default function NegocioCard({ negocio }: NegocioCardProps) {
         {negocio.servicios_destacados.slice(0, 3).map((servicio) => (
           <span
             key={servicio}
-            className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-md font-medium"
+            className="text-xs bg-secondary text-secondary-foreground px-2.5 py-0.5 rounded-full font-medium"
           >
             {servicio}
           </span>
@@ -59,10 +59,10 @@ export default function NegocioCard({ negocio }: NegocioCardProps) {
       </div>
 
       {/* CTAs */}
-      <div className="flex gap-2 pt-3 border-t border-border">
+      <div className="flex gap-2 pt-3 border-t border-border/50">
         <a
           href={`tel:${negocio.telefono.replace(/\s/g, "")}`}
-          className="flex-1 flex items-center justify-center gap-2 bg-accent text-accent-foreground font-semibold text-sm py-2.5 rounded-md hover:opacity-90 transition-opacity"
+          className="flex-1 flex items-center justify-center gap-2 bg-accent text-accent-foreground font-semibold text-sm py-2.5 rounded-full hover:opacity-90 transition-opacity"
         >
           <Phone className="w-4 h-4" />
           Llamar
@@ -71,7 +71,7 @@ export default function NegocioCard({ negocio }: NegocioCardProps) {
           href={negocio.url_google_maps}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold text-sm py-2.5 rounded-md hover:opacity-90 transition-opacity"
+          className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold text-sm py-2.5 rounded-full hover:opacity-90 transition-opacity"
         >
           <ExternalLink className="w-4 h-4" />
           Ver en Maps

@@ -4,13 +4,15 @@ import { categorias, ciudades } from "@/data";
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground mt-auto">
-      <div className="container py-12">
+    <footer className="bg-primary text-primary-foreground mt-auto relative overflow-hidden">
+      {/* Subtle ambient orb */}
+      <div className="absolute -bottom-32 -right-32 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[100px]" />
+      <div className="relative container py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary-foreground/20 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-primary-foreground/20 rounded-xl flex items-center justify-center">
                 <MapPin className="w-4 h-4 text-primary-foreground" />
               </div>
               <span className="text-lg font-bold">Visto en Maps</span>
@@ -60,7 +62,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-primary-foreground/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="border-t border-primary-foreground/5 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-primary-foreground/50">
             © {new Date().getFullYear()} Visto en Maps. Todos los derechos reservados.
           </p>

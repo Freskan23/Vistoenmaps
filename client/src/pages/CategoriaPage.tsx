@@ -89,7 +89,7 @@ export default function CategoriaPage() {
             items={[{ label: cat.nombre }]}
             variant="dark"
           />
-          <div className="flex items-center gap-4 mt-2">
+          <div className="flex items-center gap-5 mt-2">
             <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center">
               <CategoryIcon iconName={cat.icono} className="w-7 h-7 text-white" />
             </div>
@@ -109,18 +109,19 @@ export default function CategoriaPage() {
           Selecciona una ciudad
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {ciudades.map((ciudad, index) => {
             const negociosCount = getNegociosByCiudad(cat.slug, ciudad.slug).length;
             return (
               <motion.div
                 key={ciudad.slug}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.06 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4, delay: index * 0.06 }}
               >
                 <Link href={`/${cat.slug}/${ciudad.slug}`}>
-                  <div className="group bg-card border-2 border-border hover:border-primary/40 rounded-lg overflow-hidden transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                  <div className="group bg-card border border-border/60 shadow-sm hover:shadow-lg rounded-xl overflow-hidden transition-all duration-200 hover:scale-[1.02] cursor-pointer">
                     {/* City image */}
                     {ciudad.imagen ? (
                       <div className="h-36 overflow-hidden">

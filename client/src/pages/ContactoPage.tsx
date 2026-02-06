@@ -97,7 +97,7 @@ export default function ContactoPage() {
                 value={formData.nombre}
                 onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
                 placeholder="Tu nombre"
-                className="mt-1 w-full text-sm bg-secondary border border-border rounded-md px-3 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="mt-1 w-full text-sm bg-secondary border border-border rounded-xl px-3 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
               {formErrors.nombre && <p className="text-xs text-destructive mt-1">{formErrors.nombre}</p>}
             </div>
@@ -111,7 +111,7 @@ export default function ContactoPage() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 placeholder="tu@email.com"
-                className="mt-1 w-full text-sm bg-secondary border border-border rounded-md px-3 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="mt-1 w-full text-sm bg-secondary border border-border rounded-xl px-3 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               />
               {formErrors.email && <p className="text-xs text-destructive mt-1">{formErrors.email}</p>}
             </div>
@@ -123,7 +123,7 @@ export default function ContactoPage() {
               <select
                 value={formData.asunto}
                 onChange={(e) => setFormData({ ...formData, asunto: e.target.value })}
-                className="mt-1 w-full text-sm bg-secondary border border-border rounded-md px-3 py-2.5 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="mt-1 w-full text-sm bg-secondary border border-border rounded-xl px-3 py-2.5 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="">Selecciona un asunto</option>
                 <option value="Añadir mi negocio">Añadir mi negocio al directorio</option>
@@ -144,14 +144,14 @@ export default function ContactoPage() {
                 onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
                 placeholder="Cuéntanos en qué podemos ayudarte..."
                 rows={5}
-                className="mt-1 w-full text-sm bg-secondary border border-border rounded-md px-3 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                className="mt-1 w-full text-sm bg-secondary border border-border rounded-xl px-3 py-2.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
               />
               {formErrors.mensaje && <p className="text-xs text-destructive mt-1">{formErrors.mensaje}</p>}
             </div>
 
             <button
               onClick={handleSubmit}
-              className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold py-3 rounded-lg hover:opacity-90 transition-opacity"
+              className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold py-3 rounded-full hover:opacity-90 transition-opacity"
             >
               <Send className="w-5 h-5" />
               Enviar mensaje
