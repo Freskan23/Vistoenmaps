@@ -66,45 +66,79 @@ export default function Home() {
         </div>
 
         <div className="relative container py-24 md:py-32">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-2xl"
-          >
-            <div className="flex items-center gap-2 mb-5">
-              <MapPin className="w-5 h-5 text-accent" />
-              <span className="text-sm font-semibold text-primary-foreground/70 uppercase tracking-wider">
-                Directorio local verificado
-              </span>
-            </div>
-            <motion.h1
-              initial={{ opacity: 0, letterSpacing: "0.02em" }}
-              animate={{ opacity: 1, letterSpacing: "-0.03em" }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-[clamp(2.5rem,5vw+1rem,4.5rem)] leading-[1.05] font-extrabold text-white mb-6"
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            {/* Left: Text + Search */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
             >
-              Encuentra profesionales{" "}
-              <span className="text-accent">cerca de ti</span>
-            </motion.h1>
-            <p className="text-lg text-white/70 leading-relaxed mb-8 max-w-lg">
-              El directorio de profesionales y negocios locales con presencia verificada en Google Maps.
-            </p>
-            <div className="max-w-md">
-              <SearchBar variant="hero" />
-            </div>
+              <div className="flex items-center gap-2 mb-5">
+                <MapPin className="w-5 h-5 text-accent" />
+                <span className="text-sm font-semibold text-primary-foreground/70 uppercase tracking-wider">
+                  Directorio local verificado
+                </span>
+              </div>
+              <motion.h1
+                initial={{ opacity: 0, letterSpacing: "0.02em" }}
+                animate={{ opacity: 1, letterSpacing: "-0.03em" }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="text-[clamp(2.5rem,5vw+1rem,4.5rem)] leading-[1.05] font-extrabold text-white mb-6"
+              >
+                Encuentra profesionales{" "}
+                <span className="text-accent">cerca de ti</span>
+              </motion.h1>
+              <p className="text-lg text-white/70 leading-relaxed mb-8 max-w-lg">
+                El directorio de profesionales y negocios locales con presencia verificada en Google Maps.
+              </p>
+              <div className="max-w-md">
+                <SearchBar variant="hero" />
+              </div>
 
-            {/* Suggestion chips */}
-            <div className="flex flex-wrap gap-2 mt-5">
-              {categorias.slice(0, 4).map((cat) => (
-                <Link key={cat.slug} href={`/${cat.slug}`}>
-                  <span className="px-3.5 py-1.5 bg-white/10 backdrop-blur-sm text-white/80 text-sm rounded-full border border-white/15 hover:bg-white/20 hover:text-white transition-colors cursor-pointer">
-                    {cat.nombre}
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </motion.div>
+              {/* Suggestion chips */}
+              <div className="flex flex-wrap gap-2 mt-5">
+                {categorias.slice(0, 4).map((cat) => (
+                  <Link key={cat.slug} href={`/${cat.slug}`}>
+                    <span className="px-3.5 py-1.5 bg-white/10 backdrop-blur-sm text-white/80 text-sm rounded-full border border-white/15 hover:bg-white/20 hover:text-white transition-colors cursor-pointer">
+                      {cat.nombre}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Right: Category quick-access grid (desktop only) */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="hidden lg:block"
+            >
+              <div className="grid grid-cols-2 gap-3">
+                {categorias.map((cat, index) => (
+                  <motion.div
+                    key={cat.slug}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.4 + index * 0.05 }}
+                  >
+                    <Link href={`/${cat.slug}`}>
+                      <div className="group flex items-center gap-3 bg-white/8 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/15 transition-all duration-200 cursor-pointer">
+                        <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-white/20 transition-colors">
+                          <CategoryIcon iconName={cat.icono} className="w-5 h-5 text-white/80" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <span className="text-white font-medium text-sm block">{cat.nombre}</span>
+                          <span className="text-white/40 text-xs block truncate">{cat.descripcion.split('.')[0]}</span>
+                        </div>
+                        <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-white/60 transition-colors shrink-0" />
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
