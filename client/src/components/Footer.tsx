@@ -60,10 +60,16 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-primary-foreground/10 mt-10 pt-6 text-center">
+        <div className="border-t border-primary-foreground/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-primary-foreground/50">
             © {new Date().getFullYear()} Visto en Maps. Todos los derechos reservados.
           </p>
+          <Link
+            href="/contacto"
+            className="text-xs text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+          >
+            Contacto
+          </Link>
         </div>
       </div>
     </footer>

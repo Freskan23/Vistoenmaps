@@ -2,13 +2,14 @@
   DESIGN: Cartografía Urbana — Barrio Page
   - Lists businesses in a specific neighborhood
   - Business cards with ratings, phone, maps CTA
-  - Filters, sorting, pagination
+  - Advanced filters, sorting, pagination
+  - Interactive map with markers
   - Schema.org JSON-LD for each business
 */
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { useParams } from "wouter";
-import { MapPin, ArrowUpDown, Star } from "lucide-react";
+import { MapPin, ArrowUpDown, Star, Clock, Zap, Filter, X, ChevronDown, Map as MapIcon } from "lucide-react";
 import {
   getCategoria,
   getCiudad,
@@ -22,6 +23,10 @@ import Footer from "@/components/Footer";
 import NotFound from "./NotFound";
 import { motion } from "framer-motion";
 import SEOHead from "@/components/SEOHead";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
+import { MapView } from "@/components/Map";
 
 type SortOption = "rating" | "reviews" | "name";
 
@@ -35,7 +40,17 @@ export default function BarrioPage() {
   const [sortBy, setSortBy] = useState<SortOption>("rating");
   const [minRating, setMinRating] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [is24h, setIs24h] = useState(false);
+  const [isUrgente, setIsUrgente] = useState(false);
+  const [minReviews, setMinReviews] = useState<number>(0);
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [showMap, setShowMap] = useState(true);
   const perPage = 10;
+
+  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const mapRef = useRef<google.maps.Map | null>(null);
+  const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
 
   const cat = getCategoria(categoria);
   const ciu = getCiudad(ciudad);
@@ -45,8 +60,41 @@ export default function BarrioPage() {
 
   const negociosData = getNegociosByBarrio(cat.slug, ciu.slug, bar.slug);
 
+  // Extract unique services for filter badges
+  const allServices = useMemo(() => {
+    const set = new Set<string>();
+    negociosData.forEach((n) =>
+      n.servicios_destacados.forEach((s) => set.add(s))
+    );
+    return Array.from(set).sort((a, b) => a.localeCompare(b, "es"));
+  }, [negociosData]);
+
+  const hasActiveFilters = is24h || isUrgente || minReviews > 0 || minRating > 0 || selectedServices.length > 0;
+
   const filtered = useMemo(() => {
-    let list = negociosData.filter((n) => n.valoracion_media >= minRating);
+    let list = [...negociosData];
+
+    if (minRating > 0) {
+      list = list.filter((n) => n.valoracion_media >= minRating);
+    }
+    if (is24h) {
+      list = list.filter((n) => n.horario.toLowerCase().includes("24 horas"));
+    }
+    if (isUrgente) {
+      list = list.filter((n) =>
+        n.servicios_destacados.some(
+          (s) => s.toLowerCase().includes("urgente") || s.toLowerCase().includes("urgencia")
+        )
+      );
+    }
+    if (minReviews > 0) {
+      list = list.filter((n) => n.num_resenas >= minReviews);
+    }
+    if (selectedServices.length > 0) {
+      list = list.filter((n) =>
+        selectedServices.some((sel) => n.servicios_destacados.includes(sel))
+      );
+    }
 
     list.sort((a, b) => {
       switch (sortBy) {
@@ -62,10 +110,84 @@ export default function BarrioPage() {
     });
 
     return list;
-  }, [negociosData, sortBy, minRating]);
+  }, [negociosData, sortBy, minRating, is24h, isUrgente, minReviews, selectedServices]);
 
   const totalPages = Math.ceil(filtered.length / perPage);
   const paginated = filtered.slice((currentPage - 1) * perPage, currentPage * perPage);
+
+  const clearFilters = () => {
+    setMinRating(0);
+    setIs24h(false);
+    setIsUrgente(false);
+    setMinReviews(0);
+    setSelectedServices([]);
+    setCurrentPage(1);
+  };
+
+  const toggleService = (service: string) => {
+    setSelectedServices((prev) =>
+      prev.includes(service)
+        ? prev.filter((s) => s !== service)
+        : [...prev, service]
+    );
+    setCurrentPage(1);
+  };
+
+  // Map: scroll to card when marker clicked
+  const scrollToCard = useCallback((slug: string) => {
+    const el = cardRefs.current[slug];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el.classList.add("ring-2", "ring-accent");
+      setTimeout(() => el.classList.remove("ring-2", "ring-accent"), 2000);
+    }
+  }, []);
+
+  // Map: update markers when filtered results change
+  const updateMarkers = useCallback(
+    (map: google.maps.Map) => {
+      // Clear old markers
+      markersRef.current.forEach((m) => (m.map = null));
+      markersRef.current = [];
+
+      filtered.forEach((neg) => {
+        const marker = new google.maps.marker.AdvancedMarkerElement({
+          map,
+          position: { lat: neg.coordenadas.lat, lng: neg.coordenadas.lng },
+          title: neg.nombre,
+        });
+        marker.addListener("click", () => scrollToCard(neg.slug));
+        markersRef.current.push(marker);
+      });
+
+      // Fit bounds if multiple markers
+      if (filtered.length > 1) {
+        const bounds = new google.maps.LatLngBounds();
+        filtered.forEach((n) =>
+          bounds.extend({ lat: n.coordenadas.lat, lng: n.coordenadas.lng })
+        );
+        map.fitBounds(bounds, { top: 30, right: 30, bottom: 30, left: 30 });
+      }
+    },
+    [filtered, scrollToCard]
+  );
+
+  // Re-sync markers when filter changes and map already loaded
+  useEffect(() => {
+    if (mapRef.current) {
+      updateMarkers(mapRef.current);
+    }
+  }, [updateMarkers]);
+
+  const handleMapReady = useCallback(
+    (map: google.maps.Map) => {
+      mapRef.current = map;
+      updateMarkers(map);
+    },
+    [updateMarkers]
+  );
+
+  const hasApiKey = !!import.meta.env.VITE_FRONTEND_FORGE_API_KEY;
 
   // Schema.org JSON-LD
   const schemaData = negociosData.map((n) => ({
@@ -94,7 +216,6 @@ export default function BarrioPage() {
     url: n.url_google_maps,
   }));
 
-  // Breadcrumb schema
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -135,7 +256,6 @@ export default function BarrioPage() {
       />
       <Header />
 
-      {/* Inject Schema.org JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
@@ -169,49 +289,186 @@ export default function BarrioPage() {
         </div>
       </section>
 
+      {/* Interactive Map */}
+      {negociosData.length > 0 && (
+        <section className="container pt-6">
+          <div className="flex items-center justify-between mb-3">
+            <button
+              onClick={() => setShowMap(!showMap)}
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <MapIcon className="w-4 h-4" />
+              {showMap ? "Ocultar mapa" : "Mostrar mapa"}
+            </button>
+          </div>
+          {showMap && (
+            <div className="rounded-lg overflow-hidden border-2 border-border">
+              {hasApiKey ? (
+                <MapView
+                  initialCenter={bar.coordenadas}
+                  initialZoom={14}
+                  onMapReady={handleMapReady}
+                  className="h-[300px] md:h-[400px]"
+                />
+              ) : (
+                <div className="h-[300px] md:h-[400px] bg-secondary flex flex-col items-center justify-center gap-3">
+                  <MapPin className="w-10 h-10 text-muted-foreground/40" />
+                  <p className="text-sm text-muted-foreground">Mapa no disponible</p>
+                  <a
+                    href={`https://www.google.com/maps/search/${encodeURIComponent(cat.nombre + " " + bar.nombre + " " + ciu.nombre)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium text-primary hover:underline"
+                  >
+                    Ver en Google Maps
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
+        </section>
+      )}
+
       {/* Business Listings */}
-      <section className="container py-10 md:py-14">
+      <section className="container py-6 md:py-10">
         {negociosData.length > 0 ? (
           <>
-            {/* Filters bar */}
-            <div className="flex flex-wrap items-center gap-3 mb-6">
-              {/* Sort */}
-              <div className="flex items-center gap-2">
-                <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
-                <select
-                  value={sortBy}
-                  onChange={(e) => {
-                    setSortBy(e.target.value as SortOption);
-                    setCurrentPage(1);
-                  }}
-                  className="text-sm bg-secondary border border-border rounded-md px-2 py-1.5 text-foreground"
-                >
-                  <option value="rating">Mejor valoración</option>
-                  <option value="reviews">Más reseñas</option>
-                  <option value="name">Nombre A-Z</option>
-                </select>
+            {/* Filters */}
+            <div className="mb-6 space-y-4">
+              {/* Sort + basic controls */}
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
+                  <select
+                    value={sortBy}
+                    onChange={(e) => {
+                      setSortBy(e.target.value as SortOption);
+                      setCurrentPage(1);
+                    }}
+                    className="text-sm bg-secondary border border-border rounded-md px-2 py-1.5 text-foreground"
+                  >
+                    <option value="rating">Mejor valoración</option>
+                    <option value="reviews">Más reseñas</option>
+                    <option value="name">Nombre A-Z</option>
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Star className="w-4 h-4 text-muted-foreground" />
+                  <select
+                    value={minRating}
+                    onChange={(e) => {
+                      setMinRating(Number(e.target.value));
+                      setCurrentPage(1);
+                    }}
+                    className="text-sm bg-secondary border border-border rounded-md px-2 py-1.5 text-foreground"
+                  >
+                    <option value={0}>Todas las valoraciones</option>
+                    <option value={4}>4+ estrellas</option>
+                    <option value={4.5}>4.5+ estrellas</option>
+                  </select>
+                </div>
+
+                {/* Advanced filters toggle (mobile-friendly) */}
+                <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
+                  <CollapsibleTrigger className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors">
+                    <Filter className="w-4 h-4" />
+                    Más filtros
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform ${filtersOpen ? "rotate-180" : ""}`} />
+                  </CollapsibleTrigger>
+                </Collapsible>
+
+                {hasActiveFilters && (
+                  <button
+                    onClick={clearFilters}
+                    className="flex items-center gap-1 text-xs text-destructive hover:text-destructive/80 font-medium transition-colors"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                    Limpiar filtros
+                  </button>
+                )}
+
+                <span className="text-xs text-muted-foreground ml-auto">
+                  {filtered.length} resultado{filtered.length !== 1 ? "s" : ""}
+                </span>
               </div>
 
-              {/* Min rating filter */}
-              <div className="flex items-center gap-2">
-                <Star className="w-4 h-4 text-muted-foreground" />
-                <select
-                  value={minRating}
-                  onChange={(e) => {
-                    setMinRating(Number(e.target.value));
-                    setCurrentPage(1);
-                  }}
-                  className="text-sm bg-secondary border border-border rounded-md px-2 py-1.5 text-foreground"
-                >
-                  <option value={0}>Todas las valoraciones</option>
-                  <option value={4}>4+ estrellas</option>
-                  <option value={4.5}>4.5+ estrellas</option>
-                </select>
-              </div>
+              {/* Advanced filters panel */}
+              <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
+                <CollapsibleContent>
+                  <div className="bg-secondary/50 border border-border rounded-lg p-4 space-y-4">
+                    {/* Toggle filters row */}
+                    <div className="flex flex-wrap gap-6">
+                      <label className="flex items-center gap-2.5 cursor-pointer">
+                        <Switch
+                          checked={is24h}
+                          onCheckedChange={(checked) => {
+                            setIs24h(checked);
+                            setCurrentPage(1);
+                          }}
+                        />
+                        <div className="flex items-center gap-1.5">
+                          <Clock className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-sm font-medium">Disponible 24h</span>
+                        </div>
+                      </label>
 
-              <span className="text-xs text-muted-foreground ml-auto">
-                {filtered.length} resultado{filtered.length !== 1 ? "s" : ""}
-              </span>
+                      <label className="flex items-center gap-2.5 cursor-pointer">
+                        <Switch
+                          checked={isUrgente}
+                          onCheckedChange={(checked) => {
+                            setIsUrgente(checked);
+                            setCurrentPage(1);
+                          }}
+                        />
+                        <div className="flex items-center gap-1.5">
+                          <Zap className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-sm font-medium">Servicio urgente</span>
+                        </div>
+                      </label>
+
+                      <div className="flex items-center gap-2">
+                        <Star className="w-4 h-4 text-muted-foreground" />
+                        <select
+                          value={minReviews}
+                          onChange={(e) => {
+                            setMinReviews(Number(e.target.value));
+                            setCurrentPage(1);
+                          }}
+                          className="text-sm bg-background border border-border rounded-md px-2 py-1.5 text-foreground"
+                        >
+                          <option value={0}>Todas las reseñas</option>
+                          <option value={50}>50+ reseñas</option>
+                          <option value={100}>100+ reseñas</option>
+                          <option value={200}>200+ reseñas</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* Service badges */}
+                    {allServices.length > 0 && (
+                      <div>
+                        <p className="text-xs font-medium text-muted-foreground mb-2">Filtrar por servicio:</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {allServices.map((service) => (
+                            <button
+                              key={service}
+                              onClick={() => toggleService(service)}
+                            >
+                              <Badge
+                                variant={selectedServices.includes(service) ? "default" : "outline"}
+                                className="cursor-pointer text-xs"
+                              >
+                                {service}
+                              </Badge>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
             </div>
 
             {/* Cards grid */}
@@ -219,9 +476,11 @@ export default function BarrioPage() {
               {paginated.map((negocio, index) => (
                 <motion.div
                   key={negocio.slug}
+                  ref={(el) => { cardRefs.current[negocio.slug] = el; }}
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.08 }}
+                  className="transition-all duration-300 rounded-lg"
                 >
                   <NegocioCard negocio={negocio} />
                 </motion.div>
