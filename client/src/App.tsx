@@ -11,6 +11,7 @@ import BarrioPage from "./pages/BarrioPage";
 import NegocioPage from "./pages/NegocioPage";
 import ContactoPage from "./pages/ContactoPage";
 import DirectoriosPage from "./pages/DirectoriosPage";
+import DirectorioDetallePage from "./pages/DirectorioDetallePage";
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/contacto" component={ContactoPage} />
       <Route path="/directorios" component={DirectoriosPage} />
+      <Route path="/directorios/:slug" component={DirectorioDetallePage} />
       <Route path="/:categoria" component={CategoriaPage} />
       <Route path="/:categoria/:ciudad" component={CiudadPage} />
       <Route path="/:categoria/:ciudad/:barrio" component={BarrioPage} />

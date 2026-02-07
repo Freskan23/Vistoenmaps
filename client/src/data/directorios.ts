@@ -14,6 +14,11 @@ export interface Directorio {
   permiteResenas: boolean;
   alcance: "local" | "regional" | "nacional" | "europeo" | "internacional" | "global";
   popularidad: number; // 0-100
+  // Nuevos campos
+  tipoDirectorio: "tematico" | "local" | "generalista";
+  coste: "gratis" | "freemium" | "pago";
+  precio?: string;
+  urlRegistro?: string;
 }
 
 export const directorios: Directorio[] = [
@@ -28,7 +33,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": true,
     "alcance": "nacional",
-    "popularidad": 95
+    "popularidad": 95,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "milanuncios-com",
@@ -41,7 +50,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 92
+    "popularidad": 92,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "cylex-es",
@@ -54,7 +67,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": true,
     "alcance": "internacional",
-    "popularidad": 90
+    "popularidad": 90,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "trustpilot-com",
@@ -67,7 +84,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": true,
     "alcance": "global",
-    "popularidad": 88
+    "popularidad": 88,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "qdq-com",
@@ -80,7 +101,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": true,
     "alcance": "nacional",
-    "popularidad": 85
+    "popularidad": 85,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "habitissimo-es",
@@ -93,7 +118,11 @@ export const directorios: Directorio[] = [
     "gratis": false,
     "permiteResenas": true,
     "alcance": "nacional",
-    "popularidad": 84
+    "popularidad": 84,
+    "tipoDirectorio": "tematico",
+    "coste": "pago",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "cronoshare-com",
@@ -106,7 +135,11 @@ export const directorios: Directorio[] = [
     "gratis": false,
     "permiteResenas": true,
     "alcance": "nacional",
-    "popularidad": 82
+    "popularidad": 82,
+    "tipoDirectorio": "tematico",
+    "coste": "pago",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "infoisinfo-es",
@@ -119,7 +152,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": true,
     "alcance": "nacional",
-    "popularidad": 80
+    "popularidad": 80,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "yelp-com",
@@ -132,7 +169,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": true,
     "alcance": "global",
-    "popularidad": 78
+    "popularidad": 78,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "hotfrog-es",
@@ -145,7 +186,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "internacional",
-    "popularidad": 75
+    "popularidad": 75,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "interempresas-net",
@@ -158,7 +203,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 74
+    "popularidad": 74,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "kompass-com",
@@ -171,7 +220,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "global",
-    "popularidad": 72
+    "popularidad": 72,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "europages-es",
@@ -184,7 +237,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "europeo",
-    "popularidad": 70
+    "popularidad": 70,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "provenexpert-com",
@@ -197,7 +254,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": true,
     "alcance": "global",
-    "popularidad": 65
+    "popularidad": 65,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "facebook-com",
@@ -210,7 +271,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": true,
     "alcance": "global",
-    "popularidad": 96
+    "popularidad": 96,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "instagram-com",
@@ -223,7 +288,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "global",
-    "popularidad": 94
+    "popularidad": 94,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "youtube-com",
@@ -236,7 +305,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "global",
-    "popularidad": 90
+    "popularidad": 90,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "linkedin-com",
@@ -249,7 +322,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "global",
-    "popularidad": 88
+    "popularidad": 88,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "tiktok-com",
@@ -262,7 +339,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "global",
-    "popularidad": 85
+    "popularidad": 85,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "x-com",
@@ -275,7 +356,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "global",
-    "popularidad": 75
+    "popularidad": 75,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "pinterest-com",
@@ -288,7 +373,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "global",
-    "popularidad": 70
+    "popularidad": 70,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "nextdoor-com",
@@ -301,7 +390,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": true,
     "alcance": "local",
-    "popularidad": 60
+    "popularidad": 60,
+    "tipoDirectorio": "local",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "maptons-com",
@@ -314,7 +407,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "polomap-com",
@@ -327,7 +424,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "directoriogratis-es",
@@ -340,7 +441,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "cerrajerosenespana-click",
@@ -353,7 +458,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "serviciosdemantenimiento-es",
@@ -366,7 +475,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "firmania-es",
@@ -379,7 +492,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "cataloxy-es",
@@ -392,7 +509,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "cybo-com",
@@ -405,7 +526,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "todoenlaces-com",
@@ -418,7 +543,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "servipyme-com",
@@ -431,7 +560,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "emprenemjunts-es",
@@ -444,7 +577,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "empresasespanolas-net",
@@ -457,7 +594,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "botiguesdecatalunya-cat",
@@ -470,7 +611,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "planreforma-com",
@@ -483,7 +628,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "wheree-com",
@@ -496,7 +645,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "paxinasgalegas-es",
@@ -509,7 +662,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "todosbiz-es",
@@ -522,7 +679,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "wanderboat-ai",
@@ -535,7 +696,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "opendi-es",
@@ -548,7 +713,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "localo-site",
@@ -561,7 +730,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "directorio-empresa-es",
@@ -574,7 +747,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "encuentre-abierto-es",
@@ -587,7 +764,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "guiademicroempresas-es",
@@ -600,7 +781,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "acompio-es",
@@ -613,7 +798,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "locanto-es",
@@ -626,7 +815,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "homeserve-es",
@@ -639,7 +832,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "near-place-com",
@@ -652,7 +849,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "nearmenows-com",
@@ -665,7 +866,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "todocentros-com",
@@ -678,7 +883,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "solotrasteros-com",
@@ -691,7 +900,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "empresasespanolas-es",
@@ -704,7 +917,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "misterminit-eu",
@@ -717,7 +934,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "tellows-es",
@@ -730,7 +951,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "wallapop-com",
@@ -743,7 +968,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "booksy-com",
@@ -756,7 +985,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "vulka-es",
@@ -769,7 +1002,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "spain-web-com",
@@ -782,7 +1019,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "dumin-info",
@@ -795,7 +1036,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "enrollbusiness-com",
@@ -808,7 +1053,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "costatrades-com",
@@ -821,7 +1070,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "paginas1-com",
@@ -834,7 +1087,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "goto-where-com",
@@ -847,7 +1104,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "todocon-com",
@@ -860,7 +1121,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "mybusinessplaces-com",
@@ -873,7 +1138,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "repuebla-me",
@@ -886,7 +1155,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "infoconstruccion-es",
@@ -899,7 +1172,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "masquemedicos-com",
@@ -912,7 +1189,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "mejoresdevigo-es",
@@ -925,7 +1206,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "todos-los-horarios-es",
@@ -938,7 +1223,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "top-rated-online",
@@ -951,7 +1240,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "lasguias-com",
@@ -964,7 +1257,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "busconegocio-com",
@@ -977,7 +1274,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "presupuestos-com",
@@ -990,7 +1291,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "paginadirecta-com",
@@ -1003,7 +1308,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "sociedadesyempresas-com",
@@ -1016,7 +1325,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "lomejordelbarrio-com",
@@ -1029,7 +1342,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "elpages-es",
@@ -1042,7 +1359,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "horasabiertas-es",
@@ -1055,7 +1376,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "guiacomercial-cat",
@@ -1068,7 +1393,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "onebusiness-place",
@@ -1081,7 +1410,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "mejoresmallorca-es",
@@ -1094,7 +1427,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "worldplaces-me",
@@ -1107,7 +1444,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "holalocal-es",
@@ -1120,7 +1461,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "guiadebadalona-es",
@@ -1133,7 +1478,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "vigodirectorio-es",
@@ -1146,7 +1495,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "totguia-com",
@@ -1159,7 +1512,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "laagendalocal-com",
@@ -1172,7 +1529,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "losmejoresdelaspalmas-com",
@@ -1185,7 +1546,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "guiacatering-com",
@@ -1198,7 +1563,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "iglobal-co",
@@ -1211,7 +1580,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "brownbook-net",
@@ -1224,7 +1597,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "mejoresclinicas-com",
@@ -1237,7 +1614,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "bizpages-org",
@@ -1250,7 +1631,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "listadotelefonos-com",
@@ -1263,7 +1648,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "portaldelcomerciante-com",
@@ -1276,7 +1665,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "portaldetuciudad-com",
@@ -1289,7 +1682,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "leonlocal-com",
@@ -1302,7 +1699,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "manta-com",
@@ -1315,7 +1716,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "losmejoresdevitoria-com",
@@ -1328,7 +1733,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "laguiacatalana-com",
@@ -1341,7 +1750,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "directorioconstruccionbalear-com",
@@ -1354,7 +1767,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "directoriocom-com",
@@ -1367,7 +1784,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "local-one",
@@ -1380,7 +1801,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "bizhublocal-com",
@@ -1393,7 +1818,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "guiarural-com",
@@ -1406,7 +1835,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "locales-es",
@@ -1419,7 +1852,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "starofservice-com",
@@ -1432,7 +1869,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "foursquare-com",
@@ -1445,7 +1886,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "11870-com",
@@ -1458,7 +1903,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "comercioscomunitatvalenciana-com",
@@ -1471,7 +1920,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "electricistasenmiciudad-es",
@@ -1484,7 +1937,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "gimnasios-wiki",
@@ -1497,7 +1954,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "tematico",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "mejoresagenciasinmobiliarias-es",
@@ -1510,7 +1971,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "mejoresinmobiliarias-com",
@@ -1523,7 +1988,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "yellowpages-net",
@@ -1536,7 +2005,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   },
   {
     "slug": "unilocal-fr",
@@ -1549,7 +2022,11 @@ export const directorios: Directorio[] = [
     "gratis": true,
     "permiteResenas": false,
     "alcance": "nacional",
-    "popularidad": 40
+    "popularidad": 40,
+    "tipoDirectorio": "generalista",
+    "coste": "gratis",
+    "precio": "",
+    "urlRegistro": ""
   }
 ];
 

@@ -74,12 +74,7 @@ function DirectorioCard({
       viewport={{ once: true, margin: "-30px" }}
       transition={{ duration: 0.35 }}
     >
-      <a
-        href={dir.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block h-full"
-      >
+      <Link href={`/directorios/${dir.slug}`} className="block h-full">
         <div
           className={`group relative h-full bg-card border rounded-xl p-5 transition-all duration-300 hover:scale-[1.02] cursor-pointer ${
             featured
@@ -159,11 +154,11 @@ function DirectorioCard({
               <span>{categoriaDirectorio[dir.categoria]}</span>
             </div>
             <span className="text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-              Visitar <ArrowRight className="w-3 h-3" />
+              Ver ficha <ArrowRight className="w-3 h-3" />
             </span>
           </div>
         </div>
-      </a>
+      </Link>
     </motion.div>
   );
 }
