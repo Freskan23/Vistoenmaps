@@ -250,9 +250,16 @@ export default function DashboardPage() {
               )}
             </div>
           </div>
-          <Button variant="outline" onClick={logout} className="gap-2 self-start">
-            <LogOut className="w-4 h-4" /> Cerrar sesion
-          </Button>
+          <div className="flex gap-2 self-start">
+            <Link href="/dashboard/mi-negocio">
+              <Button variant="default" className="gap-2">
+                <Building2 className="w-4 h-4" /> Mi negocio
+              </Button>
+            </Link>
+            <Button variant="outline" onClick={logout} className="gap-2">
+              <LogOut className="w-4 h-4" /> Salir
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}
