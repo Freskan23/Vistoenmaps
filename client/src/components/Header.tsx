@@ -1,11 +1,12 @@
 import { Link } from "wouter";
-import { MapPin, Menu, User } from "lucide-react";
+import { Menu, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import { categorias } from "@/data";
 import SearchBar from "@/components/SearchBar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
+import logo from "@/assets/logo.png";
 
 interface HeaderProps {
   variant?: "transparent" | "solid";
@@ -41,17 +42,11 @@ export default function Header({ variant = "solid" }: HeaderProps) {
         >
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform">
-              <MapPin className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <span
-              className={cn(
-                "text-lg font-bold tracking-tight transition-colors",
-                isTransparent ? "text-white" : "text-foreground"
-              )}
-            >
-              Visto en Maps
-            </span>
+            <img
+              src={logo}
+              alt="Visto en Maps"
+              className="h-10 w-auto object-contain group-hover:scale-105 transition-transform"
+            />
           </Link>
 
           {/* Search */}
