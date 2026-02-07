@@ -1,14 +1,16 @@
-import { useMemo } from 'react';
-import { useAuth } from '@/context/AuthContext';
+import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useAuth, type DirectorioSeguimiento } from '@/context/AuthContext';
 import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { toast } from 'sonner';
 import {
   LogOut, Loader2, Crown, ExternalLink, CheckCircle2,
   AlertTriangle, ArrowUpRight, Star, Globe, Shield,
-  TrendingUp, Target, Sparkles, Building2, MapPin
+  TrendingUp, Target, Sparkles, Building2, MapPin,
+  Circle, Clock, XCircle
 } from 'lucide-react';
 import Header from '@/components/Header';
 import { getRecomendaciones, getResumenRecomendaciones, type Recomendacion } from '@/lib/recomendaciones';
@@ -25,17 +27,53 @@ function PrioridadBadge({ prioridad }: { prioridad: Recomendacion['prioridad'] }
   return <Badge variant="outline" className={c.className}>{c.label}</Badge>;
 }
 
-function DirectorioCard({ rec }: { rec: Recomendacion }) {
-  const dir = rec.directorio;
+function EstadoBadge({ estado }: { estado: DirectorioSeguimiento['estado'] }) {
+  const config = {
+    pendiente: { label: 'Pendiente', icon: Clock, className: 'bg-yellow-100 text-yellow-700 border-yellow-200' },
+    registrado: { label: 'Registrado', icon: CheckCircle2, className: 'bg-blue-100 text-blue-700 border-blue-200' },
+    activo: { label: 'Activo', icon: CheckCircle2, className: 'bg-green-100 text-green-700 border-green-200' },
+    rechazado: { label: 'Rechazado', icon: XCircle, className: 'bg-red-100 text-red-700 border-red-200' },
+  };
+  const c = config[estado];
+  const Icon = c.icon;
   return (
-    <Card className="group hover:shadow-md transition-all duration-200 hover:border-primary/30">
+    <Badge variant="outline" className={`${c.className} gap-1`}>
+      <Icon className="w-3 h-3" /> {c.label}
+    </Badge>
+  );
+}
+
+interface DirectorioCardProps {
+  rec: Recomendacion;
+  seguimiento?: DirectorioSeguimiento;
+  onMarcar: (slug: string, estado: DirectorioSeguimiento['estado']) => void;
+  marking: string | null;
+}
+
+function DirectorioCard({ rec, seguimiento, onMarcar, marking }: DirectorioCardProps) {
+  const dir = rec.directorio;
+  const isMarking = marking === dir.slug;
+  const completado = seguimiento && (seguimiento.estado === 'registrado' || seguimiento.estado === 'activo');
+
+  return (
+    <Card className={`group hover:shadow-md transition-all duration-200 hover:border-primary/30 ${completado ? 'border-green-200 bg-green-50/30' : ''}`}>
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              {dir.tipo === 'premium' && <Crown className="w-4 h-4 text-amber-500 shrink-0" />}
-              <h3 className="font-semibold text-sm truncate">{dir.nombre}</h3>
-              <PrioridadBadge prioridad={rec.prioridad} />
+              {completado ? (
+                <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
+              ) : dir.tipo === 'premium' ? (
+                <Crown className="w-4 h-4 text-amber-500 shrink-0" />
+              ) : (
+                <Circle className="w-4 h-4 text-muted-foreground/30 shrink-0" />
+              )}
+              <h3 className={`font-semibold text-sm truncate ${completado ? 'text-green-700' : ''}`}>{dir.nombre}</h3>
+              {seguimiento ? (
+                <EstadoBadge estado={seguimiento.estado} />
+              ) : (
+                <PrioridadBadge prioridad={rec.prioridad} />
+              )}
             </div>
             <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{dir.descripcion}</p>
             <div className="flex flex-wrap gap-1.5 mb-2">
@@ -66,11 +104,39 @@ function DirectorioCard({ rec }: { rec: Recomendacion }) {
               <div className="text-lg font-bold text-primary">{rec.score}</div>
               <div className="text-[10px] text-muted-foreground">puntos</div>
             </div>
-            <Link href={`/directorios/${dir.slug}`}>
-              <Button size="sm" variant="outline" className="gap-1 text-xs h-7">
-                Ver <ArrowUpRight className="w-3 h-3" />
-              </Button>
-            </Link>
+            <div className="flex flex-col gap-1">
+              {!completado ? (
+                <Button
+                  size="sm"
+                  variant="default"
+                  className="gap-1 text-xs h-7"
+                  disabled={isMarking}
+                  onClick={() => onMarcar(dir.slug, 'registrado')}
+                >
+                  {isMarking ? (
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                  ) : (
+                    <CheckCircle2 className="w-3 h-3" />
+                  )}
+                  Hecho
+                </Button>
+              ) : (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="gap-1 text-xs h-7 text-muted-foreground"
+                  disabled={isMarking}
+                  onClick={() => onMarcar(dir.slug, 'pendiente')}
+                >
+                  Desmarcar
+                </Button>
+              )}
+              <Link href={`/directorios/${dir.slug}`}>
+                <Button size="sm" variant="outline" className="gap-1 text-xs h-7 w-full">
+                  Ver <ArrowUpRight className="w-3 h-3" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </CardContent>
@@ -79,10 +145,13 @@ function DirectorioCard({ rec }: { rec: Recomendacion }) {
 }
 
 export default function DashboardPage() {
-  const { user, loading: authLoading, logout, isAuthenticated } = useAuth();
+  const { user, loading: authLoading, logout, isAuthenticated, getDirectoriosSeguimiento, marcarDirectorio } = useAuth();
   const [_, setLocation] = useLocation();
+  const [seguimiento, setSeguimiento] = useState<DirectorioSeguimiento[]>([]);
+  const [loadingSeg, setLoadingSeg] = useState(true);
+  const [marking, setMarking] = useState<string | null>(null);
 
-  // Get business info from user metadata
+  // Get business info from user profile
   const categoriaNegocio = user?.categoria_negocio || '';
   const ciudadNegocio = user?.ciudad || '';
   const nombreNegocio = user?.nombre_negocio || '';
@@ -100,6 +169,45 @@ export default function DashboardPage() {
 
   const categoriaNombre = categorias.find(c => c.slug === categoriaNegocio)?.nombre || categoriaNegocio;
   const ciudadNombre = ciudades.find(c => c.slug === ciudadNegocio)?.nombre || ciudadNegocio;
+
+  // Load tracking data
+  const loadSeguimiento = useCallback(async () => {
+    if (!isAuthenticated) return;
+    const data = await getDirectoriosSeguimiento();
+    setSeguimiento(data);
+    setLoadingSeg(false);
+  }, [isAuthenticated, getDirectoriosSeguimiento]);
+
+  useEffect(() => {
+    if (isAuthenticated && !authLoading) {
+      loadSeguimiento();
+    }
+  }, [isAuthenticated, authLoading, loadSeguimiento]);
+
+  // Seguimiento map for quick lookup
+  const seguimientoMap = useMemo(() => {
+    const map: Record<string, DirectorioSeguimiento> = {};
+    for (const s of seguimiento) {
+      map[s.directorio_slug] = s;
+    }
+    return map;
+  }, [seguimiento]);
+
+  // Count completed
+  const completados = seguimiento.filter(s => s.estado === 'registrado' || s.estado === 'activo').length;
+  const progressValue = resumen.total > 0 ? Math.round((completados / resumen.total) * 100) : 0;
+
+  const handleMarcar = async (slug: string, estado: DirectorioSeguimiento['estado']) => {
+    setMarking(slug);
+    const { error } = await marcarDirectorio(slug, estado);
+    if (error) {
+      toast.error('Error al actualizar: ' + error);
+    } else {
+      toast.success(estado === 'registrado' ? 'Marcado como registrado' : 'Estado actualizado');
+      await loadSeguimiento();
+    }
+    setMarking(null);
+  };
 
   if (authLoading) {
     return (
@@ -155,6 +263,12 @@ export default function DashboardPage() {
               <p className="text-xs text-muted-foreground mt-1">Directorios recomendados</p>
             </CardContent>
           </Card>
+          <Card className="border-green-200 bg-green-50/50">
+            <CardContent className="p-4 text-center">
+              <div className="text-3xl font-bold text-green-600">{completados}</div>
+              <p className="text-xs text-muted-foreground mt-1">Completados</p>
+            </CardContent>
+          </Card>
           <Card className="border-red-200 bg-red-50/50">
             <CardContent className="p-4 text-center">
               <div className="text-3xl font-bold text-red-600">{resumen.criticas.length}</div>
@@ -167,12 +281,6 @@ export default function DashboardPage() {
               <p className="text-xs text-muted-foreground mt-1">Prioridad alta</p>
             </CardContent>
           </Card>
-          <Card className="border-green-200 bg-green-50/50">
-            <CardContent className="p-4 text-center">
-              <div className="text-3xl font-bold text-green-600">{resumen.gratuitas.length}</div>
-              <p className="text-xs text-muted-foreground mt-1">Gratuitos</p>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Progress indicator */}
@@ -183,12 +291,18 @@ export default function DashboardPage() {
                 <TrendingUp className="w-5 h-5 text-primary" />
                 <h3 className="font-semibold">Tu presencia en directorios</h3>
               </div>
-              <span className="text-sm text-muted-foreground">0 / {resumen.total} completados</span>
+              <span className="text-sm font-medium">
+                {completados} / {resumen.total} completados
+              </span>
             </div>
-            <Progress value={0} className="h-2 mb-3" />
+            <Progress value={progressValue} className="h-2 mb-3" />
             <p className="text-sm text-muted-foreground">
-              Registrarte en estos directorios mejorara tu posicionamiento en Google Maps y busquedas locales.
-              Empieza por los de <strong>prioridad critica</strong>.
+              {completados === 0
+                ? <>Registrarte en estos directorios mejorara tu posicionamiento en Google Maps. Empieza por los de <strong>prioridad critica</strong>.</>
+                : completados < resumen.total
+                ? <>Buen progreso! Te faltan {resumen.total - completados} directorios. Sigue asi.</>
+                : <>Felicidades! Estas registrado en todos los directorios recomendados.</>
+              }
             </p>
           </CardContent>
         </Card>
@@ -202,7 +316,13 @@ export default function DashboardPage() {
             </div>
             <div className="grid gap-3 md:grid-cols-2">
               {resumen.criticas.map((rec) => (
-                <DirectorioCard key={rec.directorio.slug} rec={rec} />
+                <DirectorioCard
+                  key={rec.directorio.slug}
+                  rec={rec}
+                  seguimiento={seguimientoMap[rec.directorio.slug]}
+                  onMarcar={handleMarcar}
+                  marking={marking}
+                />
               ))}
             </div>
           </section>
@@ -217,7 +337,13 @@ export default function DashboardPage() {
             </div>
             <div className="grid gap-3 md:grid-cols-2">
               {resumen.altas.map((rec) => (
-                <DirectorioCard key={rec.directorio.slug} rec={rec} />
+                <DirectorioCard
+                  key={rec.directorio.slug}
+                  rec={rec}
+                  seguimiento={seguimientoMap[rec.directorio.slug]}
+                  onMarcar={handleMarcar}
+                  marking={marking}
+                />
               ))}
             </div>
           </section>
@@ -232,7 +358,13 @@ export default function DashboardPage() {
             </div>
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
               {resumen.medias.map((rec) => (
-                <DirectorioCard key={rec.directorio.slug} rec={rec} />
+                <DirectorioCard
+                  key={rec.directorio.slug}
+                  rec={rec}
+                  seguimiento={seguimientoMap[rec.directorio.slug]}
+                  onMarcar={handleMarcar}
+                  marking={marking}
+                />
               ))}
             </div>
           </section>
@@ -247,7 +379,13 @@ export default function DashboardPage() {
             </div>
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
               {resumen.bajas.slice(0, 12).map((rec) => (
-                <DirectorioCard key={rec.directorio.slug} rec={rec} />
+                <DirectorioCard
+                  key={rec.directorio.slug}
+                  rec={rec}
+                  seguimiento={seguimientoMap[rec.directorio.slug]}
+                  onMarcar={handleMarcar}
+                  marking={marking}
+                />
               ))}
             </div>
             {resumen.bajas.length > 12 && (
