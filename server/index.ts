@@ -2,6 +2,8 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import authRoutes from './routes/auth';
+import businessRoutes from './routes/businesses';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -9,6 +11,12 @@ const __dirname = path.dirname(__filename);
 async function startServer() {
   const app = express();
   const server = createServer(app);
+
+  app.use(express.json());
+
+  // API Routes
+  app.use('/api/auth', authRoutes);
+  app.use('/api/businesses', businessRoutes);
 
   // Serve static files from dist/public in production
   const staticPath =
@@ -19,7 +27,11 @@ async function startServer() {
   app.use(express.static(staticPath));
 
   // Handle client-side routing - serve index.html for all routes
-  app.get("*", (_req, res) => {
+  // Make sure API routes are not captured by this if they were missed above
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
     res.sendFile(path.join(staticPath, "index.html"));
   });
 

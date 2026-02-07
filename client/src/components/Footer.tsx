@@ -1,6 +1,6 @@
 import { Link } from "wouter";
-import { MapPin } from "lucide-react";
 import { categorias, ciudades } from "@/data";
+import logo from "@/assets/logo.png";
 
 export default function Footer() {
   return (
@@ -12,10 +12,13 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-primary-foreground/20 rounded-xl flex items-center justify-center">
-                <MapPin className="w-4 h-4 text-primary-foreground" />
+              <div className="bg-white/10 p-2 rounded-xl backdrop-blur-sm">
+                <img
+                  src={logo}
+                  alt="Visto en Maps"
+                  className="h-8 w-auto object-contain brightness-0 invert"
+                />
               </div>
-              <span className="text-lg font-bold">Visto en Maps</span>
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
               Directorio de profesionales y negocios locales verificados en Google Maps. 
