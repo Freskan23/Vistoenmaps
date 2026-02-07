@@ -15,7 +15,6 @@ import DirectorioDetallePage from "./pages/DirectorioDetallePage";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
-import EditBusinessPage from "./pages/dashboard/EditBusinessPage";
 import { AuthProvider } from "./context/AuthContext";
 
 function Router() {
@@ -25,8 +24,6 @@ function Router() {
       <Route path="/login" component={LoginPage} />
       <Route path="/register" component={RegisterPage} />
       <Route path="/dashboard" component={DashboardPage} />
-      <Route path="/dashboard/new" component={EditBusinessPage} />
-      <Route path="/dashboard/edit/:id" component={EditBusinessPage} />
       <Route path="/contacto" component={ContactoPage} />
       <Route path="/directorios" component={DirectoriosPage} />
       <Route path="/directorios/:slug" component={DirectorioDetallePage} />

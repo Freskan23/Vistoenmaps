@@ -1,58 +1,59 @@
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
+import { Mail, Lock } from 'lucide-react';
 
 export default function LoginPage() {
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [_, setLocation] = useLocation();
+
+  // If already authenticated, redirect to dashboard
+  if (isAuthenticated) {
+    setLocation('/dashboard');
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+    const { error } = await login(email, password);
 
-      const data = await res.json();
+    setLoading(false);
 
-      if (!res.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
-
-      login(data.token, data.user);
-      toast.success('Sesión iniciada correctamente');
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
+    if (error) {
+      toast.error(error);
+      return;
     }
+
+    toast.success('Sesion iniciada correctamente');
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 flex flex-col">
       <Header />
       <div className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>Iniciar Sesión</CardTitle>
-            <CardDescription>Accede a tu cuenta para gestionar tu negocio</CardDescription>
+            <CardTitle>Iniciar Sesion</CardTitle>
+            <CardDescription>Accede a tu cuenta para ver tus recomendaciones de directorios</CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-muted-foreground" />
+                  Email
+                </Label>
                 <Input
                   id="email"
                   type="email"
@@ -63,7 +64,10 @@ export default function LoginPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Contraseña</Label>
+                <Label htmlFor="password" className="flex items-center gap-2">
+                  <Lock className="w-4 h-4 text-muted-foreground" />
+                  Contrasena
+                </Label>
                 <Input
                   id="password"
                   type="password"
@@ -78,9 +82,9 @@ export default function LoginPage() {
                 {loading ? 'Cargando...' : 'Entrar'}
               </Button>
               <div className="text-sm text-center text-muted-foreground">
-                ¿No tienes cuenta?{' '}
+                No tienes cuenta?{' '}
                 <Link href="/register" className="text-primary hover:underline">
-                  Regístrate
+                  Registrate gratis
                 </Link>
               </div>
             </CardFooter>

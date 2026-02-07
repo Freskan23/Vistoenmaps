@@ -1,150 +1,281 @@
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Plus, Edit, Trash2, LogOut, Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import {
+  LogOut, Loader2, Crown, ExternalLink, CheckCircle2,
+  AlertTriangle, ArrowUpRight, Star, Globe, Shield,
+  TrendingUp, Target, Sparkles, Building2, MapPin
+} from 'lucide-react';
 import Header from '@/components/Header';
+import { getRecomendaciones, getResumenRecomendaciones, type Recomendacion } from '@/lib/recomendaciones';
+import { categorias, ciudades } from '@/data';
 
-interface Business {
-  id: number;
-  nombre: string;
-  slug: string;
-  categoriaSlug: string;
-  ciudadSlug: string;
-  barrioSlug: string;
+function PrioridadBadge({ prioridad }: { prioridad: Recomendacion['prioridad'] }) {
+  const config = {
+    critica: { label: 'Critico', className: 'bg-red-100 text-red-700 border-red-200' },
+    alta: { label: 'Alta', className: 'bg-orange-100 text-orange-700 border-orange-200' },
+    media: { label: 'Media', className: 'bg-blue-100 text-blue-700 border-blue-200' },
+    baja: { label: 'Baja', className: 'bg-gray-100 text-gray-600 border-gray-200' },
+  };
+  const c = config[prioridad];
+  return <Badge variant="outline" className={c.className}>{c.label}</Badge>;
+}
+
+function DirectorioCard({ rec }: { rec: Recomendacion }) {
+  const dir = rec.directorio;
+  return (
+    <Card className="group hover:shadow-md transition-all duration-200 hover:border-primary/30">
+      <CardContent className="p-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              {dir.tipo === 'premium' && <Crown className="w-4 h-4 text-amber-500 shrink-0" />}
+              <h3 className="font-semibold text-sm truncate">{dir.nombre}</h3>
+              <PrioridadBadge prioridad={rec.prioridad} />
+            </div>
+            <p className="text-xs text-muted-foreground mb-2 line-clamp-2">{dir.descripcion}</p>
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {rec.razones.map((razon, i) => (
+                <span key={i} className="text-[10px] px-2 py-0.5 rounded-full bg-secondary text-secondary-foreground">
+                  {razon}
+                </span>
+              ))}
+            </div>
+            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+              {dir.gratis && (
+                <span className="flex items-center gap-1 text-green-600">
+                  <CheckCircle2 className="w-3 h-3" /> Gratis
+                </span>
+              )}
+              {dir.permiteResenas && (
+                <span className="flex items-center gap-1">
+                  <Star className="w-3 h-3" /> Resenas
+                </span>
+              )}
+              <span className="flex items-center gap-1">
+                <Globe className="w-3 h-3" /> {dir.alcance}
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-col items-end gap-2 shrink-0">
+            <div className="text-right">
+              <div className="text-lg font-bold text-primary">{rec.score}</div>
+              <div className="text-[10px] text-muted-foreground">puntos</div>
+            </div>
+            <Link href={`/directorios/${dir.slug}`}>
+              <Button size="sm" variant="outline" className="gap-1 text-xs h-7">
+                Ver <ArrowUpRight className="w-3 h-3" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
 
 export default function DashboardPage() {
-  const { user, token, logout, isAuthenticated } = useAuth();
+  const { user, loading: authLoading, logout, isAuthenticated } = useAuth();
   const [_, setLocation] = useLocation();
-  const [businesses, setBusinesses] = useState<Business[]>([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setLocation('/login');
-      return;
-    }
+  // Get business info from user metadata
+  const categoriaNegocio = user?.categoria_negocio || '';
+  const ciudadNegocio = user?.ciudad || '';
+  const nombreNegocio = user?.nombre_negocio || '';
 
-    const fetchBusinesses = async () => {
-      try {
-        const endpoint = user?.role === 'admin' ? '/api/businesses' : '/api/businesses/mine';
-        const res = await fetch(endpoint, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+  // Get recommendations
+  const recomendaciones = useMemo(
+    () => getRecomendaciones(categoriaNegocio, ciudadNegocio),
+    [categoriaNegocio, ciudadNegocio]
+  );
 
-        if (!res.ok) throw new Error('Failed to fetch businesses');
+  const resumen = useMemo(
+    () => getResumenRecomendaciones(categoriaNegocio, ciudadNegocio),
+    [categoriaNegocio, ciudadNegocio]
+  );
 
-        const data = await res.json();
-        setBusinesses(data);
-      } catch (error) {
-        console.error(error);
-        toast.error('Error cargando los negocios');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const categoriaNombre = categorias.find(c => c.slug === categoriaNegocio)?.nombre || categoriaNegocio;
+  const ciudadNombre = ciudades.find(c => c.slug === ciudadNegocio)?.nombre || ciudadNegocio;
 
-    fetchBusinesses();
-  }, [isAuthenticated, token, user, setLocation]);
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('¿Estás seguro de querer eliminar este negocio?')) return;
-
-    try {
-      const res = await fetch(`/api/businesses/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-
-      if (!res.ok) throw new Error('Failed to delete');
-
-      setBusinesses(businesses.filter(b => b.id !== id));
-      toast.success('Negocio eliminado');
-    } catch (error) {
-      toast.error('Error al eliminar');
-    }
-  };
-
-  if (!isAuthenticated) return null;
+  if (!isAuthenticated) {
+    setLocation('/login');
+    return null;
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/10 flex flex-col">
       <Header />
-      <div className="container py-8 flex-1">
-        <div className="flex items-center justify-between mb-8">
+      <div className="container py-6 md:py-8 flex-1 max-w-6xl">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold">Dashboard</h1>
-            <p className="text-muted-foreground">
-              Bienvenido, {user?.email} ({user?.role === 'admin' ? 'Administrador' : 'Dueño de Negocio'})
-            </p>
+            <div className="flex items-center gap-2 mb-1">
+              <Sparkles className="w-5 h-5 text-primary" />
+              <h1 className="text-2xl md:text-3xl font-bold">Tu informe SEO Local</h1>
+            </div>
+            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+              <span className="flex items-center gap-1">
+                <Building2 className="w-4 h-4" />
+                {nombreNegocio || user?.email}
+              </span>
+              {categoriaNombre && (
+                <span className="flex items-center gap-1">
+                  &bull; <Target className="w-4 h-4" /> {categoriaNombre}
+                </span>
+              )}
+              {ciudadNombre && (
+                <span className="flex items-center gap-1">
+                  &bull; <MapPin className="w-4 h-4" /> {ciudadNombre}
+                </span>
+              )}
+            </div>
           </div>
-          <div className="flex gap-3">
-            <Link href="/dashboard/new">
-              <Button className="gap-2">
-                <Plus className="w-4 h-4" /> Añadir Negocio
-              </Button>
-            </Link>
-            <Button variant="outline" onClick={logout} className="gap-2">
-              <LogOut className="w-4 h-4" /> Salir
-            </Button>
-          </div>
+          <Button variant="outline" onClick={logout} className="gap-2 self-start">
+            <LogOut className="w-4 h-4" /> Cerrar sesion
+          </Button>
         </div>
 
-        {loading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-primary" />
-          </div>
-        ) : businesses.length === 0 ? (
+        {/* Stats Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
           <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <p className="text-muted-foreground mb-4">No tienes negocios registrados.</p>
-              <Link href="/dashboard/new">
-                <Button>Crear mi primer negocio</Button>
-              </Link>
+            <CardContent className="p-4 text-center">
+              <div className="text-3xl font-bold text-primary">{resumen.total}</div>
+              <p className="text-xs text-muted-foreground mt-1">Directorios recomendados</p>
             </CardContent>
           </Card>
-        ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {businesses.map((business) => (
-              <Card key={business.id}>
-                <CardHeader>
-                  <CardTitle className="truncate">{business.nombre}</CardTitle>
-                  <CardDescription className="truncate">
-                    {business.slug}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-sm text-muted-foreground mb-4">
-                    <p>Categoría: {business.categoriaSlug}</p>
-                    <p>Ubicación: {business.ciudadSlug}, {business.barrioSlug}</p>
-                  </div>
-                  <div className="flex gap-2 justify-end">
-                    <Link href={`/dashboard/edit/${business.id}`}>
-                      <Button variant="secondary" size="sm" className="gap-1">
-                        <Edit className="w-3 h-3" /> Editar
-                      </Button>
-                    </Link>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      className="gap-1"
-                      onClick={() => handleDelete(business.id)}
-                    >
-                      <Trash2 className="w-3 h-3" /> Eliminar
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <Card className="border-red-200 bg-red-50/50">
+            <CardContent className="p-4 text-center">
+              <div className="text-3xl font-bold text-red-600">{resumen.criticas.length}</div>
+              <p className="text-xs text-muted-foreground mt-1">Prioridad critica</p>
+            </CardContent>
+          </Card>
+          <Card className="border-orange-200 bg-orange-50/50">
+            <CardContent className="p-4 text-center">
+              <div className="text-3xl font-bold text-orange-600">{resumen.altas.length}</div>
+              <p className="text-xs text-muted-foreground mt-1">Prioridad alta</p>
+            </CardContent>
+          </Card>
+          <Card className="border-green-200 bg-green-50/50">
+            <CardContent className="p-4 text-center">
+              <div className="text-3xl font-bold text-green-600">{resumen.gratuitas.length}</div>
+              <p className="text-xs text-muted-foreground mt-1">Gratuitos</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Progress indicator */}
+        <Card className="mb-8">
+          <CardContent className="p-4 md:p-6">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-primary" />
+                <h3 className="font-semibold">Tu presencia en directorios</h3>
+              </div>
+              <span className="text-sm text-muted-foreground">0 / {resumen.total} completados</span>
+            </div>
+            <Progress value={0} className="h-2 mb-3" />
+            <p className="text-sm text-muted-foreground">
+              Registrarte en estos directorios mejorara tu posicionamiento en Google Maps y busquedas locales.
+              Empieza por los de <strong>prioridad critica</strong>.
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Critical Priority */}
+        {resumen.criticas.length > 0 && (
+          <section className="mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <AlertTriangle className="w-5 h-5 text-red-500" />
+              <h2 className="text-lg font-bold">Prioridad Critica - Deberias estar aqui</h2>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              {resumen.criticas.map((rec) => (
+                <DirectorioCard key={rec.directorio.slug} rec={rec} />
+              ))}
+            </div>
+          </section>
         )}
+
+        {/* High Priority */}
+        {resumen.altas.length > 0 && (
+          <section className="mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <Shield className="w-5 h-5 text-orange-500" />
+              <h2 className="text-lg font-bold">Prioridad Alta - Muy recomendados</h2>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              {resumen.altas.map((rec) => (
+                <DirectorioCard key={rec.directorio.slug} rec={rec} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Medium Priority */}
+        {resumen.medias.length > 0 && (
+          <section className="mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <Target className="w-5 h-5 text-blue-500" />
+              <h2 className="text-lg font-bold">Prioridad Media - Complementarios</h2>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+              {resumen.medias.map((rec) => (
+                <DirectorioCard key={rec.directorio.slug} rec={rec} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Low Priority */}
+        {resumen.bajas.length > 0 && (
+          <section className="mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <Globe className="w-5 h-5 text-gray-500" />
+              <h2 className="text-lg font-bold">Otros directorios</h2>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+              {resumen.bajas.slice(0, 12).map((rec) => (
+                <DirectorioCard key={rec.directorio.slug} rec={rec} />
+              ))}
+            </div>
+            {resumen.bajas.length > 12 && (
+              <div className="text-center mt-4">
+                <Link href="/directorios">
+                  <Button variant="outline" className="gap-2">
+                    Ver todos los directorios <ExternalLink className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </section>
+        )}
+
+        {/* CTA */}
+        <Card className="bg-primary/5 border-primary/20">
+          <CardContent className="p-6 text-center">
+            <h3 className="text-lg font-bold mb-2">Necesitas ayuda para darte de alta?</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Podemos gestionar el alta de tu negocio en todos estos directorios por ti.
+            </p>
+            <Link href="/contacto">
+              <Button className="gap-2">
+                Solicitar presupuesto <ArrowUpRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
