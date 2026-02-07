@@ -1,10 +1,11 @@
 import { Link } from "wouter";
-import { MapPin, Menu } from "lucide-react";
+import { MapPin, Menu, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import { categorias } from "@/data";
 import SearchBar from "@/components/SearchBar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
 
 interface HeaderProps {
   variant?: "transparent" | "solid";
@@ -12,6 +13,7 @@ interface HeaderProps {
 
 export default function Header({ variant = "solid" }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
+  const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 50);
@@ -84,6 +86,33 @@ export default function Header({ variant = "solid" }: HeaderProps) {
             >
               Directorios
             </Link>
+
+            {isAuthenticated ? (
+              <Link
+                href="/dashboard"
+                className={cn(
+                  "flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-full transition-all",
+                  isTransparent
+                    ? "bg-white/10 text-white hover:bg-white/20"
+                    : "bg-primary text-primary-foreground hover:bg-primary/90"
+                )}
+              >
+                <User className="w-4 h-4" />
+                {user?.role === 'admin' ? 'Admin' : 'Mi Cuenta'}
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className={cn(
+                  "text-sm font-medium transition-colors",
+                  isTransparent
+                    ? "text-white/70 hover:text-white"
+                    : "text-muted-foreground hover:text-primary"
+                )}
+              >
+                Acceso Negocios
+              </Link>
+            )}
           </nav>
 
           {/* Mobile Menu */}
