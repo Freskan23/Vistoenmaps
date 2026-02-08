@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
 import EyeLogo from "@/components/EyeLogo";
+import logo from "@/assets/logo.png";
 
 interface HeaderProps {
   variant?: "transparent" | "solid";
@@ -41,8 +42,12 @@ export default function Header({ variant = "solid" }: HeaderProps) {
           )}
         >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group hover:scale-105 transition-transform">
-            <EyeLogo size={36} />
+          <Link href="/" className="flex items-center gap-2 group">
+            <img
+              src={logo}
+              alt="Visto en Maps"
+              className="h-10 w-auto object-contain group-hover:scale-105 transition-transform"
+            />
           </Link>
 
           {/* Search */}
