@@ -210,7 +210,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
         </div>
 
         {/* Content */}
-        <div className="relative h-full flex flex-col overflow-y-auto">
+        <div className="relative h-full flex flex-col overflow-x-hidden overflow-y-auto">
 
           {/* Close button */}
           <button
@@ -222,7 +222,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
           </button>
 
           {/* ---- Logo Section ---- */}
-          <div className="pt-14 pb-5 px-6 flex flex-col items-center">
+          <div className="w-full pt-14 pb-5 px-6 flex flex-col items-center">
             <div
               className={cn(
                 "transition-all duration-500 ease-out",
@@ -230,11 +230,13 @@ export default function Header({ variant = "solid" }: HeaderProps) {
               )}
               style={{ transitionDelay: menuOpen ? "200ms" : "0ms" }}
             >
-              <EyeLogo size={72} glow />
+              <div className="overflow-hidden" style={{ width: 55, height: 72 }}>
+                <EyeLogo size={72} />
+              </div>
             </div>
             <div
               className={cn(
-                "mt-3 text-center transition-all duration-500 ease-out",
+                "w-full mt-3 text-center transition-all duration-500 ease-out",
                 menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
               )}
               style={{ transitionDelay: menuOpen ? "300ms" : "0ms" }}
@@ -254,7 +256,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
           {/* ---- Search Bar (mobile) ---- */}
           <div
             className={cn(
-              "px-5 pb-4 relative z-20 transition-all duration-500 ease-out",
+              "w-full px-5 pb-4 transition-all duration-500 ease-out",
               menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
             )}
             style={{ transitionDelay: menuOpen ? "350ms" : "0ms" }}
