@@ -5,7 +5,7 @@
     "provincia": "Madrid",
     "comunidad_autonoma": "Comunidad de Madrid",
     "coordenadas": { "lat": 40.4168, "lng": -3.7038 },
-    "imagen": "https://private-us-east-1.manuscdn.com/sessionFile/dX6SBMBocKkjtDRru3fhPH/sandbox/xHrEqZrZeTAgHeY9OGAYfw-img-5_1770366980000_na1fn_bWFkcmlkLWNpdHlzY2FwZQ.jpg?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvZFg2U0JNQm9jS2tqdERScnUzZmhQSC9zYW5kYm94L3hIckVxWnJaZVRBZ0hlWTlPR0FZZnctaW1nLTVfMTc3MDM2Njk4MDAwMF9uYTFmbl9iV0ZrY21sa0xXTnBkSGx6WTJGd1pRLmpwZz94LW9zcy1wcm9jZXNzPWltYWdlL3Jlc2l6ZSx3XzE5MjAsaF8xOTIwL2Zvcm1hdCx3ZWJwL3F1YWxpdHkscV84MCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTc5ODc2MTYwMH19fV19&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=E5YUZz99ObNwKO9Wtux1eoPTq4WSlgDdO4Z2NI-UEppMyDG0fmYDzkqRvCUQr5ysqpjkvPPSe15TohQOsJNtArfA0s3JpgWHjtdHv3~v7jBzaEJnKf2XO10OrcyBISFCUBZR4Bahvsc-k9v1xhbO3wmWhYCwFtdAr-rI65ZzU3B-Sw4cl8Rh1qoNTDRIg34nStCsrTXK6Nit2FEybSBZemqKnikMRPArTtSvXR~mByv5e561-cm8h7CSZkBTn3LcHML3qB0C0PMPUMX0C4ToU9ReLU3w1jbp-PPpfIJl4AG8IOZQMFshOSzFEZRVzncGfNornW9~oBHD~mxCDH8DUQ__"
+    "imagen": ""
   },
   {
     "slug": "barcelona",
@@ -37,6 +37,62 @@
     "provincia": "Málaga",
     "comunidad_autonoma": "Andalucía",
     "coordenadas": { "lat": 36.7213, "lng": -4.4214 },
+    "imagen": ""
+  },
+  {
+    "slug": "bilbao",
+    "nombre": "Bilbao",
+    "provincia": "Vizcaya",
+    "comunidad_autonoma": "País Vasco",
+    "coordenadas": { "lat": 43.2630, "lng": -2.9350 },
+    "imagen": ""
+  },
+  {
+    "slug": "zaragoza",
+    "nombre": "Zaragoza",
+    "provincia": "Zaragoza",
+    "comunidad_autonoma": "Aragón",
+    "coordenadas": { "lat": 41.6488, "lng": -0.8891 },
+    "imagen": ""
+  },
+  {
+    "slug": "alicante",
+    "nombre": "Alicante",
+    "provincia": "Alicante",
+    "comunidad_autonoma": "Comunidad Valenciana",
+    "coordenadas": { "lat": 38.3452, "lng": -0.4810 },
+    "imagen": ""
+  },
+  {
+    "slug": "murcia",
+    "nombre": "Murcia",
+    "provincia": "Murcia",
+    "comunidad_autonoma": "Región de Murcia",
+    "coordenadas": { "lat": 37.9922, "lng": -1.1307 },
+    "imagen": ""
+  },
+  {
+    "slug": "palma",
+    "nombre": "Palma de Mallorca",
+    "provincia": "Islas Baleares",
+    "comunidad_autonoma": "Islas Baleares",
+    "coordenadas": { "lat": 39.5696, "lng": 2.6502 },
+    "imagen": ""
+  },
+  {
+    "slug": "granada",
+    "nombre": "Granada",
+    "provincia": "Granada",
+    "comunidad_autonoma": "Andalucía",
+    "coordenadas": { "lat": 37.1773, "lng": -3.5986 },
+    "imagen": ""
+  },
+  {
+    "slug": "valladolid",
+    "nombre": "Valladolid",
+    "provincia": "Valladolid",
+    "comunidad_autonoma": "Castilla y León",
+    "coordenadas": { "lat": 41.6523, "lng": -4.7245 },
     "imagen": ""
   }
 ]

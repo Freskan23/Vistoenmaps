@@ -1,152 +1,73 @@
 [
-  {
-    "slug": "retiro",
-    "nombre": "Retiro",
-    "ciudad_slug": "madrid",
-    "coordenadas": { "lat": 40.4085, "lng": -3.6838 }
-  },
-  {
-    "slug": "hortaleza",
-    "nombre": "Hortaleza",
-    "ciudad_slug": "madrid",
-    "coordenadas": { "lat": 40.4725, "lng": -3.6408 }
-  },
-  {
-    "slug": "chamberi",
-    "nombre": "Chamberí",
-    "ciudad_slug": "madrid",
-    "coordenadas": { "lat": 40.4350, "lng": -3.7038 }
-  },
-  {
-    "slug": "centro",
-    "nombre": "Centro",
-    "ciudad_slug": "madrid",
-    "coordenadas": { "lat": 40.4155, "lng": -3.7074 }
-  },
-  {
-    "slug": "salamanca",
-    "nombre": "Salamanca",
-    "ciudad_slug": "madrid",
-    "coordenadas": { "lat": 40.4290, "lng": -3.6790 }
-  },
-  {
-    "slug": "eixample",
-    "nombre": "Eixample",
-    "ciudad_slug": "barcelona",
-    "coordenadas": { "lat": 41.3888, "lng": 2.1614 }
-  },
-  {
-    "slug": "gracia",
-    "nombre": "Gràcia",
-    "ciudad_slug": "barcelona",
-    "coordenadas": { "lat": 41.4035, "lng": 2.1569 }
-  },
-  {
-    "slug": "sants-montjuic",
-    "nombre": "Sants-Montjuïc",
-    "ciudad_slug": "barcelona",
-    "coordenadas": { "lat": 41.3727, "lng": 2.1487 }
-  },
-  {
-    "slug": "ciutat-vella",
-    "nombre": "Ciutat Vella",
-    "ciudad_slug": "barcelona",
-    "coordenadas": { "lat": 41.3818, "lng": 2.1685 }
-  },
-  {
-    "slug": "sarria-sant-gervasi",
-    "nombre": "Sarrià-Sant Gervasi",
-    "ciudad_slug": "barcelona",
-    "coordenadas": { "lat": 41.4000, "lng": 2.1310 }
-  },
-  {
-    "slug": "ciutat-vella-valencia",
-    "nombre": "Ciutat Vella",
-    "ciudad_slug": "valencia",
-    "coordenadas": { "lat": 39.4737, "lng": -0.3756 }
-  },
-  {
-    "slug": "eixample-valencia",
-    "nombre": "Eixample",
-    "ciudad_slug": "valencia",
-    "coordenadas": { "lat": 39.4650, "lng": -0.3722 }
-  },
-  {
-    "slug": "ruzafa",
-    "nombre": "Ruzafa",
-    "ciudad_slug": "valencia",
-    "coordenadas": { "lat": 39.4600, "lng": -0.3700 }
-  },
-  {
-    "slug": "benimaclet",
-    "nombre": "Benimaclet",
-    "ciudad_slug": "valencia",
-    "coordenadas": { "lat": 39.4850, "lng": -0.3600 }
-  },
-  {
-    "slug": "patraix",
-    "nombre": "Patraix",
-    "ciudad_slug": "valencia",
-    "coordenadas": { "lat": 39.4580, "lng": -0.3900 }
-  },
-  {
-    "slug": "triana",
-    "nombre": "Triana",
-    "ciudad_slug": "sevilla",
-    "coordenadas": { "lat": 37.3828, "lng": -6.0066 }
-  },
-  {
-    "slug": "macarena",
-    "nombre": "Macarena",
-    "ciudad_slug": "sevilla",
-    "coordenadas": { "lat": 37.4020, "lng": -5.9870 }
-  },
-  {
-    "slug": "nervion",
-    "nombre": "Nervión",
-    "ciudad_slug": "sevilla",
-    "coordenadas": { "lat": 37.3880, "lng": -5.9700 }
-  },
-  {
-    "slug": "centro-sevilla",
-    "nombre": "Centro",
-    "ciudad_slug": "sevilla",
-    "coordenadas": { "lat": 37.3886, "lng": -5.9953 }
-  },
-  {
-    "slug": "los-remedios",
-    "nombre": "Los Remedios",
-    "ciudad_slug": "sevilla",
-    "coordenadas": { "lat": 37.3760, "lng": -6.0100 }
-  },
-  {
-    "slug": "centro-malaga",
-    "nombre": "Centro",
-    "ciudad_slug": "malaga",
-    "coordenadas": { "lat": 36.7213, "lng": -4.4214 }
-  },
-  {
-    "slug": "la-malagueta",
-    "nombre": "La Malagueta",
-    "ciudad_slug": "malaga",
-    "coordenadas": { "lat": 36.7180, "lng": -4.4100 }
-  },
-  {
-    "slug": "el-palo",
-    "nombre": "El Palo",
-    "ciudad_slug": "malaga",
-    "coordenadas": { "lat": 36.7210, "lng": -4.3700 }
-  },
-  {
-    "slug": "teatinos",
-    "nombre": "Teatinos",
-    "ciudad_slug": "malaga",
-    "coordenadas": { "lat": 36.7280, "lng": -4.4680 }
-  },
-  {
-    "slug": "huelin",
-    "nombre": "Huelin",
-    "ciudad_slug": "malaga",
-    "coordenadas": { "lat": 36.7120, "lng": -4.4400 }
-  }
+  { "slug": "retiro", "nombre": "Retiro", "ciudad_slug": "madrid", "coordenadas": { "lat": 40.4085, "lng": -3.6838 } },
+  { "slug": "hortaleza", "nombre": "Hortaleza", "ciudad_slug": "madrid", "coordenadas": { "lat": 40.4725, "lng": -3.6408 } },
+  { "slug": "chamberi", "nombre": "Chamberí", "ciudad_slug": "madrid", "coordenadas": { "lat": 40.4350, "lng": -3.7038 } },
+  { "slug": "centro", "nombre": "Centro", "ciudad_slug": "madrid", "coordenadas": { "lat": 40.4155, "lng": -3.7074 } },
+  { "slug": "salamanca", "nombre": "Salamanca", "ciudad_slug": "madrid", "coordenadas": { "lat": 40.4290, "lng": -3.6790 } },
+
+  { "slug": "eixample", "nombre": "Eixample", "ciudad_slug": "barcelona", "coordenadas": { "lat": 41.3888, "lng": 2.1614 } },
+  { "slug": "gracia", "nombre": "Gràcia", "ciudad_slug": "barcelona", "coordenadas": { "lat": 41.4035, "lng": 2.1569 } },
+  { "slug": "sants-montjuic", "nombre": "Sants-Montjuïc", "ciudad_slug": "barcelona", "coordenadas": { "lat": 41.3727, "lng": 2.1487 } },
+  { "slug": "ciutat-vella", "nombre": "Ciutat Vella", "ciudad_slug": "barcelona", "coordenadas": { "lat": 41.3818, "lng": 2.1685 } },
+  { "slug": "sarria-sant-gervasi", "nombre": "Sarrià-Sant Gervasi", "ciudad_slug": "barcelona", "coordenadas": { "lat": 41.4000, "lng": 2.1310 } },
+
+  { "slug": "ciutat-vella-valencia", "nombre": "Ciutat Vella", "ciudad_slug": "valencia", "coordenadas": { "lat": 39.4737, "lng": -0.3756 } },
+  { "slug": "eixample-valencia", "nombre": "Eixample", "ciudad_slug": "valencia", "coordenadas": { "lat": 39.4650, "lng": -0.3722 } },
+  { "slug": "ruzafa", "nombre": "Ruzafa", "ciudad_slug": "valencia", "coordenadas": { "lat": 39.4600, "lng": -0.3700 } },
+  { "slug": "benimaclet", "nombre": "Benimaclet", "ciudad_slug": "valencia", "coordenadas": { "lat": 39.4850, "lng": -0.3600 } },
+  { "slug": "patraix", "nombre": "Patraix", "ciudad_slug": "valencia", "coordenadas": { "lat": 39.4580, "lng": -0.3900 } },
+
+  { "slug": "triana", "nombre": "Triana", "ciudad_slug": "sevilla", "coordenadas": { "lat": 37.3828, "lng": -6.0066 } },
+  { "slug": "macarena", "nombre": "Macarena", "ciudad_slug": "sevilla", "coordenadas": { "lat": 37.4020, "lng": -5.9870 } },
+  { "slug": "nervion", "nombre": "Nervión", "ciudad_slug": "sevilla", "coordenadas": { "lat": 37.3880, "lng": -5.9700 } },
+  { "slug": "centro-sevilla", "nombre": "Centro", "ciudad_slug": "sevilla", "coordenadas": { "lat": 37.3886, "lng": -5.9953 } },
+  { "slug": "los-remedios", "nombre": "Los Remedios", "ciudad_slug": "sevilla", "coordenadas": { "lat": 37.3760, "lng": -6.0100 } },
+
+  { "slug": "centro-malaga", "nombre": "Centro", "ciudad_slug": "malaga", "coordenadas": { "lat": 36.7213, "lng": -4.4214 } },
+  { "slug": "la-malagueta", "nombre": "La Malagueta", "ciudad_slug": "malaga", "coordenadas": { "lat": 36.7180, "lng": -4.4100 } },
+  { "slug": "el-palo", "nombre": "El Palo", "ciudad_slug": "malaga", "coordenadas": { "lat": 36.7210, "lng": -4.3700 } },
+  { "slug": "teatinos", "nombre": "Teatinos", "ciudad_slug": "malaga", "coordenadas": { "lat": 36.7280, "lng": -4.4680 } },
+  { "slug": "huelin", "nombre": "Huelin", "ciudad_slug": "malaga", "coordenadas": { "lat": 36.7120, "lng": -4.4400 } },
+
+  { "slug": "casco-viejo-bilbao", "nombre": "Casco Viejo", "ciudad_slug": "bilbao", "coordenadas": { "lat": 43.2569, "lng": -2.9235 } },
+  { "slug": "abando", "nombre": "Abando", "ciudad_slug": "bilbao", "coordenadas": { "lat": 43.2627, "lng": -2.9340 } },
+  { "slug": "deusto", "nombre": "Deusto", "ciudad_slug": "bilbao", "coordenadas": { "lat": 43.2710, "lng": -2.9450 } },
+  { "slug": "indautxu", "nombre": "Indautxu", "ciudad_slug": "bilbao", "coordenadas": { "lat": 43.2610, "lng": -2.9430 } },
+  { "slug": "santutxu", "nombre": "Santutxu", "ciudad_slug": "bilbao", "coordenadas": { "lat": 43.2500, "lng": -2.9180 } },
+
+  { "slug": "centro-zaragoza", "nombre": "Centro", "ciudad_slug": "zaragoza", "coordenadas": { "lat": 41.6560, "lng": -0.8773 } },
+  { "slug": "delicias-zaragoza", "nombre": "Delicias", "ciudad_slug": "zaragoza", "coordenadas": { "lat": 41.6470, "lng": -0.9050 } },
+  { "slug": "actur", "nombre": "Actur", "ciudad_slug": "zaragoza", "coordenadas": { "lat": 41.6700, "lng": -0.8900 } },
+  { "slug": "san-jose-zaragoza", "nombre": "San José", "ciudad_slug": "zaragoza", "coordenadas": { "lat": 41.6450, "lng": -0.8650 } },
+  { "slug": "torrero", "nombre": "Torrero", "ciudad_slug": "zaragoza", "coordenadas": { "lat": 41.6330, "lng": -0.8750 } },
+
+  { "slug": "centro-alicante", "nombre": "Centro", "ciudad_slug": "alicante", "coordenadas": { "lat": 38.3453, "lng": -0.4831 } },
+  { "slug": "playa-san-juan", "nombre": "Playa de San Juan", "ciudad_slug": "alicante", "coordenadas": { "lat": 38.3700, "lng": -0.4200 } },
+  { "slug": "carolinas", "nombre": "Carolinas", "ciudad_slug": "alicante", "coordenadas": { "lat": 38.3530, "lng": -0.4900 } },
+  { "slug": "san-blas-alicante", "nombre": "San Blas", "ciudad_slug": "alicante", "coordenadas": { "lat": 38.3600, "lng": -0.4600 } },
+  { "slug": "benalua", "nombre": "Benalúa", "ciudad_slug": "alicante", "coordenadas": { "lat": 38.3400, "lng": -0.4900 } },
+
+  { "slug": "centro-murcia", "nombre": "Centro", "ciudad_slug": "murcia", "coordenadas": { "lat": 37.9838, "lng": -1.1280 } },
+  { "slug": "la-flota", "nombre": "La Flota", "ciudad_slug": "murcia", "coordenadas": { "lat": 37.9900, "lng": -1.1100 } },
+  { "slug": "vistalegre", "nombre": "Vistalegre", "ciudad_slug": "murcia", "coordenadas": { "lat": 37.9780, "lng": -1.1350 } },
+  { "slug": "el-carmen-murcia", "nombre": "El Carmen", "ciudad_slug": "murcia", "coordenadas": { "lat": 37.9870, "lng": -1.1200 } },
+  { "slug": "infante-juan-manuel", "nombre": "Infante Juan Manuel", "ciudad_slug": "murcia", "coordenadas": { "lat": 37.9850, "lng": -1.1400 } },
+
+  { "slug": "centro-palma", "nombre": "Centro", "ciudad_slug": "palma", "coordenadas": { "lat": 39.5693, "lng": 2.6502 } },
+  { "slug": "el-terreno", "nombre": "El Terreno", "ciudad_slug": "palma", "coordenadas": { "lat": 39.5650, "lng": 2.6300 } },
+  { "slug": "santa-catalina", "nombre": "Santa Catalina", "ciudad_slug": "palma", "coordenadas": { "lat": 39.5700, "lng": 2.6400 } },
+  { "slug": "el-molinar", "nombre": "El Molinar", "ciudad_slug": "palma", "coordenadas": { "lat": 39.5650, "lng": 2.6700 } },
+  { "slug": "son-armadans", "nombre": "Son Armadans", "ciudad_slug": "palma", "coordenadas": { "lat": 39.5600, "lng": 2.6350 } },
+
+  { "slug": "albaicin", "nombre": "Albaicín", "ciudad_slug": "granada", "coordenadas": { "lat": 37.1810, "lng": -3.5910 } },
+  { "slug": "centro-granada", "nombre": "Centro", "ciudad_slug": "granada", "coordenadas": { "lat": 37.1760, "lng": -3.5990 } },
+  { "slug": "realejo", "nombre": "Realejo", "ciudad_slug": "granada", "coordenadas": { "lat": 37.1730, "lng": -3.5930 } },
+  { "slug": "zaidin", "nombre": "Zaidín", "ciudad_slug": "granada", "coordenadas": { "lat": 37.1630, "lng": -3.5900 } },
+  { "slug": "ronda-granada", "nombre": "Ronda", "ciudad_slug": "granada", "coordenadas": { "lat": 37.1780, "lng": -3.6050 } },
+
+  { "slug": "centro-valladolid", "nombre": "Centro", "ciudad_slug": "valladolid", "coordenadas": { "lat": 41.6523, "lng": -4.7245 } },
+  { "slug": "parquesol", "nombre": "Parquesol", "ciudad_slug": "valladolid", "coordenadas": { "lat": 41.6380, "lng": -4.7530 } },
+  { "slug": "la-victoria", "nombre": "La Victoria", "ciudad_slug": "valladolid", "coordenadas": { "lat": 41.6600, "lng": -4.7100 } },
+  { "slug": "delicias-valladolid", "nombre": "Delicias", "ciudad_slug": "valladolid", "coordenadas": { "lat": 41.6430, "lng": -4.7350 } },
+  { "slug": "huerta-del-rey", "nombre": "Huerta del Rey", "ciudad_slug": "valladolid", "coordenadas": { "lat": 41.6450, "lng": -4.7500 } }
 ]
