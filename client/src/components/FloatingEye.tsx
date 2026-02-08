@@ -8,12 +8,14 @@ import EyeLogo from "@/components/EyeLogo";
 export default function FloatingEye() {
   const [location] = useLocation();
 
-  // No mostrar en admin, dashboard, login, register
+  // No mostrar en páginas que tienen su propio EyeLogo integrado
   const hidden =
     location.startsWith("/admin") ||
     location.startsWith("/dashboard") ||
     location === "/login" ||
-    location === "/register";
+    location === "/register" ||
+    location === "/contacto" ||
+    location === "/";
 
   if (hidden) return null;
 

@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Mail, Send } from "lucide-react";
+import { Mail, Send, MessageCircle, Heart } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
+import EyeLogo from "@/components/EyeLogo";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 
@@ -104,87 +105,132 @@ export default function ContactoPage() {
         </div>
       </section>
 
-      {/* Form section */}
+      {/* Form + Eye section */}
       <section className="container py-10 md:py-14">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="max-w-lg"
-        >
-          <div className="bg-white border border-gray-200/80 rounded-2xl shadow-sm p-6 md:p-8">
-            <div className="space-y-5">
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Nombre <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={formData.nombre}
-                  onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-                  placeholder="Tu nombre"
-                  className="mt-1.5 w-full text-sm bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
-                />
-                {formErrors.nombre && <p className="text-xs text-red-500 mt-1">{formErrors.nombre}</p>}
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          {/* Left: Form */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="bg-white border border-gray-200/80 rounded-2xl shadow-sm p-6 md:p-8">
+              <div className="space-y-5">
+                <div>
+                  <label className="text-sm font-medium text-gray-700">
+                    Nombre <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.nombre}
+                    onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
+                    placeholder="Tu nombre"
+                    className="mt-1.5 w-full text-sm bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
+                  />
+                  {formErrors.nombre && <p className="text-xs text-red-500 mt-1">{formErrors.nombre}</p>}
+                </div>
 
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Email <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="tu@email.com"
-                  className="mt-1.5 w-full text-sm bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
-                />
-                {formErrors.email && <p className="text-xs text-red-500 mt-1">{formErrors.email}</p>}
-              </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700">
+                    Email <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="tu@email.com"
+                    className="mt-1.5 w-full text-sm bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
+                  />
+                  {formErrors.email && <p className="text-xs text-red-500 mt-1">{formErrors.email}</p>}
+                </div>
 
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Asunto <span className="text-red-500">*</span>
-                </label>
-                <select
-                  value={formData.asunto}
-                  onChange={(e) => setFormData({ ...formData, asunto: e.target.value })}
-                  className="mt-1.5 w-full text-sm bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
+                <div>
+                  <label className="text-sm font-medium text-gray-700">
+                    Asunto <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={formData.asunto}
+                    onChange={(e) => setFormData({ ...formData, asunto: e.target.value })}
+                    className="mt-1.5 w-full text-sm bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all"
+                  >
+                    <option value="">Selecciona un asunto</option>
+                    <option value="Añadir mi negocio">Añadir mi negocio al directorio</option>
+                    <option value="Sugerencia">Sugerencia de mejora</option>
+                    <option value="Reportar error">Reportar un error</option>
+                    <option value="Colaboración">Propuesta de colaboración</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                  {formErrors.asunto && <p className="text-xs text-red-500 mt-1">{formErrors.asunto}</p>}
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-gray-700">
+                    Mensaje <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    value={formData.mensaje}
+                    onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
+                    placeholder="Cuéntanos en qué podemos ayudarte..."
+                    rows={5}
+                    className="mt-1.5 w-full text-sm bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all resize-none"
+                  />
+                  {formErrors.mensaje && <p className="text-xs text-red-500 mt-1">{formErrors.mensaje}</p>}
+                </div>
+
+                <button
+                  onClick={handleSubmit}
+                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#0f2035] to-[#1a3a5c] text-white font-semibold py-3.5 rounded-full hover:from-[#142d45] hover:to-[#1f4468] shadow-md hover:shadow-lg transition-all duration-200"
                 >
-                  <option value="">Selecciona un asunto</option>
-                  <option value="Añadir mi negocio">Añadir mi negocio al directorio</option>
-                  <option value="Sugerencia">Sugerencia de mejora</option>
-                  <option value="Reportar error">Reportar un error</option>
-                  <option value="Colaboración">Propuesta de colaboración</option>
-                  <option value="Otro">Otro</option>
-                </select>
-                {formErrors.asunto && <p className="text-xs text-red-500 mt-1">{formErrors.asunto}</p>}
+                  <Send className="w-5 h-5" />
+                  Enviar mensaje
+                </button>
               </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700">
-                  Mensaje <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  value={formData.mensaje}
-                  onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
-                  placeholder="Cuéntanos en qué podemos ayudarte..."
-                  rows={5}
-                  className="mt-1.5 w-full text-sm bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all resize-none"
-                />
-                {formErrors.mensaje && <p className="text-xs text-red-500 mt-1">{formErrors.mensaje}</p>}
-              </div>
-
-              <button
-                onClick={handleSubmit}
-                className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#0f2035] to-[#1a3a5c] text-white font-semibold py-3.5 rounded-full hover:from-[#142d45] hover:to-[#1f4468] shadow-md hover:shadow-lg transition-all duration-200"
-              >
-                <Send className="w-5 h-5" />
-                Enviar mensaje
-              </button>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+
+          {/* Right: EyeLogo companion */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="hidden lg:flex flex-col items-center justify-center sticky top-28"
+          >
+            <div className="flex flex-col items-center gap-6">
+              {/* The eye — big, watching the form, happy */}
+              <div className="relative">
+                <EyeLogo size={220} glow />
+              </div>
+
+              {/* Friendly message */}
+              <div className="text-center max-w-[260px]">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <MessageCircle className="w-4 h-4 text-cyan-500" />
+                  <span className="text-sm font-bold text-gray-800">
+                    Te escuchamos
+                  </span>
+                  <Heart className="w-4 h-4 text-rose-400" />
+                </div>
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  Nuestro equipo revisa cada mensaje personalmente.
+                  Responderemos lo antes posible.
+                </p>
+              </div>
+
+              {/* Subtle stats */}
+              <div className="flex gap-6 mt-2">
+                <div className="text-center">
+                  <p className="text-lg font-bold text-gray-800">&lt; 24h</p>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wider">Respuesta</p>
+                </div>
+                <div className="w-px bg-gray-200" />
+                <div className="text-center">
+                  <p className="text-lg font-bold text-gray-800">100%</p>
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wider">Leídos</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </section>
 
       <Footer />
