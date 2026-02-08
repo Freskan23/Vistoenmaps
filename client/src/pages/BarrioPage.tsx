@@ -14,8 +14,8 @@ import {
   getCategoria,
   getCiudad,
   getBarrio,
-  getNegociosByBarrio,
 } from "@/data";
+import { useAllNegocios, filterByBarrio } from "@/hooks/useSupabaseNegocios";
 import Breadcrumb from "@/components/Breadcrumb";
 import NegocioCard from "@/components/NegocioCard";
 import Header from "@/components/Header";
@@ -55,10 +55,11 @@ export default function BarrioPage() {
   const cat = getCategoria(categoria);
   const ciu = getCiudad(ciudad);
   const bar = getBarrio(barrio, ciudad);
+  const { allNegocios } = useAllNegocios();
 
   if (!cat || !ciu || !bar) return <NotFound />;
 
-  const negociosData = getNegociosByBarrio(cat.slug, ciu.slug, bar.slug);
+  const negociosData = filterByBarrio(allNegocios, cat.slug, ciu.slug, bar.slug);
 
   // Extract unique services for filter badges
   const allServices = useMemo(() => {

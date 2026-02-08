@@ -7,7 +7,8 @@
 
 import { Link, useParams } from "wouter";
 import { MapPin, ArrowRight, Building2 } from "lucide-react";
-import { getCategoria, ciudades, getNegociosByCiudad } from "@/data";
+import { getCategoria, ciudades } from "@/data";
+import { useAllNegocios, filterByCiudad } from "@/hooks/useSupabaseNegocios";
 import CategoryIcon from "@/components/CategoryIcon";
 import Breadcrumb from "@/components/Breadcrumb";
 import Header from "@/components/Header";
@@ -19,6 +20,7 @@ import SEOHead from "@/components/SEOHead";
 export default function CategoriaPage() {
   const { categoria } = useParams<{ categoria: string }>();
   const cat = getCategoria(categoria);
+  const { allNegocios } = useAllNegocios();
 
   if (!cat) return <NotFound />;
 
@@ -111,7 +113,7 @@ export default function CategoriaPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {ciudades.map((ciudad, index) => {
-            const negociosCount = getNegociosByCiudad(cat.slug, ciudad.slug).length;
+            const negociosCount = filterByCiudad(allNegocios, cat.slug, ciudad.slug).length;
             return (
               <motion.div
                 key={ciudad.slug}

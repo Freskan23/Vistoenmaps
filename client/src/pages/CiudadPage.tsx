@@ -11,9 +11,8 @@ import {
   getCategoria,
   getCiudad,
   getBarriosByCiudad,
-  countNegociosByBarrio,
-  getNegociosByCiudad,
 } from "@/data";
+import { useAllNegocios, filterByCiudad, countByBarrio } from "@/hooks/useSupabaseNegocios";
 import CategoryIcon from "@/components/CategoryIcon";
 import Breadcrumb from "@/components/Breadcrumb";
 import Header from "@/components/Header";
@@ -26,11 +25,12 @@ export default function CiudadPage() {
   const { categoria, ciudad } = useParams<{ categoria: string; ciudad: string }>();
   const cat = getCategoria(categoria);
   const ciu = getCiudad(ciudad);
+  const { allNegocios } = useAllNegocios();
 
   if (!cat || !ciu) return <NotFound />;
 
   const barriosData = getBarriosByCiudad(ciu.slug);
-  const totalNegocios = getNegociosByCiudad(cat.slug, ciu.slug).length;
+  const totalNegocios = filterByCiudad(allNegocios, cat.slug, ciu.slug).length;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -132,7 +132,7 @@ export default function CiudadPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {barriosData.map((barrio, index) => {
-            const count = countNegociosByBarrio(cat.slug, ciu.slug, barrio.slug);
+            const count = countByBarrio(allNegocios, cat.slug, ciu.slug, barrio.slug);
             return (
               <motion.div
                 key={barrio.slug}
