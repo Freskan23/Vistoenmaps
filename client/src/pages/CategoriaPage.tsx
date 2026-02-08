@@ -7,8 +7,8 @@
 
 import { Link, useParams } from "wouter";
 import { MapPin, ArrowRight, Building2 } from "lucide-react";
-import { getCategoria, ciudades } from "@/data";
-import { useAllNegocios, filterByCiudad } from "@/hooks/useSupabaseNegocios";
+import { getCategoria } from "@/data";
+import { useAllNegocios, useAllCiudades, filterByCiudad } from "@/hooks/useSupabaseNegocios";
 import CategoryIcon from "@/components/CategoryIcon";
 import Breadcrumb from "@/components/Breadcrumb";
 import Header from "@/components/Header";
@@ -31,6 +31,7 @@ export default function CategoriaPage() {
   const { categoria } = useParams<{ categoria: string }>();
   const cat = getCategoria(categoria);
   const { allNegocios } = useAllNegocios();
+  const { allCiudades } = useAllCiudades();
 
   if (!cat) return <NotFound />;
 
@@ -75,7 +76,7 @@ export default function CategoriaPage() {
             "@type": "ItemList",
             name: `${cat.nombre} en España`,
             description: cat.descripcion,
-            itemListElement: ciudades.map((ciudad, i) => ({
+            itemListElement: allCiudades.map((ciudad, i) => ({
               "@type": "ListItem",
               position: i + 1,
               name: `${cat.nombre} en ${ciudad.nombre}`,
@@ -183,7 +184,7 @@ export default function CategoriaPage() {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {ciudades.map((ciudad, index) => {
+          {allCiudades.map((ciudad, index) => {
             const negociosCount = filterByCiudad(allNegocios, cat.slug, ciudad.slug).length;
             const color = cardColors[index % cardColors.length];
             return (

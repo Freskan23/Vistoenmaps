@@ -4,10 +4,8 @@ import { Star, Phone, Clock, MapPin, ExternalLink, ArrowLeft, FileText, MessageC
 import { Link } from "wouter";
 import {
   getCategoria,
-  getCiudad,
-  getBarrio,
 } from "@/data";
-import { useFindNegocio } from "@/hooks/useSupabaseNegocios";
+import { useFindNegocio, useAllBarrios, useAllCiudades } from "@/hooks/useSupabaseNegocios";
 import CategoryIcon from "@/components/CategoryIcon";
 import Breadcrumb from "@/components/Breadcrumb";
 import Header from "@/components/Header";
@@ -52,13 +50,16 @@ export default function NegocioPage() {
   const mapRef = useRef<google.maps.Map | null>(null);
 
   const cat = getCategoria(categoria);
-  const ciu = getCiudad(ciudad);
-  const bar = getBarrio(barrio, ciudad);
+  const { allCiudades } = useAllCiudades();
+  const { allBarrios } = useAllBarrios();
   const { negocio: neg, loaded } = useFindNegocio(categoria, ciudad, barrio, negocioSlug);
 
+  const ciu = allCiudades.find((c) => c.slug === ciudad);
+  const bar = allBarrios.find((b) => b.slug === barrio && b.ciudad_slug === ciudad);
+
   // Esperar a que carguen los datos de Supabase antes de mostrar NotFound
-  if (!cat || !ciu || !bar) return <NotFound />;
-  if (!neg && !loaded) {
+  if (!cat) return <NotFound />;
+  if ((!ciu || !bar || !neg) && !loaded) {
     return (
       <div className="min-h-screen flex flex-col bg-[#fafaf7]">
         <Header />
@@ -68,7 +69,7 @@ export default function NegocioPage() {
       </div>
     );
   }
-  if (!neg) return <NotFound />;
+  if (!ciu || !bar || !neg) return <NotFound />;
 
   const hasApiKey = !!import.meta.env.VITE_FRONTEND_FORGE_API_KEY;
 

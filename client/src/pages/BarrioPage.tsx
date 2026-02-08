@@ -12,10 +12,8 @@ import { useParams } from "wouter";
 import { MapPin, ArrowUpDown, Star, Clock, Zap, Filter, X, ChevronDown, Map as MapIcon } from "lucide-react";
 import {
   getCategoria,
-  getCiudad,
-  getBarrio,
 } from "@/data";
-import { useAllNegocios, filterByBarrio } from "@/hooks/useSupabaseNegocios";
+import { useAllNegocios, useAllBarrios, useAllCiudades, filterByBarrio } from "@/hooks/useSupabaseNegocios";
 import Breadcrumb from "@/components/Breadcrumb";
 import NegocioCard from "@/components/NegocioCard";
 import Header from "@/components/Header";
@@ -53,9 +51,12 @@ export default function BarrioPage() {
   const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
 
   const cat = getCategoria(categoria);
-  const ciu = getCiudad(ciudad);
-  const bar = getBarrio(barrio, ciudad);
   const { allNegocios } = useAllNegocios();
+  const { allBarrios } = useAllBarrios();
+  const { allCiudades } = useAllCiudades();
+
+  const ciu = allCiudades.find((c) => c.slug === ciudad);
+  const bar = allBarrios.find((b) => b.slug === barrio && b.ciudad_slug === ciudad);
 
   if (!cat || !ciu || !bar) return <NotFound />;
 

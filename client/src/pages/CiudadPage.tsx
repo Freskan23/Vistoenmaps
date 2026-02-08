@@ -9,10 +9,8 @@ import { Link, useParams } from "wouter";
 import { MapPin, ArrowRight, Users } from "lucide-react";
 import {
   getCategoria,
-  getCiudad,
-  getBarriosByCiudad,
 } from "@/data";
-import { useAllNegocios, filterByCiudad, countByBarrio } from "@/hooks/useSupabaseNegocios";
+import { useAllNegocios, useAllBarrios, useAllCiudades, filterByCiudad, countByBarrio } from "@/hooks/useSupabaseNegocios";
 import CategoryIcon from "@/components/CategoryIcon";
 import Breadcrumb from "@/components/Breadcrumb";
 import Header from "@/components/Header";
@@ -33,12 +31,15 @@ const CARD_ACCENTS = [
 export default function CiudadPage() {
   const { categoria, ciudad } = useParams<{ categoria: string; ciudad: string }>();
   const cat = getCategoria(categoria);
-  const ciu = getCiudad(ciudad);
   const { allNegocios } = useAllNegocios();
+  const { allBarrios } = useAllBarrios();
+  const { allCiudades } = useAllCiudades();
+
+  const ciu = allCiudades.find((c) => c.slug === ciudad);
 
   if (!cat || !ciu) return <NotFound />;
 
-  const barriosData = getBarriosByCiudad(ciu.slug);
+  const barriosData = allBarrios.filter((b) => b.ciudad_slug === ciu.slug);
   const totalNegocios = filterByCiudad(allNegocios, cat.slug, ciu.slug).length;
 
   return (
