@@ -21,8 +21,8 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-[#fafaf7]">
       <SEOHead
-        title="Visto en Maps — Directorio de profesionales y negocios locales"
-        description="Encuentra profesionales y negocios locales verificados en Google Maps. Cerrajeros, fontaneros, electricistas y más servicios cerca de ti en toda España."
+        title="Visto en Maps — Profesionales verificados en Google Maps"
+        description="Cerrajeros, fontaneros, dentistas, restaurantes... Solo negocios reales con reseñas verificadas en Google Maps. Encuentra al mejor profesional de tu ciudad en segundos."
         canonical="https://vistoenmaps.com"
       />
       <Header variant="transparent" />
@@ -105,7 +105,7 @@ export default function Home() {
             >
               <Eye className="w-3.5 h-3.5 text-accent" />
               <span className="text-[11px] font-bold text-accent uppercase tracking-widest">
-                Te estamos observando
+                +175 negocios verificados en Google Maps
               </span>
             </motion.div>
 
@@ -115,11 +115,10 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.7 }}
               className="text-[clamp(2rem,5vw+0.5rem,3.8rem)] leading-[1.08] font-extrabold text-white mb-4 max-w-3xl"
             >
-              Encuentra{" "}
+              El profesional que necesitas,{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-accent">
-                profesionales
+                a un clic
               </span>
-              {" "}verificados cerca de ti
             </motion.h1>
 
             <motion.p
@@ -128,7 +127,7 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.85 }}
               className="text-base md:text-lg text-white/50 leading-relaxed mb-8 max-w-xl"
             >
-              Cerrajeros, fontaneros, electricistas y más. Todos con presencia real y verificada en Google Maps.
+              Deja de buscar en Google y rezar. Aquí solo aparecen negocios reales, con reseñas reales y ubicación verificada en Maps. Sin sorpresas.
             </motion.p>
 
             <motion.div
@@ -163,15 +162,15 @@ export default function Home() {
             >
               <div className="flex items-center gap-1.5 text-white/40 text-xs">
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400/80" />
-                <span>100% verificados</span>
+                <span>Solo negocios reales</span>
               </div>
               <div className="flex items-center gap-1.5 text-white/40 text-xs">
                 <Clock className="w-3.5 h-3.5 text-blue-400/80" />
-                <span>Urgencias 24/7</span>
+                <span>Contacto directo</span>
               </div>
               <div className="flex items-center gap-1.5 text-white/40 text-xs">
                 <MapPin className="w-3.5 h-3.5 text-accent/80" />
-                <span>Toda España</span>
+                <span>5 ciudades de España</span>
               </div>
             </motion.div>
           </div>
@@ -199,10 +198,10 @@ export default function Home() {
               <span className="text-xs font-bold text-accent uppercase tracking-wider">Directorio</span>
             </div>
             <h2 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
-              Explora nuestro directorio
+              ¿Qué necesitas hoy?
             </h2>
             <p className="text-muted-foreground mt-1">
-              4 grandes categorías con profesionales verificados en toda España
+              Elige categoría, tu ciudad y contacta directamente. Así de fácil.
             </p>
           </div>
         </motion.div>
@@ -239,10 +238,10 @@ export default function Home() {
                 <span className="text-xs font-bold text-purple-500 uppercase tracking-wider">Eventos</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
-                Próximos eventos
+                No te lo pierdas
               </h2>
               <p className="text-muted-foreground mt-1">
-                Descubre lo que pasa en tu ciudad
+                Conciertos, deporte y planes que se agotan. Mira qué hay cerca de ti.
               </p>
             </div>
             <Link
@@ -277,7 +276,7 @@ export default function Home() {
           ) : (
             <div className="text-center py-12">
               <Calendar className="w-10 h-10 text-purple-300 mx-auto mb-3" />
-              <p className="text-muted-foreground text-sm">No hay eventos próximos disponibles</p>
+              <p className="text-muted-foreground text-sm">Cargando los próximos eventos...</p>
             </div>
           )}
 
@@ -309,10 +308,10 @@ export default function Home() {
                 <span className="text-xs font-bold text-amber-500 uppercase tracking-wider">Blog</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
-                Rankings y guías
+                Los mejores de tu ciudad
               </h2>
               <p className="text-muted-foreground mt-1">
-                Los mejores profesionales según valoraciones reales
+                Rankings basados en reseñas reales de Google. Sin pagar, sin trucos.
               </p>
             </div>
             <Link
@@ -364,11 +363,11 @@ export default function Home() {
             <div className="inline-flex items-center gap-2 bg-primary/5 border border-primary/10 rounded-full px-4 py-1.5 mb-4">
               <Shield className="w-4 h-4 text-primary" />
               <span className="text-xs font-bold text-primary uppercase tracking-wider">
-                Confianza garantizada
+                Sin trucos, sin letra pequeña
               </span>
             </div>
             <h2 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
-              ¿Por qué Visto en Maps?
+              ¿Por qué la gente confía en nosotros?
             </h2>
           </motion.div>
 
@@ -378,22 +377,22 @@ export default function Home() {
                 icon: CheckCircle2,
                 color: "text-emerald-500",
                 bg: "from-emerald-500/15 to-emerald-500/5",
-                title: "100% Verificados",
-                desc: "Todos los negocios tienen presencia real y verificada en Google Maps",
+                title: "Solo negocios reales",
+                desc: "Nada de perfiles fantasma. Si aparece aquí, existe en Google Maps con reseñas y dirección verificada.",
               },
               {
                 icon: Clock,
                 color: "text-blue-500",
                 bg: "from-blue-500/15 to-blue-500/5",
-                title: "Urgencias 24/7",
-                desc: "Servicios de cerrajería, fontanería y electricidad disponibles a cualquier hora",
+                title: "Contacto en 10 segundos",
+                desc: "Teléfono, web y ubicación a un clic. Sin registros, sin formularios interminables.",
               },
               {
                 icon: Star,
                 color: "text-amber-500",
                 bg: "from-amber-500/15 to-amber-500/5",
-                title: "Toda España",
-                desc: "Cobertura en las principales ciudades y barrios de todo el territorio nacional",
+                title: "Rankings que no se compran",
+                desc: "El orden lo deciden las estrellas y reseñas de Google, no quién paga más.",
               },
             ].map((item, i) => (
               <motion.div
@@ -434,17 +433,17 @@ export default function Home() {
             </div>
             <div className="flex-1 text-center md:text-left">
               <h2 className="text-xl md:text-2xl font-extrabold text-white mb-2">
-                ¿Tienes un negocio local?
+                ¿Tienes un negocio y no apareces aquí?
               </h2>
               <p className="text-white/50 text-sm md:text-base">
-                Registra tu negocio gratis y aparece en nuestro directorio verificado. Aumenta tu visibilidad online.
+                Tus competidores ya están. Regístrate gratis y empieza a recibir clientes que buscan exactamente lo que tú ofreces.
               </p>
             </div>
             <Link
               href="/register"
               className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-white font-bold px-6 py-3 rounded-xl transition-all hover:scale-105 shadow-lg shadow-accent/25 shrink-0"
             >
-              Registrar mi negocio
+              Aparecer en el directorio
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

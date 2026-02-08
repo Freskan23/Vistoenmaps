@@ -152,10 +152,10 @@ export default function EventosPage() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl lg:text-[2.75rem] font-extrabold text-white tracking-tight leading-tight">
-                Eventos
+                Eventos en España
               </h1>
               <p className="text-sky-200/60 mt-1.5 text-base md:text-lg">
-                Descubre los proximos eventos en tu ciudad
+                Conciertos, deporte y cultura. Filtra por ciudad y no te quedes sin entrada.
               </p>
             </div>
           </div>
@@ -258,12 +258,12 @@ export default function EventosPage() {
               <Calendar className="w-8 h-8 text-primary/60" />
             </div>
             <h3 className="text-lg font-bold text-foreground mb-2">
-              No hay eventos proximos
+              Sin resultados para estos filtros
             </h3>
             <p className="text-sm text-muted-foreground max-w-md mx-auto">
               {error
-                ? "Ha ocurrido un error al cargar los eventos. Intenta de nuevo mas tarde."
-                : "No se han encontrado eventos con los filtros seleccionados. Prueba con otra ciudad o categoria."}
+                ? "Estamos actualizando los eventos. Vuelve en unos minutos."
+                : "Prueba con otra ciudad o categoría. Hay cientos de eventos esperándote."}
             </p>
           </motion.div>
         ) : (

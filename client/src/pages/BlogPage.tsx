@@ -137,7 +137,7 @@ export default function BlogPage() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-3xl md:text-4xl font-extrabold text-white"
           >
-            Blog
+            Los mejores de cada ciudad
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 8 }}
@@ -145,7 +145,7 @@ export default function BlogPage() {
             transition={{ duration: 0.4, delay: 0.2 }}
             className="text-white/50 mt-2 max-w-lg mx-auto"
           >
-            Rankings y guias de los mejores profesionales en tu ciudad
+            Rankings basados en reseñas reales de Google Maps. No pagamos por posiciones, no aceptamos publicidad.
           </motion.p>
         </div>
 

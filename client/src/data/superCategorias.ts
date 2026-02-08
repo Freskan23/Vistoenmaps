@@ -4,7 +4,7 @@ export const superCategorias: SuperCategoria[] = [
   {
     slug: "servicios",
     nombre: "Servicios",
-    descripcion: "Profesionales del hogar y servicios a domicilio",
+    descripcion: "Cerrajero a las 3AM, fontanero que no cancela, electricista de confianza. Aquí están.",
     icono: "Wrench",
     color: {
       bg: "from-blue-500/20 to-cyan-500/10",
@@ -17,7 +17,7 @@ export const superCategorias: SuperCategoria[] = [
   {
     slug: "salud",
     nombre: "Salud",
-    descripcion: "Centros de salud, clínicas y profesionales sanitarios",
+    descripcion: "Dentistas, fisios, veterinarios y más. Con valoraciones reales de pacientes.",
     icono: "HeartPulse",
     color: {
       bg: "from-emerald-500/20 to-teal-500/10",
@@ -30,7 +30,7 @@ export const superCategorias: SuperCategoria[] = [
   {
     slug: "ocio",
     nombre: "Ocio",
-    descripcion: "Entretenimiento, deporte y tiempo libre",
+    descripcion: "Gimnasios, cines, teatros y planes para no quedarte en el sofá.",
     icono: "Ticket",
     color: {
       bg: "from-purple-500/20 to-pink-500/10",
@@ -43,7 +43,7 @@ export const superCategorias: SuperCategoria[] = [
   {
     slug: "restaurantes",
     nombre: "Restaurantes",
-    descripcion: "Restaurantes, bares y gastronomía local",
+    descripcion: "Dónde comer bien sin arruinarte. Los mejor valorados de tu barrio.",
     icono: "UtensilsCrossed",
     color: {
       bg: "from-amber-500/20 to-orange-500/10",
