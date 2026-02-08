@@ -16,6 +16,11 @@ import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import MiNegocioPage from "./pages/dashboard/MiNegocioPage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminNegociosPage from "./pages/admin/AdminNegociosPage";
+import AdminUsuariosPage from "./pages/admin/AdminUsuariosPage";
+import AdminNotificacionesPage from "./pages/admin/AdminNotificacionesPage";
+import AdminConfiguracionPage from "./pages/admin/AdminConfiguracionPage";
 import { AuthProvider } from "./context/AuthContext";
 
 function Router() {
@@ -26,6 +31,12 @@ function Router() {
       <Route path="/register" component={RegisterPage} />
       <Route path="/dashboard" component={DashboardPage} />
       <Route path="/dashboard/mi-negocio" component={MiNegocioPage} />
+      {/* Admin routes */}
+      <Route path="/admin" component={AdminDashboardPage} />
+      <Route path="/admin/negocios" component={AdminNegociosPage} />
+      <Route path="/admin/usuarios" component={AdminUsuariosPage} />
+      <Route path="/admin/notificaciones" component={AdminNotificacionesPage} />
+      <Route path="/admin/configuracion" component={AdminConfiguracionPage} />
       <Route path="/contacto" component={ContactoPage} />
       <Route path="/directorios" component={DirectoriosPage} />
       <Route path="/directorios/:slug" component={DirectorioDetallePage} />
