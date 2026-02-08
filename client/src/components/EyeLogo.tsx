@@ -316,39 +316,89 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
           touchAction: 'none'
         }}
       >
-        {/* Eyelids for blink/squint/touch */}
-        <div
-          ref={upperLidRef}
+        {/* Curved eyelids using SVG for natural curvature */}
+        <svg
+          viewBox="0 0 100 100"
           style={{
             position: 'absolute',
+            inset: 0,
             width: '100%',
-            height: '55%',
-            left: 0,
-            top: 0,
-            background: 'linear-gradient(180deg, #d07a0e 0%, #c06a00 100%)',
-            transformOrigin: 'top center',
-            transform: isEyeTouched || isBlinking ? 'scaleY(1)' : `scaleY(${squintAmount})`,
-            transition: isBlinking || isEyeTouched ? 'transform 0.1s ease-in' : 'transform 0.15s ease-out',
+            height: '100%',
             zIndex: 20,
             pointerEvents: 'none',
+            overflow: 'visible',
           }}
-        />
-        <div
-          ref={lowerLidRef}
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '55%',
-            left: 0,
-            bottom: 0,
-            background: 'linear-gradient(0deg, #b85c00 0%, #c06a00 100%)',
-            transformOrigin: 'bottom center',
-            transform: isEyeTouched || isBlinking ? 'scaleY(1)' : `scaleY(${squintAmount})`,
-            transition: isBlinking || isEyeTouched ? 'transform 0.1s ease-in' : 'transform 0.15s ease-out',
-            zIndex: 20,
-            pointerEvents: 'none',
-          }}
-        />
+        >
+          <defs>
+            <linearGradient id={`${uid}UpperLid`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#d07a0e" />
+              <stop offset="100%" stopColor="#c06a00" />
+            </linearGradient>
+            <linearGradient id={`${uid}LowerLid`} x1="0" y1="1" x2="0" y2="0">
+              <stop offset="0%" stopColor="#b85c00" />
+              <stop offset="100%" stopColor="#c06a00" />
+            </linearGradient>
+          </defs>
+          {/* Upper eyelid — curved path that drops down */}
+          <path
+            ref={upperLidRef as any}
+            d={(() => {
+              const closed = isEyeTouched || isBlinking;
+              // How far the lid droops: 0 = open, 50 = fully closed to center
+              const drop = closed ? 52 : squintAmount * 36;
+              // Curved lid: from left edge, arcs down to center, back up to right edge
+              return `M -2,-2 L 102,-2 L 102,${drop * 0.3} Q 50,${drop + 8} -2,${drop * 0.3} Z`;
+            })()}
+            fill={`url(#${uid}UpperLid)`}
+            style={{
+              transition: isBlinking || isEyeTouched ? 'd 0.12s ease-in' : 'd 0.18s ease-out',
+            }}
+          />
+          {/* Lower eyelid — curved path that rises up */}
+          <path
+            ref={lowerLidRef as any}
+            d={(() => {
+              const closed = isEyeTouched || isBlinking;
+              const rise = closed ? 52 : squintAmount * 28;
+              return `M -2,102 L 102,102 L 102,${100 - rise * 0.3} Q 50,${100 - rise - 6} -2,${100 - rise * 0.3} Z`;
+            })()}
+            fill={`url(#${uid}LowerLid)`}
+            style={{
+              transition: isBlinking || isEyeTouched ? 'd 0.12s ease-in' : 'd 0.18s ease-out',
+            }}
+          />
+          {/* Lid edge shadow lines for depth */}
+          {(isEyeTouched || isBlinking || squintAmount > 0.05) && (
+            <>
+              <path
+                d={(() => {
+                  const closed = isEyeTouched || isBlinking;
+                  const drop = closed ? 52 : squintAmount * 36;
+                  return `M -2,${drop * 0.3} Q 50,${drop + 8} 102,${drop * 0.3}`;
+                })()}
+                fill="none"
+                stroke="rgba(0,0,0,0.25)"
+                strokeWidth="1.5"
+                style={{
+                  transition: isBlinking || isEyeTouched ? 'd 0.12s ease-in' : 'd 0.18s ease-out',
+                }}
+              />
+              <path
+                d={(() => {
+                  const closed = isEyeTouched || isBlinking;
+                  const rise = closed ? 52 : squintAmount * 28;
+                  return `M -2,${100 - rise * 0.3} Q 50,${100 - rise - 6} 102,${100 - rise * 0.3}`;
+                })()}
+                fill="none"
+                stroke="rgba(0,0,0,0.2)"
+                strokeWidth="1"
+                style={{
+                  transition: isBlinking || isEyeTouched ? 'd 0.12s ease-in' : 'd 0.18s ease-out',
+                }}
+              />
+            </>
+          )}
+        </svg>
 
         {/* Eye ring */}
         <div
