@@ -27,6 +27,7 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
   const lastPointerTime = useRef(0);
   const saccadeTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const idleTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const pupilDriftRAF = useRef<number>(0);
 
   const uid = useId().replace(/:/g, '');
 
@@ -94,6 +95,33 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
     return () => {
       mounted = false;
       clearTimeout(saccadeTimer.current);
+    };
+  }, [scale]);
+
+  // ─── Pupil micro-drift (organic tremor) ─────────────────────────
+  // Continuous subtle movement — like the natural tremor of a living eye.
+  // Uses two sine waves at different frequencies for organic feel.
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) return;
+
+    let mounted = true;
+    const maxDrift = Math.max(0.5, 2 * scale); // Very subtle: ±0.5–2px
+
+    const animate = (time: number) => {
+      if (!mounted || !pupilRef.current) return;
+      // Two slow sine waves at different speeds = organic, non-repetitive
+      const dx = Math.sin(time * 0.0013) * maxDrift + Math.sin(time * 0.0031) * maxDrift * 0.4;
+      const dy = Math.cos(time * 0.0017) * maxDrift * 0.7 + Math.sin(time * 0.0023) * maxDrift * 0.3;
+      pupilRef.current.style.transform = `translate(${dx}px, ${dy}px)`;
+      pupilDriftRAF.current = requestAnimationFrame(animate);
+    };
+
+    pupilDriftRAF.current = requestAnimationFrame(animate);
+
+    return () => {
+      mounted = false;
+      cancelAnimationFrame(pupilDriftRAF.current);
     };
   }, [scale]);
 
@@ -528,7 +556,7 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
                 }}
               />
 
-              {/* Pupil — dynamic size */}
+              {/* Pupil — dynamic size + micro-drift */}
               <div
                 ref={pupilRef}
                 style={{
@@ -543,7 +571,9 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
                   background: 'radial-gradient(circle at 48% 42%, #151520 0%, #000 55%)',
                   zIndex: 3,
                   boxShadow: '0 0 8px rgba(0,0,0,0.45)',
-                  transition: 'width 0.3s ease-out, height 0.3s ease-out, margin 0.3s ease-out',
+                  // No transition on transform (rAF handles drift), but smooth size changes
+                  transition: 'width 0.3s ease-out, height 0.3s ease-out, margin-top 0.3s ease-out, margin-left 0.3s ease-out',
+                  willChange: 'transform',
                 }}
               >
                 {/* Main highlight */}
