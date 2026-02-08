@@ -40,17 +40,23 @@ export default function Header({ variant = "solid" }: HeaderProps) {
             scrolled ? "h-14" : "h-16"
           )}
         >
-          {/* Logo — EyeLogo + brand name */}
-          <Link href="/" className="flex items-center gap-2.5 group">
+          {/* Logo — EyeLogo + brand name with fun typography */}
+          <Link href="/" className="flex items-center gap-2 group">
             <div className="group-hover:scale-105 transition-transform">
               <EyeLogo size={44} />
             </div>
-            <div className="hidden sm:block">
+            <div className="flex flex-col leading-none">
               <span className={cn(
-                "text-sm font-extrabold tracking-tight leading-none",
-                isTransparent ? "text-white" : "text-foreground"
+                "text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em]",
+                isTransparent ? "text-white/60" : "text-muted-foreground"
               )}>
-                Visto en Maps
+                Visto en
+              </span>
+              <span
+                className="text-base sm:text-lg font-black tracking-tight bg-gradient-to-r from-[#fcc44e] via-[#f5a623] to-[#C45B28] bg-clip-text text-transparent"
+                style={{ fontFamily: "'Outfit', 'Inter', sans-serif", lineHeight: 1.1 }}
+              >
+                Maps
               </span>
             </div>
           </Link>
