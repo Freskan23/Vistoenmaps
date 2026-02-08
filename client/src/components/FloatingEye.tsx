@@ -1,27 +1,58 @@
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import EyeLogo from "@/components/EyeLogo";
 
 /**
  * Mascota flotante — EyeLogo grande fijo en la esquina inferior-derecha.
- * Siempre visible en páginas públicas, oculto en admin/dashboard.
+ * En Home: oculto arriba, desliza desde la derecha al hacer scroll.
+ * Oculto en admin/dashboard/login/register/contacto.
+ * Siempre visible en el resto de páginas.
  */
 export default function FloatingEye() {
   const [location] = useLocation();
+  const [scrolledPastHero, setScrolledPastHero] = useState(false);
 
-  // No mostrar en páginas que tienen su propio EyeLogo integrado
+  const isHome = location === "/";
+
+  // Páginas que tienen su propio EyeLogo integrado (no Home)
   const hidden =
     location.startsWith("/admin") ||
     location.startsWith("/dashboard") ||
     location === "/login" ||
     location === "/register" ||
-    location === "/contacto" ||
-    location === "/";
+    location === "/contacto";
+
+  // En Home: detectar scroll para mostrar/ocultar
+  useEffect(() => {
+    if (!isHome) {
+      setScrolledPastHero(false);
+      return;
+    }
+
+    const handleScroll = () => {
+      // El hero ocupa ~100vh aprox. Umbral: 60% del viewport
+      const threshold = window.innerHeight * 0.6;
+      setScrolledPastHero(window.scrollY > threshold);
+    };
+
+    // Comprobar estado inicial
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isHome]);
 
   if (hidden) return null;
 
+  // En Home: mostrar solo si pasó el hero. En resto: siempre visible.
+  const visible = isHome ? scrolledPastHero : true;
+
   return (
     <div
-      className="fixed bottom-4 right-4 z-[90] group pointer-events-none"
+      className="fixed bottom-4 right-4 z-[90] group pointer-events-none transition-transform duration-700 ease-out"
+      style={{
+        transform: visible ? "translateX(0)" : "translateX(calc(100% + 2rem))",
+      }}
     >
       {/* Glow aura */}
       <div
