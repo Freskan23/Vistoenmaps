@@ -14,6 +14,7 @@ import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import BlogPostCard from "@/components/BlogPostCard";
 import { useBlogPosts } from "@/hooks/useBlogPosts";
+import AdSlot from "@/components/ads/AdSlot";
 
 /* ------------------------------------------------------------------ */
 /*  Skeleton card for loading state                                    */
@@ -235,6 +236,11 @@ export default function BlogPage() {
           </div>
         </div>
       </section>
+
+      {/* Ad slot */}
+      <div className="container py-4">
+        <AdSlot slot="blog-after-filters" />
+      </div>
 
       {/* ===== POSTS GRID ===== */}
       <section className="container py-8 flex-1">

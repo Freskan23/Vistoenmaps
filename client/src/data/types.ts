@@ -135,3 +135,20 @@ export interface Negocio {
   anos_experiencia?: number;
   certificaciones?: string[];
 }
+
+export interface Destacado {
+  id: string;
+  negocio_nombre: string;
+  negocio_slug: string;
+  categoria_slug: string;
+  ciudad_slug: string;
+  descripcion_corta: string;
+  imagen?: string;
+  telefono?: string;
+  web?: string;
+  valoracion?: number;
+  num_resenas?: number;
+  slots: string[];
+  activo_desde: string;
+  activo_hasta: string;
+}

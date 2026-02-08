@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import SEOHead from "@/components/SEOHead";
 import { useEventos } from "@/hooks/useEventos";
 import { useBlogPosts } from "@/hooks/useBlogPosts";
+import AdSlot from "@/components/ads/AdSlot";
 
 export default function Home() {
   const { eventos, loading: eventosLoading } = useEventos({ limit: 4 });
@@ -221,6 +222,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== AD SLOT: after directorio ===== */}
+      <div className="container pb-4">
+        <AdSlot slot="home-after-directorio" />
+      </div>
+
       {/* ===== EVENTOS PREVIEW ===== */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-[#fafaf7] via-purple-500/[0.03] to-[#fafaf7]" />
@@ -292,6 +298,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== AD SLOT: after eventos ===== */}
+      <div className="container pb-4">
+        <AdSlot slot="home-after-eventos" />
+      </div>
+
       {/* ===== BLOG PREVIEW ===== */}
       {blogLoaded && blogPosts.length > 0 && (
         <section className="container py-12 md:py-16">
@@ -348,6 +359,11 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      {/* ===== AD SLOT: before trust ===== */}
+      <div className="container pb-4">
+        <AdSlot slot="home-before-trust" />
+      </div>
 
       {/* ===== TRUST / WHY US SECTION ===== */}
       <section className="relative overflow-hidden">

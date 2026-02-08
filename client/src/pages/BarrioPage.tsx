@@ -7,7 +7,7 @@
   - Schema.org JSON-LD for each business
 */
 
-import { useState, useMemo, useRef, useCallback, useEffect } from "react";
+import React, { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { useParams } from "wouter";
 import { MapPin, ArrowUpDown, Star, Clock, Zap, Filter, X, ChevronDown, Map as MapIcon } from "lucide-react";
 import {
@@ -16,6 +16,7 @@ import {
 import { useAllNegocios, useAllBarrios, useAllCiudades, filterByBarrio } from "@/hooks/useSupabaseNegocios";
 import Breadcrumb from "@/components/Breadcrumb";
 import NegocioCard from "@/components/NegocioCard";
+import AdSlot from "@/components/ads/AdSlot";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NotFound from "./NotFound";
@@ -482,20 +483,27 @@ export default function BarrioPage() {
               </Collapsible>
             </div>
 
-            {/* Cards grid */}
+            {/* Cards grid with ad slots */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               {paginated.map((negocio, index) => (
-                <motion.div
-                  key={negocio.slug}
-                  ref={(el) => { cardRefs.current[negocio.slug] = el; }}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.4, delay: index * 0.06 }}
-                  className="transition-all duration-300 rounded-xl"
-                >
-                  <NegocioCard negocio={negocio} />
-                </motion.div>
+                <React.Fragment key={negocio.slug}>
+                  <motion.div
+                    ref={(el) => { cardRefs.current[negocio.slug] = el; }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.4, delay: index * 0.06 }}
+                    className="transition-all duration-300 rounded-xl"
+                  >
+                    <NegocioCard negocio={negocio} />
+                  </motion.div>
+                  {index === 3 && (
+                    <AdSlot slot="barrio-grid-4" format="card" className="min-h-[200px]" />
+                  )}
+                  {index === 7 && (
+                    <AdSlot slot="barrio-grid-8" format="card" className="min-h-[200px]" />
+                  )}
+                </React.Fragment>
               ))}
             </div>
 

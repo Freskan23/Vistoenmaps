@@ -5,6 +5,7 @@
   - City cards with per-card color accents and hover effects
 */
 
+import React from "react";
 import { Link, useParams } from "wouter";
 import { MapPin, ArrowRight, Building2 } from "lucide-react";
 import { getCategoria } from "@/data";
@@ -16,6 +17,7 @@ import Footer from "@/components/Footer";
 import NotFound from "./NotFound";
 import { motion } from "framer-motion";
 import SEOHead from "@/components/SEOHead";
+import AdSlot from "@/components/ads/AdSlot";
 
 // Color accents per city card for visual variety
 const cardColors = [
@@ -188,63 +190,67 @@ export default function CategoriaPage() {
             const negociosCount = filterByCiudad(allNegocios, cat.slug, ciudad.slug).length;
             const color = cardColors[index % cardColors.length];
             return (
-              <motion.div
-                key={ciudad.slug}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.4, delay: index * 0.06 }}
-              >
-                <Link href={`/${cat.slug}/${ciudad.slug}`}>
-                  <div className={`group relative bg-white border ${color.border} shadow-sm ${color.hover} hover:shadow-xl rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 cursor-pointer`}>
-                    {/* Subtle gradient bg on hover */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${color.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+              <React.Fragment key={ciudad.slug}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.4, delay: index * 0.06 }}
+                >
+                  <Link href={`/${cat.slug}/${ciudad.slug}`}>
+                    <div className={`group relative bg-white border ${color.border} shadow-sm ${color.hover} hover:shadow-xl rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 cursor-pointer`}>
+                      {/* Subtle gradient bg on hover */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${color.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
 
-                    {/* City image */}
-                    <div className="relative">
-                      {ciudad.imagen ? (
-                        <div className="h-36 overflow-hidden">
-                          <img
-                            src={ciudad.imagen}
-                            alt={`${cat.nombre} en ${ciudad.nombre}`}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        </div>
-                      ) : (
-                        <div className="h-36 bg-gradient-to-br from-primary/5 to-primary/15 flex items-center justify-center">
-                          <Building2 className="w-12 h-12 text-primary/20" />
-                        </div>
-                      )}
-                    </div>
+                      {/* City image */}
+                      <div className="relative">
+                        {ciudad.imagen ? (
+                          <div className="h-36 overflow-hidden">
+                            <img
+                              src={ciudad.imagen}
+                              alt={`${cat.nombre} en ${ciudad.nombre}`}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </div>
+                        ) : (
+                          <div className="h-36 bg-gradient-to-br from-primary/5 to-primary/15 flex items-center justify-center">
+                            <Building2 className="w-12 h-12 text-primary/20" />
+                          </div>
+                        )}
+                      </div>
 
-                    <div className="relative p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">
-                            {ciudad.nombre}
-                          </h3>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            {ciudad.comunidad_autonoma}
-                          </p>
+                      <div className="relative p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">
+                              {ciudad.nombre}
+                            </h3>
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                              {ciudad.comunidad_autonoma}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            {negociosCount > 0 && (
+                              <span className="text-xs bg-accent/10 text-accent font-bold px-2 py-1 rounded-full">
+                                {negociosCount} {negociosCount === 1 ? "negocio" : "negocios"}
+                              </span>
+                            )}
+                            <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1">
-                          {negociosCount > 0 && (
-                            <span className="text-xs bg-accent/10 text-accent font-bold px-2 py-1 rounded-full">
-                              {negociosCount} {negociosCount === 1 ? "negocio" : "negocios"}
-                            </span>
-                          )}
-                          <ArrowRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                        {/* Hover reveal text */}
+                        <div className="flex items-center gap-1 text-sm font-semibold text-accent mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
+                          Ver barrios
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </div>
                       </div>
-                      {/* Hover reveal text */}
-                      <div className="flex items-center gap-1 text-sm font-semibold text-accent mt-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
-                        Ver barrios
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
                     </div>
-                  </div>
-                </Link>
-              </motion.div>
+                  </Link>
+                </motion.div>
+                {index === 5 && (
+                  <AdSlot slot="categoria-grid-6" format="card" className="min-h-[200px]" />
+                )}
+              </React.Fragment>
             );
           })}
         </div>

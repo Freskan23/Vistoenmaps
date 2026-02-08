@@ -17,6 +17,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import EventoCard from "@/components/EventoCard";
 import { useEventos } from "@/hooks/useEventos";
 import { cn } from "@/lib/utils";
+import AdSlot from "@/components/ads/AdSlot";
 
 /* ------------------------------------------------------------------ */
 /*  Filter options                                                     */
@@ -235,6 +236,11 @@ export default function EventosPage() {
           </div>
         </div>
       </section>
+
+      {/* Ad slot */}
+      <div className="container py-4">
+        <AdSlot slot="eventos-after-filters" />
+      </div>
 
       {/* Events grid */}
       <section className="container py-8 pb-14">
