@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Search, MapPin, Tag, Building2, Store } from "lucide-react";
 import { Link } from "wouter";
 import { searchDirectory, type SearchResult } from "@/data";
+import { useSearchNegocios } from "@/hooks/useSupabaseNegocios";
 
 const typeIcons: Record<SearchResult["type"], typeof Search> = {
   negocio: Store,
@@ -19,11 +20,12 @@ export default function SearchBar({ variant = "header" }: SearchBarProps) {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const allNegocios = useSearchNegocios();
 
   useEffect(() => {
-    setResults(searchDirectory(query));
+    setResults(searchDirectory(query, 10, allNegocios));
     setIsOpen(query.length >= 2);
-  }, [query]);
+  }, [query, allNegocios]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {

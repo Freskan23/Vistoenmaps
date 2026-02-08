@@ -6,8 +6,8 @@ import {
   getCategoria,
   getCiudad,
   getBarrio,
-  getNegocio,
 } from "@/data";
+import { useFindNegocio } from "@/hooks/useSupabaseNegocios";
 import CategoryIcon from "@/components/CategoryIcon";
 import Breadcrumb from "@/components/Breadcrumb";
 import Header from "@/components/Header";
@@ -54,9 +54,21 @@ export default function NegocioPage() {
   const cat = getCategoria(categoria);
   const ciu = getCiudad(ciudad);
   const bar = getBarrio(barrio, ciudad);
-  const neg = getNegocio(categoria, ciudad, barrio, negocioSlug);
+  const { negocio: neg, loaded } = useFindNegocio(categoria, ciudad, barrio, negocioSlug);
 
-  if (!cat || !ciu || !bar || !neg) return <NotFound />;
+  // Esperar a que carguen los datos de Supabase antes de mostrar NotFound
+  if (!cat || !ciu || !bar) return <NotFound />;
+  if (!neg && !loaded) {
+    return (
+      <div className="min-h-screen flex flex-col bg-[#fafaf7]">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="animate-pulse text-muted-foreground">Cargando...</div>
+        </div>
+      </div>
+    );
+  }
+  if (!neg) return <NotFound />;
 
   const hasApiKey = !!import.meta.env.VITE_FRONTEND_FORGE_API_KEY;
 

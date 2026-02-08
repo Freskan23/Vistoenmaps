@@ -103,11 +103,12 @@ export interface SearchResult {
   href: string;
 }
 
-export function searchDirectory(query: string, limit = 10): SearchResult[] {
+export function searchDirectory(query: string, limit = 10, allNegocios?: Negocio[]): SearchResult[] {
   const q = query.toLowerCase().trim();
   if (q.length < 2) return [];
 
   const results: SearchResult[] = [];
+  const negociosList = allNegocios || negocios;
 
   // Search categorias
   for (const cat of categorias) {
@@ -146,8 +147,8 @@ export function searchDirectory(query: string, limit = 10): SearchResult[] {
     }
   }
 
-  // Search negocios
-  for (const neg of negocios) {
+  // Search negocios (uses combined list if provided)
+  for (const neg of negociosList) {
     if (
       neg.nombre.toLowerCase().includes(q) ||
       neg.servicios_destacados.some((s) => s.toLowerCase().includes(q))

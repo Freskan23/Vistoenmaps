@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
 import { negocios as staticNegocios } from '@/data';
 import type { Negocio } from '@/data/types';
@@ -33,18 +33,18 @@ async function fetchAndMerge(): Promise<Negocio[]> {
     // Convertir negocios de Supabase al formato Negocio
     const dbNegocios: Negocio[] = data.map((sn) => ({
       nombre: sn.nombre,
-      slug: slugify(sn.nombre),
+      slug: sn.slug || slugify(sn.nombre),
       categoria_slug: sn.categoria_slug || '',
-      ciudad_slug: sn.ciudad || '',
-      barrio_slug: sn.barrio_nombre ? slugify(sn.barrio_nombre) : '',
+      ciudad_slug: sn.ciudad_slug || '',
+      barrio_slug: sn.barrio_slug || '',
       direccion: sn.direccion || '',
       telefono: sn.telefono || '',
       horario: sn.horario || '',
-      coordenadas: { lat: 0, lng: 0 },
-      valoracion_media: 0,
-      num_resenas: 0,
-      servicios_destacados: sn.descripcion ? [sn.descripcion] : [],
-      url_google_maps: sn.google_maps_url || '',
+      coordenadas: { lat: sn.lat || 0, lng: sn.lng || 0 },
+      valoracion_media: sn.valoracion_media || 0,
+      num_resenas: sn.num_resenas || 0,
+      servicios_destacados: sn.servicios_destacados || (sn.descripcion ? [sn.descripcion] : []),
+      url_google_maps: sn.url_google_maps || '',
     }));
 
     // Merge: estaticos + DB (evitar duplicados por slug+categoria)
@@ -96,6 +96,40 @@ export function useAllNegocios() {
   }, []);
 
   return { allNegocios, loaded };
+}
+
+/**
+ * Buscar un negocio individual en los datos combinados (estáticos + Supabase)
+ */
+export function useFindNegocio(
+  categoriaSlug: string,
+  ciudadSlug: string,
+  barrioSlug: string,
+  negocioSlug: string
+) {
+  const { allNegocios, loaded } = useAllNegocios();
+
+  const negocio = useMemo(
+    () =>
+      allNegocios.find(
+        (n) =>
+          n.categoria_slug === categoriaSlug &&
+          n.ciudad_slug === ciudadSlug &&
+          n.barrio_slug === barrioSlug &&
+          n.slug === negocioSlug
+      ) || null,
+    [allNegocios, categoriaSlug, ciudadSlug, barrioSlug, negocioSlug]
+  );
+
+  return { negocio, loaded };
+}
+
+/**
+ * Buscar negocios en datos combinados (para SearchBar)
+ */
+export function useSearchNegocios() {
+  const { allNegocios } = useAllNegocios();
+  return allNegocios;
 }
 
 // Helpers que trabajan sobre el array combinado
