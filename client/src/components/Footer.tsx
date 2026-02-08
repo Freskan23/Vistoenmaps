@@ -1,5 +1,6 @@
 import { Link } from "wouter";
-import { categorias, ciudades } from "@/data";
+import { ciudades } from "@/data";
+import { superCategorias } from "@/data/superCategorias";
 import EyeLogo from "@/components/EyeLogo";
 
 export default function Footer() {
@@ -8,31 +9,31 @@ export default function Footer() {
       {/* Subtle ambient orb */}
       <div className="absolute -bottom-32 -right-32 w-[400px] h-[400px] bg-accent/5 rounded-full blur-[100px]" />
       <div className="relative container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
           {/* Brand */}
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <EyeLogo size={32} />
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
-              Directorio de profesionales y negocios locales verificados en Google Maps. 
+              Directorio de profesionales y negocios locales verificados en Google Maps.
               Encuentra el servicio que necesitas cerca de ti.
             </p>
           </div>
 
-          {/* Categorías */}
+          {/* Directorio */}
           <div>
             <h3 className="font-bold text-sm uppercase tracking-wider mb-4 text-primary-foreground/80">
-              Categorías
+              Directorio
             </h3>
             <ul className="space-y-2">
-              {categorias.map((cat) => (
-                <li key={cat.slug}>
+              {superCategorias.map((sc) => (
+                <li key={sc.slug}>
                   <Link
-                    href={`/${cat.slug}`}
+                    href={`/directorio/${sc.slug}`}
                     className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                   >
-                    {cat.nombre}
+                    {sc.nombre}
                   </Link>
                 </li>
               ))}
@@ -42,7 +43,7 @@ export default function Footer() {
           {/* Ciudades */}
           <div>
             <h3 className="font-bold text-sm uppercase tracking-wider mb-4 text-primary-foreground/80">
-              Ciudades principales
+              Ciudades
             </h3>
             <ul className="space-y-2">
               {ciudades.map((ciudad) => (
@@ -52,6 +53,30 @@ export default function Footer() {
                     className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                   >
                     {ciudad.nombre}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Recursos */}
+          <div>
+            <h3 className="font-bold text-sm uppercase tracking-wider mb-4 text-primary-foreground/80">
+              Recursos
+            </h3>
+            <ul className="space-y-2">
+              {[
+                { href: "/eventos", label: "Eventos" },
+                { href: "/blog", label: "Blog" },
+                { href: "/directorios", label: "Directorios" },
+                { href: "/contacto", label: "Contacto" },
+              ].map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                  >
+                    {item.label}
                   </Link>
                 </li>
               ))}

@@ -1,4 +1,9 @@
-import { KeyRound, Wrench, Zap, Paintbrush, Sparkles, Hammer } from "lucide-react";
+import {
+  KeyRound, Wrench, Zap, Paintbrush, Sparkles, Hammer,
+  HeartPulse, Ticket, UtensilsCrossed, Stethoscope, Dog,
+  Pill, Brain, Dumbbell, Film, Drama, TreePine, Compass,
+  Coffee, Pizza, Beer,
+} from "lucide-react";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   KeyRound,
@@ -7,6 +12,21 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Paintbrush,
   Sparkles,
   Hammer,
+  HeartPulse,
+  Ticket,
+  UtensilsCrossed,
+  Stethoscope,
+  Dog,
+  Pill,
+  Brain,
+  Dumbbell,
+  Film,
+  Drama,
+  TreePine,
+  Compass,
+  Coffee,
+  Pizza,
+  Beer,
 };
 
 interface CategoryIconProps {

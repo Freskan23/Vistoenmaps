@@ -1,25 +1,23 @@
 import { Link } from "wouter";
-import { MapPin, ArrowRight, CheckCircle2, Clock, Shield, Sparkles, Star, Eye } from "lucide-react";
+import { MapPin, ArrowRight, CheckCircle2, Clock, Shield, Star, Eye, Calendar, Newspaper } from "lucide-react";
+import { superCategorias } from "@/data/superCategorias";
 import { categorias } from "@/data";
-import CategoryIcon from "@/components/CategoryIcon";
+import SuperCategoriaCard from "@/components/SuperCategoriaCard";
+import EventoCard from "@/components/EventoCard";
+import BlogPostCard from "@/components/BlogPostCard";
 import SearchBar from "@/components/SearchBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import EyeLogo from "@/components/EyeLogo";
 import { motion } from "framer-motion";
 import SEOHead from "@/components/SEOHead";
-
-// Color accents per category for visual variety
-const catColors = [
-  { bg: "from-amber-500/20 to-orange-500/10", icon: "text-amber-500", border: "border-amber-500/20", hover: "hover:border-amber-500/40 hover:shadow-amber-500/10" },
-  { bg: "from-blue-500/20 to-cyan-500/10", icon: "text-blue-500", border: "border-blue-500/20", hover: "hover:border-blue-500/40 hover:shadow-blue-500/10" },
-  { bg: "from-yellow-500/20 to-amber-500/10", icon: "text-yellow-600", border: "border-yellow-500/20", hover: "hover:border-yellow-500/40 hover:shadow-yellow-500/10" },
-  { bg: "from-purple-500/20 to-pink-500/10", icon: "text-purple-500", border: "border-purple-500/20", hover: "hover:border-purple-500/40 hover:shadow-purple-500/10" },
-  { bg: "from-emerald-500/20 to-teal-500/10", icon: "text-emerald-500", border: "border-emerald-500/20", hover: "hover:border-emerald-500/40 hover:shadow-emerald-500/10" },
-  { bg: "from-rose-500/20 to-red-500/10", icon: "text-rose-500", border: "border-rose-500/20", hover: "hover:border-rose-500/40 hover:shadow-rose-500/10" },
-];
+import { useEventos } from "@/hooks/useEventos";
+import { useBlogPosts } from "@/hooks/useBlogPosts";
 
 export default function Home() {
+  const { eventos, loading: eventosLoading } = useEventos({ limit: 4 });
+  const { posts: blogPosts, loaded: blogLoaded } = useBlogPosts();
+
   return (
     <div className="min-h-screen flex flex-col bg-[#fafaf7]">
       <SEOHead
@@ -67,21 +65,13 @@ export default function Home() {
 
       {/* ===== HERO: EL OJO COMO PROTAGONISTA ABSOLUTO ===== */}
       <section className="relative overflow-hidden -mt-16 pt-16">
-        {/* Vibrant gradient background */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628] via-[#0f2035] to-[#142d45]" />
-
-        {/* Dramatic light effects radiating from center */}
         <div className="absolute inset-0 overflow-hidden">
-          {/* Main eye glow - cyan radiating from where the eye will be */}
           <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-cyan-500/15 rounded-full blur-[120px]" />
-          {/* Warm golden glow from pin */}
           <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-amber-500/12 rounded-full blur-[80px]" />
-          {/* Side ambient */}
           <div className="absolute -top-20 right-[10%] w-[300px] h-[300px] bg-accent/15 rounded-full blur-[100px]" />
           <div className="absolute bottom-[30%] left-[5%] w-[300px] h-[300px] bg-cyan-500/8 rounded-full blur-[100px]" />
         </div>
-
-        {/* Subtle radial grid pattern */}
         <div
           className="absolute inset-0 opacity-[0.025]"
           style={{
@@ -91,19 +81,13 @@ export default function Home() {
         />
 
         <div className="relative container py-12 md:py-16 lg:py-20">
-          {/* THE EYE — Center stage, massive, impossible to miss */}
           <div className="flex flex-col items-center text-center">
-            {/* Pin drop animation — falls from above like a Google Maps pin */}
             <motion.div
               initial={{ opacity: 0, y: -120, scale: 0.6 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{
-                duration: 0.8,
-                ease: [0.34, 1.56, 0.64, 1], // Spring-like bounce
-              }}
+              transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
               className="relative mb-4"
             >
-              {/* Shadow on "ground" that grows as pin lands */}
               <motion.div
                 initial={{ opacity: 0, scaleX: 0.3 }}
                 animate={{ opacity: 0.3, scaleX: 1 }}
@@ -113,7 +97,6 @@ export default function Home() {
               <EyeLogo size={160} glow />
             </motion.div>
 
-            {/* Tagline — appears after pin lands */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -126,7 +109,6 @@ export default function Home() {
               </span>
             </motion.div>
 
-            {/* Main headline */}
             <motion.h1
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
@@ -149,7 +131,6 @@ export default function Home() {
               Cerrajeros, fontaneros, electricistas y más. Todos con presencia real y verificada en Google Maps.
             </motion.p>
 
-            {/* Search bar — centered, prominent */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -159,7 +140,6 @@ export default function Home() {
               <SearchBar variant="hero" />
             </motion.div>
 
-            {/* Suggestion chips */}
             <div className="flex flex-wrap justify-center gap-2 mb-8">
               {categorias.slice(0, 4).map((cat, i) => (
                 <Link key={cat.slug} href={`/${cat.slug}`}>
@@ -175,7 +155,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Trust badges */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -198,7 +177,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Bottom wave separator */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 60" fill="none" className="w-full h-auto" preserveAspectRatio="none">
             <path d="M0 60V20C240 45 480 0 720 20C960 40 1200 10 1440 30V60H0Z" fill="#fafaf7" />
@@ -206,7 +184,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== CATEGORIES SECTION ===== */}
+      {/* ===== DIRECTORIO: SUPER-CATEGORÍAS ===== */}
       <section className="container py-12 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -218,58 +196,159 @@ export default function Home() {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <div className="w-1 h-6 bg-accent rounded-full" />
-              <span className="text-xs font-bold text-accent uppercase tracking-wider">Servicios</span>
+              <span className="text-xs font-bold text-accent uppercase tracking-wider">Directorio</span>
             </div>
             <h2 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
-              Categorías de servicios
+              Explora nuestro directorio
             </h2>
             <p className="text-muted-foreground mt-1">
-              Explora profesionales por tipo de servicio en toda España
+              4 grandes categorías con profesionales verificados en toda España
             </p>
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {categorias.map((cat, index) => {
-            const color = catColors[index % catColors.length];
-            return (
-              <motion.div
-                key={cat.slug}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-30px" }}
-                transition={{ duration: 0.4, delay: index * 0.06 }}
-              >
-                <Link href={`/${cat.slug}`}>
-                  <div className={`group relative bg-white border ${color.border} shadow-sm ${color.hover} hover:shadow-xl rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden`}>
-                    {/* Subtle gradient bg on hover */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${color.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-                    <div className="relative">
-                      <div className="flex items-start gap-4">
-                        <div className={`w-12 h-12 bg-gradient-to-br ${color.bg} rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                          <CategoryIcon iconName={cat.icono} className={`w-6 h-6 ${color.icon}`} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-base text-foreground mb-1 group-hover:text-primary transition-colors">
-                            {cat.nombre}
-                          </h3>
-                          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                            {cat.descripcion}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1 text-sm font-semibold text-accent mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
-                        Ver profesionales
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </motion.div>
-            );
-          })}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          {superCategorias.map((sc, index) => (
+            <motion.div
+              key={sc.slug}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{ duration: 0.4, delay: index * 0.08 }}
+            >
+              <SuperCategoriaCard superCategoria={sc} />
+            </motion.div>
+          ))}
         </div>
       </section>
+
+      {/* ===== EVENTOS PREVIEW ===== */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#fafaf7] via-purple-500/[0.03] to-[#fafaf7]" />
+        <div className="relative container py-12 md:py-16">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="flex items-end justify-between mb-8"
+          >
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-1 h-6 bg-purple-500 rounded-full" />
+                <span className="text-xs font-bold text-purple-500 uppercase tracking-wider">Eventos</span>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
+                Próximos eventos
+              </h2>
+              <p className="text-muted-foreground mt-1">
+                Descubre lo que pasa en tu ciudad
+              </p>
+            </div>
+            <Link
+              href="/eventos"
+              className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-purple-500 hover:text-purple-600 transition-colors"
+            >
+              Ver todos
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+
+          {eventosLoading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {[0, 1, 2, 3].map((i) => (
+                <div key={i} className="bg-white rounded-2xl h-[280px] animate-pulse border border-border/50" />
+              ))}
+            </div>
+          ) : eventos.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {eventos.slice(0, 4).map((evento, i) => (
+                <motion.div
+                  key={evento.id}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.08 }}
+                >
+                  <EventoCard evento={evento} />
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <Calendar className="w-10 h-10 text-purple-300 mx-auto mb-3" />
+              <p className="text-muted-foreground text-sm">No hay eventos próximos disponibles</p>
+            </div>
+          )}
+
+          <div className="flex sm:hidden justify-center mt-6">
+            <Link
+              href="/eventos"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-purple-500 hover:text-purple-600 transition-colors"
+            >
+              Ver todos los eventos
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== BLOG PREVIEW ===== */}
+      {blogLoaded && blogPosts.length > 0 && (
+        <section className="container py-12 md:py-16">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="flex items-end justify-between mb-8"
+          >
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-1 h-6 bg-amber-500 rounded-full" />
+                <span className="text-xs font-bold text-amber-500 uppercase tracking-wider">Blog</span>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
+                Rankings y guías
+              </h2>
+              <p className="text-muted-foreground mt-1">
+                Los mejores profesionales según valoraciones reales
+              </p>
+            </div>
+            <Link
+              href="/blog"
+              className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-amber-500 hover:text-amber-600 transition-colors"
+            >
+              Ver todos
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {blogPosts.slice(0, 3).map((post, i) => (
+              <motion.div
+                key={post.slug}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.08 }}
+              >
+                <BlogPostCard post={post} />
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="flex sm:hidden justify-center mt-6">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-amber-500 hover:text-amber-600 transition-colors"
+            >
+              Ver todos los artículos
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* ===== TRUST / WHY US SECTION ===== */}
       <section className="relative overflow-hidden">
@@ -350,7 +429,6 @@ export default function Home() {
             <div className="absolute -bottom-20 -left-20 w-[200px] h-[200px] bg-cyan-500/10 rounded-full blur-[60px]" />
           </div>
           <div className="relative flex flex-col md:flex-row items-center gap-6 md:gap-10">
-            {/* EyeLogo in CTA — watching you, reminding you */}
             <div className="shrink-0 hidden md:block">
               <EyeLogo size={80} glow />
             </div>

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Menu, User, ArrowRight, BookOpen, Mail, X, Search, ArrowLeft } from "lucide-react";
+import { Menu, User, ArrowRight, BookOpen, Mail, X, Search, ArrowLeft, Calendar, Newspaper } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { categorias } from "@/data";
 import SearchBar from "@/components/SearchBar";
@@ -112,10 +112,15 @@ export default function Header({ variant = "solid" }: HeaderProps) {
 
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-6">
-              {categorias.slice(0, 3).map((cat) => (
+              {[
+                { href: "/directorio/servicios", label: "Directorio" },
+                { href: "/eventos", label: "Eventos" },
+                { href: "/blog", label: "Blog" },
+                { href: "/directorios", label: "Directorios" },
+              ].map((item) => (
                 <Link
-                  key={cat.slug}
-                  href={`/${cat.slug}`}
+                  key={item.href}
+                  href={item.href}
                   className={cn(
                     "text-sm font-medium transition-colors",
                     isTransparent
@@ -123,20 +128,9 @@ export default function Header({ variant = "solid" }: HeaderProps) {
                       : "text-muted-foreground hover:text-primary"
                   )}
                 >
-                  {cat.nombre}
+                  {item.label}
                 </Link>
               ))}
-              <Link
-                href="/directorios"
-                className={cn(
-                  "text-sm font-medium transition-colors",
-                  isTransparent
-                    ? "text-white/70 hover:text-white"
-                    : "text-muted-foreground hover:text-primary"
-                )}
-              >
-                Directorios
-              </Link>
 
               {isAuthenticated ? (
                 <Link
@@ -362,38 +356,30 @@ export default function Header({ variant = "solid" }: HeaderProps) {
           {/* ---- Extra Links ---- */}
           <div className="px-5 pb-4">
             <div className="space-y-1">
-              <Link
-                href="/directorios"
-                onClick={closeMenu}
-                className={cn(
-                  "flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-white/5 transition-all duration-300 group",
-                  menuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
-                )}
-                style={{ transitionDelay: menuOpen ? `${320 + categorias.length * 50}ms` : "0ms" }}
-              >
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/5 border border-white/10">
-                  <BookOpen className="w-4 h-4 text-white/50" />
-                </div>
-                <span className="text-sm font-semibold text-white/70 group-hover:text-white/90 transition-colors">
-                  Directorios
-                </span>
-              </Link>
-              <Link
-                href="/contacto"
-                onClick={closeMenu}
-                className={cn(
-                  "flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-white/5 transition-all duration-300 group",
-                  menuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
-                )}
-                style={{ transitionDelay: menuOpen ? `${370 + categorias.length * 50}ms` : "0ms" }}
-              >
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/5 border border-white/10">
-                  <Mail className="w-4 h-4 text-white/50" />
-                </div>
-                <span className="text-sm font-semibold text-white/70 group-hover:text-white/90 transition-colors">
-                  Contacto
-                </span>
-              </Link>
+              {[
+                { href: "/eventos", icon: Calendar, label: "Eventos", iconColor: "text-purple-400/70" },
+                { href: "/blog", icon: Newspaper, label: "Blog", iconColor: "text-amber-400/70" },
+                { href: "/directorios", icon: BookOpen, label: "Directorios", iconColor: "text-white/50" },
+                { href: "/contacto", icon: Mail, label: "Contacto", iconColor: "text-white/50" },
+              ].map((item, i) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={closeMenu}
+                  className={cn(
+                    "flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-white/5 transition-all duration-300 group",
+                    menuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
+                  )}
+                  style={{ transitionDelay: menuOpen ? `${320 + categorias.length * 50 + i * 50}ms` : "0ms" }}
+                >
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/5 border border-white/10">
+                    <item.icon className={cn("w-4 h-4", item.iconColor)} />
+                  </div>
+                  <span className="text-sm font-semibold text-white/70 group-hover:text-white/90 transition-colors">
+                    {item.label}
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
 

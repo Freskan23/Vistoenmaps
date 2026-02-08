@@ -1,3 +1,40 @@
+export interface SuperCategoria {
+  slug: string;
+  nombre: string;
+  descripcion: string;
+  icono: string;
+  color: { bg: string; icon: string; border: string; hover: string };
+  categorias: string[];
+}
+
+export interface Evento {
+  id: string;
+  nombre: string;
+  slug: string;
+  fecha: string;
+  hora?: string;
+  imagen: string;
+  lugar: string;
+  ciudad: string;
+  ciudad_slug: string;
+  clasificacion: string;
+  precio_min?: number;
+  precio_max?: number;
+  url_compra: string;
+}
+
+export interface BlogPost {
+  slug: string;
+  titulo: string;
+  extracto: string;
+  categoria_slug: string;
+  ciudad_slug: string;
+  ciudad_nombre: string;
+  categoria_nombre: string;
+  fecha_generado: string;
+  negocios: Negocio[];
+}
+
 export interface Categoria {
   slug: string;
   nombre: string;

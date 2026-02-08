@@ -23,6 +23,11 @@ import AdminNotificacionesPage from "./pages/admin/AdminNotificacionesPage";
 import AdminConfiguracionPage from "./pages/admin/AdminConfiguracionPage";
 import { AuthProvider } from "./context/AuthContext";
 import FloatingEye from "./components/FloatingEye";
+import SuperCategoriaPage from "./pages/SuperCategoriaPage";
+import EventosPage from "./pages/EventosPage";
+import EventosCiudadPage from "./pages/EventosCiudadPage";
+import BlogPage from "./pages/BlogPage";
+import BlogPostPage from "./pages/BlogPostPage";
 
 function Router() {
   return (
@@ -41,6 +46,11 @@ function Router() {
       <Route path="/contacto" component={ContactoPage} />
       <Route path="/directorios" component={DirectoriosPage} />
       <Route path="/directorios/:slug" component={DirectorioDetallePage} />
+      <Route path="/directorio/:superCategoria" component={SuperCategoriaPage} />
+      <Route path="/eventos" component={EventosPage} />
+      <Route path="/eventos/:ciudad" component={EventosCiudadPage} />
+      <Route path="/blog" component={BlogPage} />
+      <Route path="/blog/:slug" component={BlogPostPage} />
       <Route path="/:categoria" component={CategoriaPage} />
       <Route path="/:categoria/:ciudad" component={CiudadPage} />
       <Route path="/:categoria/:ciudad/:barrio" component={BarrioPage} />

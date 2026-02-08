@@ -4,21 +4,21 @@
     "nombre": "Cerrajeros",
     "descripcion": "Encuentra cerrajeros profesionales cerca de ti. Apertura de puertas, cambio de cerraduras, instalación de bombines de seguridad y más.",
     "icono": "KeyRound",
-    "imagen": "https://private-us-east-1.manuscdn.com/sessionFile/dX6SBMBocKkjtDRru3fhPH/sandbox/xHrEqZrZeTAgHeY9OGAYfw-img-2_1770366984000_na1fn_Y2F0ZWdvcnktY2VycmFqZXJvcw.jpg?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvZFg2U0JNQm9jS2tqdERScnUzZmhQSC9zYW5kYm94L3hIckVxWnJaZVRBZ0hlWTlPR0FZZnctaW1nLTJfMTc3MDM2Njk4NDAwMF9uYTFmbl9ZMkYwWldkdmNua3RZMlZ5Y21GcVpYSnZjdy5qcGc~eC1vc3MtcHJvY2Vzcz1pbWFnZS9yZXNpemUsd18xOTIwLGhfMTkyMC9mb3JtYXQsd2VicC9xdWFsaXR5LHFfODAiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTg3NjE2MDB9fX1dfQ__&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=mWHHBi8YYBGiXBHKj3MoifukvF~0Cht28L8~qPchRnw-UoRPzxDlit2KiKEK04ZW4hg5jorr69CzHjJ1rl15Zq1AB05apCMwDolrfEViXFp1Jsq1S9atcxLanH4~-qc7dACxrYrT8aBvSGcy02nW0P8klwxCYWYv61FmE0Danc6YHn7AIJF5CBmKG0h72EVLmm5vDUsi5LqmnDxM6Y7H~mgw5V7lTwB0GaOU9GMdbVw9HKnGyNfHvgOUBrtdhSZbU~Lk7rYUJbW1UBr9xwpWRBakth-sP0s1UzIYsS65wrT0VmCb4xKc69QS~~vwihj6STZ5womcFuEXUcVHmpgSPA__"
+    "imagen": ""
   },
   {
     "slug": "fontaneros",
     "nombre": "Fontaneros",
     "descripcion": "Fontaneros de confianza en tu zona. Reparación de fugas, instalación de grifería, desatascos y mantenimiento de tuberías.",
     "icono": "Wrench",
-    "imagen": "https://private-us-east-1.manuscdn.com/sessionFile/dX6SBMBocKkjtDRru3fhPH/sandbox/xHrEqZrZeTAgHeY9OGAYfw-img-3_1770366979000_na1fn_Y2F0ZWdvcnktZm9udGFuZXJvcw.jpg?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvZFg2U0JNQm9jS2tqdERScnUzZmhQSC9zYW5kYm94L3hIckVxWnJaZVRBZ0hlWTlPR0FZZnctaW1nLTNfMTc3MDM2Njk3OTAwMF9uYTFmbl9ZMkYwWldkdmNua3RabTl1ZEdGdVpYSnZjdy5qcGc~eC1vc3MtcHJvY2Vzcz1pbWFnZS9yZXNpemUsd18xOTIwLGhfMTkyMC9mb3JtYXQsd2VicC9xdWFsaXR5LHFfODAiLCJDb25kaXRpb24iOnsiRGF0ZUxlc3NUaGFuIjp7IkFXUzpFcG9jaFRpbWUiOjE3OTg3NjE2MDB9fX1dfQ__&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=GQR7RYbpafmCXWlHuv4eqamC-tdacyYXxaapts5AtIGJIDzvTbjmgkE7XHRuQ38ly9tngbdXE7EJc1zuOlvkzz5g7qIpU9p6rJznhGZqsZDpGGNCJBCyPZJzkG-AsfRy0WAOmm4cxJNuiB0pmdiD9VeOLV9b-1Bp1gLuUhxzZvLh-epVFiZX8u451d9bbvAd2XUbitdSupW4LzkFXOgOX~vFeeFJejFv6nU5JdsRTm5sdi8iHNeQPTVWEh-Jjrg~mZ~Ky3YFQZUhS8y9NfzNSlv~WJaYuav1BSYQoa5dUBBCW3GQHDk2a8MJYortX1WfE7ht7VbvPh-0Dkzkes7D~g__"
+    "imagen": ""
   },
   {
     "slug": "electricistas",
     "nombre": "Electricistas",
     "descripcion": "Electricistas autorizados en tu barrio. Instalaciones eléctricas, reparación de averías, cuadros eléctricos y certificados.",
     "icono": "Zap",
-    "imagen": "https://private-us-east-1.manuscdn.com/sessionFile/dX6SBMBocKkjtDRru3fhPH/sandbox/xHrEqZrZeTAgHeY9OGAYfw-img-4_1770366983000_na1fn_Y2F0ZWdvcnktZWxlY3RyaWNpc3Rhcw.jpg?x-oss-process=image/resize,w_1920,h_1920/format,webp/quality,q_80&Expires=1798761600&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9wcml2YXRlLXVzLWVhc3QtMS5tYW51c2Nkbi5jb20vc2Vzc2lvbkZpbGUvZFg2U0JNQm9jS2tqdERScnUzZmhQSC9zYW5kYm94L3hIckVxWnJaZVRBZ0hlWTlPR0FZZnctaW1nLTRfMTc3MDM2Njk4MzAwMF9uYTFmbl9ZMkYwWldkdmNua3RaV3hsWTNSeWFXTnBjM1JoY3cuanBnP3gtb3NzLXByb2Nlc3M9aW1hZ2UvcmVzaXplLHdfMTkyMCxoXzE5MjAvZm9ybWF0LHdlYnAvcXVhbGl0eSxxXzgwIiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNzk4NzYxNjAwfX19XX0_&Key-Pair-Id=K2HSFNDJXOU9YS&Signature=NhXEIjNjOXEHjz4eysxU6pnR93egahJyJXCOLq~-fPhTmjefQqUzNUCUWB4HaLvNIJmUz5JbroPrSVw4ElAJkL~a2c6BDEt-Qyz8EHNDsc~jfSq9J9VMdNtvU6p0~XP2uyRtjdpjkrM3gBz3BZR37b6CyjYp80A0odxTK3lC8yGXFsBp8OHFlVM~bq70pWBVMtzK4t27V3EKTfrzFYihCAy~RxjsCBdlTHzWSNe-aCYLP6mSOfjtCV0MJanbPInSbT8Ov1VT0L0k1W~J7ZUzyjSpyKAJRJYSerSOV9DbIxvgOyVm1tuR8nhNXk9~mMZwiOwpVQIVkhnBkz9xa2VF9w__"
+    "imagen": ""
   },
   {
     "slug": "pintores",
@@ -39,6 +39,104 @@
     "nombre": "Reformas",
     "descripcion": "Empresas de reformas integrales. Baños, cocinas, suelos, tabiquería y reformas completas de viviendas.",
     "icono": "Hammer",
+    "imagen": ""
+  },
+  {
+    "slug": "dentistas",
+    "nombre": "Dentistas",
+    "descripcion": "Clínicas dentales y odontólogos de confianza. Ortodoncia, implantes, blanqueamiento y revisiones.",
+    "icono": "Stethoscope",
+    "imagen": ""
+  },
+  {
+    "slug": "fisioterapeutas",
+    "nombre": "Fisioterapeutas",
+    "descripcion": "Centros de fisioterapia y rehabilitación. Lesiones deportivas, dolor de espalda, masajes terapéuticos.",
+    "icono": "HeartPulse",
+    "imagen": ""
+  },
+  {
+    "slug": "veterinarios",
+    "nombre": "Veterinarios",
+    "descripcion": "Clínicas veterinarias para tus mascotas. Consultas, vacunaciones, cirugía y urgencias veterinarias.",
+    "icono": "Dog",
+    "imagen": ""
+  },
+  {
+    "slug": "farmacias",
+    "nombre": "Farmacias",
+    "descripcion": "Farmacias de guardia y servicios farmacéuticos. Medicamentos, parafarmacia y asesoramiento.",
+    "icono": "Pill",
+    "imagen": ""
+  },
+  {
+    "slug": "psicologos",
+    "nombre": "Psicólogos",
+    "descripcion": "Psicólogos y terapeutas profesionales. Ansiedad, depresión, terapia de pareja y coaching personal.",
+    "icono": "Brain",
+    "imagen": ""
+  },
+  {
+    "slug": "gimnasios",
+    "nombre": "Gimnasios",
+    "descripcion": "Gimnasios y centros deportivos. Fitness, crossfit, piscina, clases dirigidas y entrenamiento personal.",
+    "icono": "Dumbbell",
+    "imagen": ""
+  },
+  {
+    "slug": "cines",
+    "nombre": "Cines",
+    "descripcion": "Cines y salas de proyección. Cartelera, estrenos, sesiones VOSE y cine de autor.",
+    "icono": "Film",
+    "imagen": ""
+  },
+  {
+    "slug": "teatros",
+    "nombre": "Teatros",
+    "descripcion": "Teatros y salas de espectáculos. Obras, musicales, monólogos y programación cultural.",
+    "icono": "Drama",
+    "imagen": ""
+  },
+  {
+    "slug": "parques",
+    "nombre": "Parques",
+    "descripcion": "Parques y espacios naturales. Jardines, áreas recreativas, rutas y actividades al aire libre.",
+    "icono": "TreePine",
+    "imagen": ""
+  },
+  {
+    "slug": "turismo",
+    "nombre": "Turismo",
+    "descripcion": "Oficinas de turismo y experiencias locales. Visitas guiadas, monumentos y actividades turísticas.",
+    "icono": "Compass",
+    "imagen": ""
+  },
+  {
+    "slug": "restaurantes",
+    "nombre": "Restaurantes",
+    "descripcion": "Restaurantes de todo tipo. Cocina mediterránea, internacional, fusión y menús del día.",
+    "icono": "UtensilsCrossed",
+    "imagen": ""
+  },
+  {
+    "slug": "bares",
+    "nombre": "Bares",
+    "descripcion": "Bares y tabernas con encanto. Tapas, cañas, terrazas y ambiente local.",
+    "icono": "Beer",
+    "imagen": ""
+  },
+  {
+    "slug": "cafeterias",
+    "nombre": "Cafeterías",
+    "descripcion": "Cafeterías y coffee shops. Café de especialidad, brunch, repostería artesanal y espacios de trabajo.",
+    "icono": "Coffee",
+    "imagen": ""
+  },
+  {
+    "slug": "comida-rapida",
+    "nombre": "Comida rápida",
+    "descripcion": "Comida rápida y para llevar. Pizzerías, hamburgueserías, kebabs y delivery.",
+    "icono": "Pizza",
     "imagen": ""
   }
 ]

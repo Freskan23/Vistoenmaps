@@ -3,6 +3,7 @@ import ciudadesData from "./ciudades.json";
 import barriosData from "./barrios.json";
 import negociosData from "./negocios.json";
 import type { Categoria, Ciudad, Barrio, Negocio } from "./types";
+export { superCategorias, getSuperCategoria, getSuperCategoriaForCategoria } from "./superCategorias";
 
 export const categorias: Categoria[] = categoriasData;
 export const ciudades: Ciudad[] = ciudadesData;
