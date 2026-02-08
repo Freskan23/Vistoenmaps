@@ -229,7 +229,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
           </button>
 
           {/* ---- Logo Section ---- */}
-          <div className="w-full pt-14 pb-5 px-6 flex flex-col items-center">
+          <div className="w-full pt-12 pb-4 px-6 flex flex-col items-center">
             <div
               className={cn(
                 "transition-all duration-500 ease-out",
@@ -237,8 +237,8 @@ export default function Header({ variant = "solid" }: HeaderProps) {
               )}
               style={{ transitionDelay: menuOpen ? "200ms" : "0ms" }}
             >
-              <div className="overflow-hidden" style={{ width: 55, height: 72 }}>
-                <EyeLogo size={72} />
+              <div className="overflow-hidden" style={{ width: 62, height: 80 }}>
+                <EyeLogo size={80} />
               </div>
             </div>
             <div
@@ -260,17 +260,6 @@ export default function Header({ variant = "solid" }: HeaderProps) {
             </div>
           </div>
 
-          {/* ---- Search Bar (mobile) ---- */}
-          <div
-            className={cn(
-              "w-full px-5 pb-4 transition-all duration-500 ease-out",
-              menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-            )}
-            style={{ transitionDelay: menuOpen ? "350ms" : "0ms" }}
-          >
-            <SearchBar variant="hero" />
-          </div>
-
           {/* ---- Divider ---- */}
           <div className="mx-5 border-t border-white/[0.08]" />
 
@@ -281,7 +270,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
                 "text-[10px] font-bold uppercase tracking-[0.2em] text-white/30 mb-3 transition-all duration-400 ease-out",
                 menuOpen ? "opacity-100" : "opacity-0"
               )}
-              style={{ transitionDelay: menuOpen ? "400ms" : "0ms" }}
+              style={{ transitionDelay: menuOpen ? "300ms" : "0ms" }}
             >
               Servicios
             </p>
@@ -299,7 +288,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
                       menuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
                     )}
                     style={{
-                      transitionDelay: menuOpen ? `${420 + i * 50}ms` : "0ms",
+                      transitionDelay: menuOpen ? `${320 + i * 50}ms` : "0ms",
                     }}
                   >
                     <div className={cn(
@@ -333,7 +322,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
                   "flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-white/5 transition-all duration-300 group",
                   menuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
                 )}
-                style={{ transitionDelay: menuOpen ? `${420 + categorias.length * 50}ms` : "0ms" }}
+                style={{ transitionDelay: menuOpen ? `${320 + categorias.length * 50}ms` : "0ms" }}
               >
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/5 border border-white/10">
                   <BookOpen className="w-4 h-4 text-white/50" />
@@ -349,7 +338,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
                   "flex items-center gap-3 py-2.5 px-3 rounded-xl hover:bg-white/5 transition-all duration-300 group",
                   menuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6"
                 )}
-                style={{ transitionDelay: menuOpen ? `${470 + categorias.length * 50}ms` : "0ms" }}
+                style={{ transitionDelay: menuOpen ? `${370 + categorias.length * 50}ms` : "0ms" }}
               >
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/5 border border-white/10">
                   <Mail className="w-4 h-4 text-white/50" />
@@ -370,7 +359,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
               "px-5 pb-6 transition-all duration-500 ease-out",
               menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             )}
-            style={{ transitionDelay: menuOpen ? `${520 + categorias.length * 50}ms` : "0ms" }}
+            style={{ transitionDelay: menuOpen ? `${420 + categorias.length * 50}ms` : "0ms" }}
           >
             {isAuthenticated ? (
               <Link
