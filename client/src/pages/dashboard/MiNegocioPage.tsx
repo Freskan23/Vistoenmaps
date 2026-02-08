@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/lib/supabase';
 import { Link, useLocation } from 'wouter';
@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import {
   Select,
   SelectContent,
@@ -18,10 +18,11 @@ import { toast } from 'sonner';
 import Header from '@/components/Header';
 import {
   Building2, MapPin, Phone, Globe, Clock, Tag, FileText,
-  Save, Loader2, ArrowLeft, CheckCircle2, Sparkles, Map
+  Save, Loader2, ArrowLeft, CheckCircle2, Sparkles, Map,
+  ArrowRight
 } from 'lucide-react';
-import { categorias, ciudades, getBarriosByCiudad } from '@/data';
-import type { Barrio } from '@/data/types';
+import { categorias } from '@/data';
+import { COMUNIDADES_AUTONOMAS, PROVINCIAS, getProvinciasByComunidad } from '@/data/provincias';
 
 function slugify(text: string): string {
   return text
@@ -36,8 +37,10 @@ interface NegocioForm {
   nombre: string;
   descripcion: string;
   categoria_slug: string;
-  ciudad_slug: string;
-  barrio_slug: string;
+  comunidad: string;
+  provincia: string;
+  ciudad: string;
+  barrio: string;
   direccion: string;
   telefono: string;
   email: string;
@@ -50,8 +53,10 @@ const emptyForm: NegocioForm = {
   nombre: '',
   descripcion: '',
   categoria_slug: '',
-  ciudad_slug: '',
-  barrio_slug: '',
+  comunidad: '',
+  provincia: '',
+  ciudad: '',
+  barrio: '',
   direccion: '',
   telefono: '',
   email: '',
@@ -64,25 +69,15 @@ export default function MiNegocioPage() {
   const { user, loading: authLoading, isAuthenticated } = useAuth();
   const [_, setLocation] = useLocation();
   const [form, setForm] = useState<NegocioForm>(emptyForm);
-  const [barrios, setBarrios] = useState<Barrio[]>([]);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [existingId, setExistingId] = useState<string | null>(null);
-  const [saved, setSaved] = useState(false);
 
-  // Load barrios when city changes
-  useEffect(() => {
-    if (form.ciudad_slug) {
-      const b = getBarriosByCiudad(form.ciudad_slug);
-      setBarrios(b);
-      // Reset barrio if not in new city
-      if (!b.find(barrio => barrio.slug === form.barrio_slug)) {
-        setForm(prev => ({ ...prev, barrio_slug: '' }));
-      }
-    } else {
-      setBarrios([]);
-    }
-  }, [form.ciudad_slug]);
+  // Provincias filtradas por comunidad
+  const provinciasFiltradas = useMemo(
+    () => form.comunidad ? getProvinciasByComunidad(form.comunidad) : [],
+    [form.comunidad]
+  );
 
   // Load existing negocio
   useEffect(() => {
@@ -98,12 +93,16 @@ export default function MiNegocioPage() {
 
       if (data && !error) {
         setExistingId(data.id);
+        // Inferir comunidad desde provincia
+        const prov = PROVINCIAS.find(p => p.slug === data.provincia);
         setForm({
           nombre: data.nombre || '',
           descripcion: data.descripcion || '',
           categoria_slug: data.categoria_slug || '',
-          ciudad_slug: data.ciudad_slug || '',
-          barrio_slug: data.barrio_slug || '',
+          comunidad: prov?.comunidad || data.comunidad || '',
+          provincia: data.provincia || '',
+          ciudad: data.ciudad_nombre || data.ciudad_slug || '',
+          barrio: data.barrio_nombre || data.barrio_slug || '',
           direccion: data.direccion || '',
           telefono: data.telefono || '',
           email: data.email || '',
@@ -117,7 +116,7 @@ export default function MiNegocioPage() {
           ...prev,
           nombre: user.nombre_negocio || '',
           categoria_slug: user.categoria_negocio || '',
-          ciudad_slug: user.ciudad || '',
+          ciudad: user.ciudad || '',
           email: user.email || '',
         }));
       }
@@ -128,31 +127,46 @@ export default function MiNegocioPage() {
   }, [user, isAuthenticated]);
 
   const updateField = (field: keyof NegocioForm, value: string) => {
-    setForm(prev => ({ ...prev, [field]: value }));
+    setForm(prev => {
+      const updated = { ...prev, [field]: value };
+      // Reset cascading fields
+      if (field === 'comunidad') {
+        updated.provincia = '';
+        updated.ciudad = '';
+        updated.barrio = '';
+      }
+      if (field === 'provincia') {
+        updated.ciudad = '';
+        updated.barrio = '';
+      }
+      return updated;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!user) return;
-    if (!form.nombre || !form.categoria_slug || !form.ciudad_slug) {
-      toast.error('Nombre, categoria y ciudad son obligatorios');
+    if (!form.nombre || !form.categoria_slug || !form.provincia || !form.ciudad) {
+      toast.error('Nombre, categoria, provincia y ciudad son obligatorios');
       return;
     }
 
     setSaving(true);
 
-    const slug = slugify(form.nombre) + '-' + slugify(
-      ciudades.find(c => c.slug === form.ciudad_slug)?.nombre || form.ciudad_slug
-    );
+    const slug = slugify(form.nombre) + '-' + slugify(form.ciudad);
 
     const negocioData = {
       nombre: form.nombre,
       slug,
       descripcion: form.descripcion || null,
       categoria_slug: form.categoria_slug,
-      ciudad_slug: form.ciudad_slug,
-      barrio_slug: form.barrio_slug || null,
+      ciudad_slug: slugify(form.ciudad),
+      barrio_slug: form.barrio ? slugify(form.barrio) : null,
+      provincia: form.provincia,
+      comunidad: form.comunidad,
+      ciudad_nombre: form.ciudad,
+      barrio_nombre: form.barrio || null,
       direccion: form.direccion || null,
       telefono: form.telefono || null,
       email: form.email || null,
@@ -160,20 +174,17 @@ export default function MiNegocioPage() {
       url_google_maps: form.url_google_maps || null,
       horario: form.horario || null,
       user_id: user.id,
-      activo: true,
     };
 
     let error;
 
     if (existingId) {
-      // Update
       const result = await supabase
         .from('negocios')
         .update(negocioData)
         .eq('id', existingId);
       error = result.error;
     } else {
-      // Insert
       const result = await supabase
         .from('negocios')
         .insert(negocioData)
@@ -192,8 +203,9 @@ export default function MiNegocioPage() {
       return;
     }
 
-    setSaved(true);
-    toast.success(existingId ? 'Negocio actualizado' : 'Negocio creado correctamente');
+    toast.success(existingId ? 'Negocio actualizado' : 'Negocio creado — pendiente de aprobacion por el equipo de Visto en Maps');
+    // Redirect to dashboard after save
+    setLocation('/dashboard');
   };
 
   if (authLoading || loading) {
@@ -237,18 +249,6 @@ export default function MiNegocioPage() {
           </div>
         </div>
 
-        {saved && !existingId && (
-          <Card className="mb-6 border-green-200 bg-green-50/50">
-            <CardContent className="p-4 flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
-              <div>
-                <p className="font-medium text-green-800">Negocio creado correctamente</p>
-                <p className="text-sm text-green-600">Tu negocio ya esta registrado. Puedes seguir editandolo cuando quieras.</p>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
         <form onSubmit={handleSubmit}>
           {/* Datos basicos */}
           <Card className="mb-6">
@@ -288,81 +288,107 @@ export default function MiNegocioPage() {
                 />
               </div>
 
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2">
+                  <Tag className="w-4 h-4 text-muted-foreground" />
+                  Categoria *
+                </Label>
+                <Select value={form.categoria_slug} onValueChange={(v) => updateField('categoria_slug', v)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecciona categoria" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categorias.map((cat) => (
+                      <SelectItem key={cat.slug} value={cat.slug}>
+                        {cat.nombre}
+                      </SelectItem>
+                    ))}
+                    <SelectItem value="otro">Otro</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Ubicacion */}
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-primary" />
+                Ubicacion
+              </CardTitle>
+              <CardDescription>Donde se encuentra tu negocio</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="flex items-center gap-2">
-                    <Tag className="w-4 h-4 text-muted-foreground" />
-                    Categoria *
-                  </Label>
-                  <Select value={form.categoria_slug} onValueChange={(v) => updateField('categoria_slug', v)}>
+                  <Label>Comunidad Autonoma *</Label>
+                  <Select value={form.comunidad} onValueChange={(v) => updateField('comunidad', v)}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Selecciona categoria" />
+                      <SelectValue placeholder="Selecciona comunidad" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categorias.map((cat) => (
-                        <SelectItem key={cat.slug} value={cat.slug}>
-                          {cat.nombre}
+                      {COMUNIDADES_AUTONOMAS.map((ca) => (
+                        <SelectItem key={ca} value={ca}>
+                          {ca}
                         </SelectItem>
                       ))}
-                      <SelectItem value="otro">Otro</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-muted-foreground" />
-                    Ciudad *
-                  </Label>
-                  <Select value={form.ciudad_slug} onValueChange={(v) => updateField('ciudad_slug', v)}>
+                  <Label>Provincia *</Label>
+                  <Select
+                    value={form.provincia}
+                    onValueChange={(v) => updateField('provincia', v)}
+                    disabled={!form.comunidad}
+                  >
                     <SelectTrigger>
-                      <SelectValue placeholder="Selecciona ciudad" />
+                      <SelectValue placeholder={form.comunidad ? 'Selecciona provincia' : 'Primero selecciona comunidad'} />
                     </SelectTrigger>
                     <SelectContent>
-                      {ciudades.map((c) => (
-                        <SelectItem key={c.slug} value={c.slug}>
-                          {c.nombre}
+                      {provinciasFiltradas.map((p) => (
+                        <SelectItem key={p.slug} value={p.slug}>
+                          {p.nombre}
                         </SelectItem>
                       ))}
-                      <SelectItem value="otra">Otra ciudad</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
-              {barrios.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-muted-foreground" />
-                    Barrio / Zona
-                  </Label>
-                  <Select value={form.barrio_slug} onValueChange={(v) => updateField('barrio_slug', v)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecciona barrio (opcional)" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {barrios.map((b) => (
-                        <SelectItem key={b.slug} value={b.slug}>
-                          {b.nombre}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <Label htmlFor="ciudad">Ciudad / Municipio *</Label>
+                  <Input
+                    id="ciudad"
+                    placeholder="Ej: Alcobendas, Getafe, Madrid..."
+                    value={form.ciudad}
+                    onChange={(e) => updateField('ciudad', e.target.value)}
+                    required
+                    disabled={!form.provincia}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Escribe el nombre de tu ciudad o municipio
+                  </p>
                 </div>
-              )}
-            </CardContent>
-          </Card>
 
-          {/* Contacto */}
-          <Card className="mb-6">
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Phone className="w-5 h-5 text-primary" />
-                Contacto y ubicacion
-              </CardTitle>
-              <CardDescription>Como pueden encontrarte tus clientes</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="barrio">Barrio / Zona</Label>
+                  <Input
+                    id="barrio"
+                    placeholder="Ej: Chamberi, Centro, Casco Antiguo..."
+                    value={form.barrio}
+                    onChange={(e) => updateField('barrio', e.target.value)}
+                    disabled={!form.ciudad}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Opcional — ayuda a tus clientes a encontrarte
+                  </p>
+                </div>
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="direccion" className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-muted-foreground" />
@@ -375,7 +401,19 @@ export default function MiNegocioPage() {
                   onChange={(e) => updateField('direccion', e.target.value)}
                 />
               </div>
+            </CardContent>
+          </Card>
 
+          {/* Contacto */}
+          <Card className="mb-6">
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Phone className="w-5 h-5 text-primary" />
+                Contacto
+              </CardTitle>
+              <CardDescription>Como pueden contactarte tus clientes</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="telefono" className="flex items-center gap-2">
