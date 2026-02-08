@@ -84,17 +84,27 @@ function generatePage(data: PageData) {
 
   html = html.replace("</head>", `    ${metaBlock}\n  </head>`);
 
-  // Inject schema BEFORE #root, and SSR HTML INSIDE #root
-  // React will hydrate over this content when JS loads
+  // SSR content wrapper: visible to crawlers, hidden from users to avoid FOUC
+  // - Crawlers (no JS): see full HTML content, can index everything
+  // - Users (with JS): React mounts into #root, then removes #ssr-content
+  // - height:0 + overflow:hidden is SEO-safe (not penalized like display:none)
+  const wrappedSsr = `<div id="ssr-content" style="height:0;overflow:hidden;position:absolute;width:100%;left:0;top:0">${ssrHtml}</div>`;
+
+  // Small inline script removes SSR shell once React has mounted
+  const cleanupScript = `<script>
+(function(){var r=document.getElementById('root');if(r){var o=new MutationObserver(function(m,obs){var s=document.getElementById('ssr-content');if(s&&r.children.length>1){s.remove();obs.disconnect()}});o.observe(r,{childList:true});setTimeout(function(){var s=document.getElementById('ssr-content');if(s)s.remove()},3000)}})();
+</script>`;
+
+  // Inject schema BEFORE #root, SSR HTML INSIDE #root, cleanup script after
   html = html.replace(
     '<div id="root"></div>',
-    `${schemaScripts}\n<div id="root">${ssrHtml}</div>`
+    `${schemaScripts}\n<div id="root">${wrappedSsr}</div>\n${cleanupScript}`
   );
 
   // Also handle case where root already has content
   html = html.replace(
     /<div id="root">(?:<\/div>)?/,
-    `${schemaScripts}\n<div id="root">${ssrHtml}</div>`
+    `${schemaScripts}\n<div id="root">${wrappedSsr}</div>\n${cleanupScript}`
   );
 
   // Write file
