@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Menu, User, ArrowRight, BookOpen, Mail, X } from "lucide-react";
+import { Menu, User, ArrowRight, BookOpen, Mail, X, Search, ArrowLeft } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { categorias } from "@/data";
 import SearchBar from "@/components/SearchBar";
@@ -27,6 +27,7 @@ interface HeaderProps {
 export default function Header({ variant = "solid" }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { isAuthenticated, user } = useAuth();
   const [location] = useLocation();
 
@@ -39,6 +40,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
   // Close menu on route change
   useEffect(() => {
     setMenuOpen(false);
+    setSearchOpen(false);
   }, [location]);
 
   // Open menu from FloatingEye tap
@@ -58,7 +60,10 @@ export default function Header({ variant = "solid" }: HeaderProps) {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  const closeMenu = useCallback(() => setMenuOpen(false), []);
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    setSearchOpen(false);
+  }, []);
 
   const isTransparent = variant === "transparent" && !scrolled;
 
@@ -219,34 +224,76 @@ export default function Header({ variant = "solid" }: HeaderProps) {
         {/* Content */}
         <div className="relative h-full flex flex-col overflow-x-hidden overflow-y-auto">
 
-          {/* Close button */}
-          <button
-            onClick={closeMenu}
-            className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
-            aria-label="Cerrar menú"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          {/* ---- Top bar: Close + Search icon ---- */}
+          <div className="flex items-center justify-between px-4 pt-4">
+            {/* Search toggle / back button */}
+            {searchOpen ? (
+              <button
+                onClick={() => setSearchOpen(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+                aria-label="Volver"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+            ) : (
+              <button
+                onClick={() => setSearchOpen(true)}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-cyan-400/80 hover:text-cyan-300 hover:bg-white/10 transition-colors"
+                aria-label="Buscar"
+              >
+                <Search className="w-4 h-4" />
+              </button>
+            )}
 
-          {/* ---- Logo Section ---- */}
-          <div className="w-full pt-12 pb-4 px-6 flex flex-col items-center">
+            {/* Close button */}
+            <button
+              onClick={closeMenu}
+              className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+              aria-label="Cerrar menú"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* ---- Search mode: SearchBar + Maper visible ---- */}
+          <div
+            className={cn(
+              "overflow-hidden transition-all duration-400 ease-out",
+              searchOpen ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"
+            )}
+          >
+            <div className="px-5 pt-4 pb-2 flex items-center gap-3">
+              <div className="shrink-0">
+                <EyeLogo size={52} />
+              </div>
+              <div className="flex-1">
+                <SearchBar variant="hero" />
+              </div>
+            </div>
+          </div>
+
+          {/* ---- Logo Section (hidden when search is open) ---- */}
+          <div
+            className={cn(
+              "w-full px-6 flex flex-col items-center transition-all duration-400 ease-out",
+              searchOpen ? "max-h-0 opacity-0 overflow-hidden pt-0 pb-0" : "max-h-[200px] opacity-100 pt-8 pb-3"
+            )}
+          >
             <div
               className={cn(
                 "transition-all duration-500 ease-out",
-                menuOpen ? "opacity-100 scale-100" : "opacity-0 scale-75"
+                menuOpen && !searchOpen ? "opacity-100 scale-100" : "opacity-0 scale-75"
               )}
-              style={{ transitionDelay: menuOpen ? "200ms" : "0ms" }}
+              style={{ transitionDelay: menuOpen && !searchOpen ? "200ms" : "0ms" }}
             >
-              <div className="overflow-hidden" style={{ width: 62, height: 80 }}>
-                <EyeLogo size={80} />
-              </div>
+              <EyeLogo size={80} />
             </div>
             <div
               className={cn(
-                "w-full mt-3 text-center transition-all duration-500 ease-out",
-                menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+                "w-full mt-2 text-center transition-all duration-500 ease-out",
+                menuOpen && !searchOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
               )}
-              style={{ transitionDelay: menuOpen ? "300ms" : "0ms" }}
+              style={{ transitionDelay: menuOpen && !searchOpen ? "300ms" : "0ms" }}
             >
               <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40 block">
                 Visto en
