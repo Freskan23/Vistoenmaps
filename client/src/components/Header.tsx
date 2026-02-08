@@ -222,7 +222,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
           </button>
 
           {/* ---- Logo Section ---- */}
-          <div className="pt-8 pb-4 px-6 flex flex-col items-center">
+          <div className="pt-14 pb-5 px-6 flex flex-col items-center">
             <div
               className={cn(
                 "transition-all duration-500 ease-out",
@@ -230,16 +230,16 @@ export default function Header({ variant = "solid" }: HeaderProps) {
               )}
               style={{ transitionDelay: menuOpen ? "200ms" : "0ms" }}
             >
-              <EyeLogo size={80} glow />
+              <EyeLogo size={72} glow />
             </div>
             <div
               className={cn(
-                "mt-2 text-center transition-all duration-500 ease-out",
+                "mt-3 text-center transition-all duration-500 ease-out",
                 menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
               )}
               style={{ transitionDelay: menuOpen ? "300ms" : "0ms" }}
             >
-              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">
+              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40 block">
                 Visto en
               </span>
               <span
@@ -254,7 +254,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
           {/* ---- Search Bar (mobile) ---- */}
           <div
             className={cn(
-              "px-5 mb-4 transition-all duration-500 ease-out",
+              "px-5 pb-4 relative z-20 transition-all duration-500 ease-out",
               menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
             )}
             style={{ transitionDelay: menuOpen ? "350ms" : "0ms" }}
@@ -263,7 +263,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
           </div>
 
           {/* ---- Divider ---- */}
-          <div className="mx-5 border-t border-white/[0.06]" />
+          <div className="mx-5 border-t border-white/[0.08]" />
 
           {/* ---- Categories ---- */}
           <div className="px-5 pt-4 pb-2">
