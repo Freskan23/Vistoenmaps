@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from 'sonner';
 import Header from '@/components/Header';
+import EyeLogo from '@/components/EyeLogo';
 import { Building2, MapPin, Tag, Mail, Lock, ArrowRight, CheckCircle2, Sparkles } from 'lucide-react';
 import { categorias, ciudades } from '@/data';
 
@@ -59,10 +60,15 @@ export default function RegisterPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 flex flex-col">
+      <div className="min-h-screen bg-gradient-to-b from-[#0a1628] via-[#0f2035] to-[#142d45] flex flex-col relative overflow-hidden">
+        {/* Ambient light orbs */}
+        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+
         <Header />
-        <div className="flex-1 flex items-center justify-center p-4">
-          <Card className="w-full max-w-md text-center">
+        <div className="flex-1 flex items-center justify-center p-4 relative z-10">
+          <Card className="w-full max-w-md text-center bg-white/95 backdrop-blur-sm">
             <CardContent className="pt-8 pb-8 space-y-4">
               <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
                 <CheckCircle2 className="w-8 h-8 text-green-600" />
@@ -83,26 +89,36 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-[#0a1628] via-[#0f2035] to-[#142d45] flex flex-col relative overflow-hidden">
+      {/* Ambient light orbs */}
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+
       <Header />
-      <div className="flex-1 flex items-center justify-center p-4">
+      <div className="flex-1 flex items-center justify-center p-4 relative z-10">
         <div className="w-full max-w-lg">
+          {/* EyeLogo centered at top */}
+          <div className="flex justify-center mb-6">
+            <EyeLogo size={80} glow />
+          </div>
+
           {/* Value proposition */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-cyan-300 text-sm font-medium mb-4">
               <Sparkles className="w-4 h-4" />
               Gratis para siempre
             </div>
-            <h1 className="text-3xl font-bold tracking-tight">
+            <h1 className="text-3xl font-bold tracking-tight text-white">
               Descubre donde deberia estar tu negocio
             </h1>
-            <p className="text-muted-foreground mt-2 max-w-md mx-auto">
+            <p className="text-white/60 mt-2 max-w-md mx-auto">
               Te mostramos los directorios mas importantes para tu tipo de negocio y ubicacion.
               Mejora tu SEO local en minutos.
             </p>
           </div>
 
-          <Card>
+          <Card className="bg-white/95 backdrop-blur-sm">
             <CardHeader>
               <div className="flex items-center gap-2">
                 <div className="flex gap-1">

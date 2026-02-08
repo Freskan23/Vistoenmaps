@@ -40,14 +40,20 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-[#0a1628] via-[#0f2035] to-[#142d45] flex flex-col relative overflow-hidden">
+      {/* Ambient light orbs */}
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
+
       <Header />
-      <div className="flex-1 flex items-center justify-center p-4">
+      <div className="flex-1 flex items-center justify-center p-4 relative z-10">
         <div className="w-full max-w-md">
-          <div className="flex justify-center mb-6">
-            <EyeLogo size={64} />
+          <div className="flex flex-col items-center mb-6">
+            <EyeLogo size={64} glow />
+            <p className="text-white/90 font-semibold text-lg mt-3 tracking-wide">Visto en Maps</p>
           </div>
-        <Card>
+        <Card className="bg-white/95 backdrop-blur-sm">
           <CardHeader>
             <CardTitle>Iniciar Sesion</CardTitle>
             <CardDescription>Accede a tu cuenta para ver tus recomendaciones de directorios</CardDescription>

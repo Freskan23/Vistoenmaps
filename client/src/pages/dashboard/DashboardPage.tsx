@@ -56,7 +56,7 @@ function DirectorioCard({ rec, seguimiento, onMarcar, marking }: DirectorioCardP
   const completado = seguimiento && (seguimiento.estado === 'registrado' || seguimiento.estado === 'activo');
 
   return (
-    <Card className={`group hover:shadow-md transition-all duration-200 hover:border-primary/30 ${completado ? 'border-green-200 bg-green-50/30' : ''}`}>
+    <Card className={`group hover:shadow-md transition-all duration-200 hover:border-primary/30 bg-white ${completado ? 'border-green-200' : ''}`}>
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
@@ -223,66 +223,80 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/10 flex flex-col">
+    <div className="min-h-screen bg-[#fafaf7] flex flex-col">
       <Header />
-      <div className="container py-6 md:py-8 flex-1 max-w-6xl">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Sparkles className="w-5 h-5 text-primary" />
-              <h1 className="text-2xl md:text-3xl font-bold">Tu informe SEO Local</h1>
-            </div>
-            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-              <span className="flex items-center gap-1">
-                <Building2 className="w-4 h-4" />
-                {nombreNegocio || user?.email}
-              </span>
-              {categoriaNombre && (
+
+      {/* Dashboard Hero */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1628] via-[#0f2035] to-[#142d45]">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-20 right-[10%] w-[400px] h-[400px] bg-accent/15 rounded-full blur-[100px]" />
+          <div className="absolute bottom-0 left-[5%] w-[300px] h-[300px] bg-cyan-500/10 rounded-full blur-[80px]" />
+        </div>
+        <div className="relative container py-8 md:py-10 max-w-6xl">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Sparkles className="w-5 h-5 text-accent" />
+                <h1 className="text-2xl md:text-3xl font-bold text-white">Tu informe SEO Local</h1>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 text-sm text-white/50">
                 <span className="flex items-center gap-1">
-                  &bull; <Target className="w-4 h-4" /> {categoriaNombre}
+                  <Building2 className="w-4 h-4" />
+                  {nombreNegocio || user?.email}
                 </span>
-              )}
-              {ciudadNombre && (
-                <span className="flex items-center gap-1">
-                  &bull; <MapPin className="w-4 h-4" /> {ciudadNombre}
-                </span>
-              )}
+                {categoriaNombre && (
+                  <span className="flex items-center gap-1">
+                    &bull; <Target className="w-4 h-4" /> {categoriaNombre}
+                  </span>
+                )}
+                {ciudadNombre && (
+                  <span className="flex items-center gap-1">
+                    &bull; <MapPin className="w-4 h-4" /> {ciudadNombre}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="flex gap-2 self-start">
-            <Link href="/dashboard/mi-negocio">
-              <Button variant="default" className="gap-2">
-                <Building2 className="w-4 h-4" /> Mi negocio
+            <div className="flex gap-2 self-start">
+              <Link href="/dashboard/mi-negocio">
+                <Button variant="default" className="gap-2 bg-accent hover:bg-accent/90 text-white">
+                  <Building2 className="w-4 h-4" /> Mi negocio
+                </Button>
+              </Link>
+              <Button variant="outline" onClick={logout} className="gap-2 border-white/20 text-white/70 hover:bg-white/10 hover:text-white">
+                <LogOut className="w-4 h-4" /> Salir
               </Button>
-            </Link>
-            <Button variant="outline" onClick={logout} className="gap-2">
-              <LogOut className="w-4 h-4" /> Salir
-            </Button>
+            </div>
           </div>
         </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 40" fill="none" className="w-full h-auto" preserveAspectRatio="none">
+            <path d="M0 40V15C360 30 720 0 1080 15C1260 22 1380 18 1440 20V40H0Z" fill="#fafaf7" />
+          </svg>
+        </div>
+      </section>
 
+      <div className="container py-6 md:py-8 flex-1 max-w-6xl">
         {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
-          <Card>
+          <Card className="bg-white border-primary/20 shadow-sm">
             <CardContent className="p-4 text-center">
               <div className="text-3xl font-bold text-primary">{resumen.total}</div>
               <p className="text-xs text-muted-foreground mt-1">Directorios recomendados</p>
             </CardContent>
           </Card>
-          <Card className="border-green-200 bg-green-50/50">
+          <Card className="bg-white border-emerald-200 shadow-sm">
             <CardContent className="p-4 text-center">
-              <div className="text-3xl font-bold text-green-600">{completados}</div>
+              <div className="text-3xl font-bold text-emerald-600">{completados}</div>
               <p className="text-xs text-muted-foreground mt-1">Completados</p>
             </CardContent>
           </Card>
-          <Card className="border-red-200 bg-red-50/50">
+          <Card className="bg-white border-red-200 shadow-sm">
             <CardContent className="p-4 text-center">
               <div className="text-3xl font-bold text-red-600">{resumen.criticas.length}</div>
               <p className="text-xs text-muted-foreground mt-1">Prioridad critica</p>
             </CardContent>
           </Card>
-          <Card className="border-orange-200 bg-orange-50/50">
+          <Card className="bg-white border-orange-200 shadow-sm">
             <CardContent className="p-4 text-center">
               <div className="text-3xl font-bold text-orange-600">{resumen.altas.length}</div>
               <p className="text-xs text-muted-foreground mt-1">Prioridad alta</p>
@@ -408,19 +422,22 @@ export default function DashboardPage() {
         )}
 
         {/* CTA */}
-        <Card className="bg-primary/5 border-primary/20">
-          <CardContent className="p-6 text-center">
-            <h3 className="text-lg font-bold mb-2">Necesitas ayuda para darte de alta?</h3>
-            <p className="text-sm text-muted-foreground mb-4">
+        <div className="relative bg-gradient-to-br from-[#0a1628] via-[#0f2035] to-[#142d45] rounded-2xl p-8 overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-10 -right-10 w-[200px] h-[200px] bg-accent/15 rounded-full blur-[60px]" />
+          </div>
+          <div className="relative text-center">
+            <h3 className="text-lg font-bold text-white mb-2">Necesitas ayuda para darte de alta?</h3>
+            <p className="text-sm text-white/50 mb-4">
               Podemos gestionar el alta de tu negocio en todos estos directorios por ti.
             </p>
             <Link href="/contacto">
-              <Button className="gap-2">
+              <Button className="gap-2 bg-accent hover:bg-accent/90 text-white">
                 Solicitar presupuesto <ArrowUpRight className="w-4 h-4" />
               </Button>
             </Link>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

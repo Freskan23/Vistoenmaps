@@ -193,7 +193,7 @@ export default function NegocioPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#fafaf7]">
       <SEOHead
         title={`${neg.nombre} — ${cat.nombre} en ${bar.nombre}, ${ciu.nombre} | Visto en Maps`}
         description={`${neg.nombre}: ${cat.nombre.toLowerCase()} en ${bar.nombre}, ${ciu.nombre}. ${neg.valoracion_media} estrellas, ${neg.num_resenas} reseñas. ${neg.direccion}. Tel: ${neg.telefono}.`}
@@ -211,8 +211,13 @@ export default function NegocioPage() {
       />
 
       {/* Hero */}
-      <section className="bg-primary">
-        <div className="container py-10 md:py-14">
+      <section className="relative bg-gradient-to-br from-[#0a1628] via-[#0f2035] to-[#142d45] overflow-hidden">
+        {/* Ambient light orbs */}
+        <div className="absolute top-[-40%] left-[-10%] w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-[-30%] right-[-5%] w-[400px] h-[400px] bg-cyan-400/8 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-[20%] right-[20%] w-[200px] h-[200px] bg-indigo-400/6 rounded-full blur-2xl pointer-events-none" />
+
+        <div className="relative container py-10 md:py-14">
           <Breadcrumb
             items={[
               { label: cat.nombre, href: `/${cat.slug}` },
@@ -223,7 +228,7 @@ export default function NegocioPage() {
             variant="dark"
           />
           <div className="mt-2 flex items-center gap-3">
-            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-sm border border-white/5">
               <CategoryIcon iconName={cat.icono} className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -236,6 +241,11 @@ export default function NegocioPage() {
             </div>
           </div>
         </div>
+
+        {/* Wave separator */}
+        <svg viewBox="0 0 1440 60" fill="none" className="w-full h-auto" preserveAspectRatio="none">
+          <path d="M0 60V20C240 45 480 0 720 20C960 40 1200 10 1440 30V60H0Z" fill="#fafaf7" />
+        </svg>
       </section>
 
       {/* Content */}
@@ -258,32 +268,40 @@ export default function NegocioPage() {
           </div>
 
           {/* Info card */}
-          <div className="bg-card border border-border/60 shadow-sm rounded-xl p-6 mb-6">
+          <div className="bg-white border border-border/60 shadow-sm rounded-xl p-6 mb-6 hover:shadow-md transition-shadow duration-300">
             <div className="space-y-4">
-              <div className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 shrink-0 mt-0.5 text-primary" />
+              <div className="flex items-start gap-3 group">
+                <div className="w-9 h-9 rounded-lg bg-primary/5 flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
+                  <MapPin className="w-[18px] h-[18px] text-primary" />
+                </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Dirección</p>
-                  <p className="text-foreground">{neg.direccion}</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Direcci&oacute;n</p>
+                  <p className="text-foreground mt-0.5">{neg.direccion}</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <Phone className="w-5 h-5 shrink-0 mt-0.5 text-primary" />
+              <hr className="border-border/40" />
+              <div className="flex items-start gap-3 group">
+                <div className="w-9 h-9 rounded-lg bg-primary/5 flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
+                  <Phone className="w-[18px] h-[18px] text-primary" />
+                </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Teléfono</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Tel&eacute;fono</p>
                   <a
                     href={`tel:${neg.telefono.replace(/\s/g, "")}`}
-                    className="text-foreground hover:text-primary transition-colors"
+                    className="text-foreground hover:text-primary transition-colors mt-0.5 inline-block"
                   >
                     {neg.telefono}
                   </a>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <Clock className="w-5 h-5 shrink-0 mt-0.5 text-primary" />
+              <hr className="border-border/40" />
+              <div className="flex items-start gap-3 group">
+                <div className="w-9 h-9 rounded-lg bg-primary/5 flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
+                  <Clock className="w-[18px] h-[18px] text-primary" />
+                </div>
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Horario</p>
-                  <p className="text-foreground">{neg.horario}</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/70">Horario</p>
+                  <p className="text-foreground mt-0.5">{neg.horario}</p>
                 </div>
               </div>
             </div>
@@ -333,14 +351,14 @@ export default function NegocioPage() {
           <div className="flex flex-col sm:flex-row gap-3">
             <a
               href={`tel:${neg.telefono.replace(/\s/g, "")}`}
-              className="flex-1 flex items-center justify-center gap-2 bg-accent text-accent-foreground font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity"
+              className="flex-1 flex items-center justify-center gap-2 bg-orange-500 text-white font-semibold py-3 rounded-xl shadow-md shadow-orange-500/20 hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-200"
             >
               <Phone className="w-5 h-5" />
               Llamar ahora
             </a>
             <button
               onClick={() => setShowPresupuesto(true)}
-              className="flex-1 flex items-center justify-center gap-2 bg-emerald-600 text-white font-semibold py-3 rounded-xl hover:bg-emerald-700 transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 bg-emerald-500 text-white font-semibold py-3 rounded-xl shadow-md shadow-emerald-500/20 hover:bg-emerald-600 hover:shadow-lg hover:shadow-emerald-500/30 transition-all duration-200"
             >
               <FileText className="w-5 h-5" />
               Pedir presupuesto
@@ -349,7 +367,7 @@ export default function NegocioPage() {
               href={neg.url_google_maps}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity"
+              className="flex-1 flex items-center justify-center gap-2 bg-[#0f2035] text-white font-semibold py-3 rounded-xl shadow-md shadow-[#0f2035]/20 hover:bg-[#142d45] hover:shadow-lg hover:shadow-[#0f2035]/30 transition-all duration-200"
             >
               <ExternalLink className="w-5 h-5" />
               Ver en Maps
@@ -394,7 +412,7 @@ export default function NegocioPage() {
 
             <div>
               <label className="text-sm font-medium text-foreground">
-                Teléfono <span className="text-destructive">*</span>
+                Tel&eacute;fono <span className="text-destructive">*</span>
               </label>
               <input
                 type="tel"

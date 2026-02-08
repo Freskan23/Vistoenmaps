@@ -1,5 +1,5 @@
 /*
-  DESIGN: Cartografía Urbana — Barrio Page
+  DESIGN: Cartografia Urbana — Barrio Page
   - Lists businesses in a specific neighborhood
   - Business cards with ratings, phone, maps CTA
   - Advanced filters, sorting, pagination
@@ -249,10 +249,10 @@ export default function BarrioPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#fafaf7]">
       <SEOHead
         title={`${cat.nombre} en ${bar.nombre}, ${ciu.nombre} | Visto en Maps`}
-        description={`${negociosData.length} ${cat.nombre.toLowerCase()} en ${bar.nombre}, ${ciu.nombre}. Teléfonos, horarios, valoraciones y dirección. Verificados en Google Maps.`}
+        description={`${negociosData.length} ${cat.nombre.toLowerCase()} en ${bar.nombre}, ${ciu.nombre}. Telefonos, horarios, valoraciones y direccion. Verificados en Google Maps.`}
         canonical={`https://vistoenmaps.com/${cat.slug}/${ciu.slug}/${bar.slug}`}
       />
       <Header />
@@ -267,8 +267,12 @@ export default function BarrioPage() {
       />
 
       {/* Barrio Hero */}
-      <section className="bg-primary">
-        <div className="container py-10 md:py-14">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1628] via-[#0f2035] to-[#142d45]">
+        {/* Ambient light orbs */}
+        <div className="absolute top-1/4 -left-20 w-72 h-72 bg-accent/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-10 w-56 h-56 bg-cyan-400/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative container py-10 md:py-14">
           <Breadcrumb
             items={[
               { label: cat.nombre, href: `/${cat.slug}` },
@@ -288,6 +292,11 @@ export default function BarrioPage() {
             </p>
           </div>
         </div>
+
+        {/* Wave separator */}
+        <svg viewBox="0 0 1440 60" fill="none" className="w-full h-auto" preserveAspectRatio="none">
+          <path d="M0 60V20C240 45 480 0 720 20C960 40 1200 10 1440 30V60H0Z" fill="#fafaf7" />
+        </svg>
       </section>
 
       {/* Interactive Map */}
@@ -346,10 +355,10 @@ export default function BarrioPage() {
                       setSortBy(e.target.value as SortOption);
                       setCurrentPage(1);
                     }}
-                    className="text-sm bg-secondary border border-border rounded-md px-2 py-1.5 text-foreground"
+                    className="text-sm bg-white border border-border/60 rounded-xl px-3 py-2 text-foreground shadow-sm hover:border-primary/40 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer"
                   >
-                    <option value="rating">Mejor valoración</option>
-                    <option value="reviews">Más reseñas</option>
+                    <option value="rating">Mejor valoracion</option>
+                    <option value="reviews">Mas resenas</option>
                     <option value="name">Nombre A-Z</option>
                   </select>
                 </div>
@@ -362,7 +371,7 @@ export default function BarrioPage() {
                       setMinRating(Number(e.target.value));
                       setCurrentPage(1);
                     }}
-                    className="text-sm bg-secondary border border-border rounded-md px-2 py-1.5 text-foreground"
+                    className="text-sm bg-white border border-border/60 rounded-xl px-3 py-2 text-foreground shadow-sm hover:border-primary/40 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer"
                   >
                     <option value={0}>Todas las valoraciones</option>
                     <option value={4}>4+ estrellas</option>
@@ -374,7 +383,7 @@ export default function BarrioPage() {
                 <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
                   <CollapsibleTrigger className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors">
                     <Filter className="w-4 h-4" />
-                    Más filtros
+                    Mas filtros
                     <ChevronDown className={`w-3.5 h-3.5 transition-transform ${filtersOpen ? "rotate-180" : ""}`} />
                   </CollapsibleTrigger>
                 </Collapsible>
@@ -397,7 +406,7 @@ export default function BarrioPage() {
               {/* Advanced filters panel */}
               <Collapsible open={filtersOpen} onOpenChange={setFiltersOpen}>
                 <CollapsibleContent>
-                  <div className="bg-secondary/50 border border-border rounded-xl p-4 space-y-4">
+                  <div className="bg-white/80 backdrop-blur-sm border border-border/50 rounded-2xl p-5 space-y-4 shadow-sm">
                     {/* Toggle filters row */}
                     <div className="flex flex-wrap gap-6">
                       <label className="flex items-center gap-2.5 cursor-pointer">
@@ -436,12 +445,12 @@ export default function BarrioPage() {
                             setMinReviews(Number(e.target.value));
                             setCurrentPage(1);
                           }}
-                          className="text-sm bg-background border border-border rounded-md px-2 py-1.5 text-foreground"
+                          className="text-sm bg-white border border-border/60 rounded-xl px-3 py-2 text-foreground shadow-sm hover:border-primary/40 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer"
                         >
-                          <option value={0}>Todas las reseñas</option>
-                          <option value={50}>50+ reseñas</option>
-                          <option value={100}>100+ reseñas</option>
-                          <option value={200}>200+ reseñas</option>
+                          <option value={0}>Todas las resenas</option>
+                          <option value={50}>50+ resenas</option>
+                          <option value={100}>100+ resenas</option>
+                          <option value={200}>200+ resenas</option>
                         </select>
                       </div>
                     </div>
@@ -526,7 +535,7 @@ export default function BarrioPage() {
           <div className="text-center py-16">
             <MapPin className="w-12 h-12 text-muted-foreground/30 mx-auto mb-3" />
             <p className="text-muted-foreground">
-              Aún no hay {cat.nombre.toLowerCase()} registrados en {bar.nombre}, {ciu.nombre}.
+              Aun no hay {cat.nombre.toLowerCase()} registrados en {bar.nombre}, {ciu.nombre}.
             </p>
           </div>
         )}

@@ -67,7 +67,7 @@ export default function DirectorioDetallePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-[#fafaf7]">
       <SEOHead
         title={`${directorio.nombre} - Ficha del Directorio | Visto en Maps`}
         description={`Información sobre ${directorio.nombre}: tipo de directorio, coste, alcance y cómo registrar tu negocio.`}
@@ -90,7 +90,7 @@ export default function DirectorioDetallePage() {
       />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-primary text-primary-foreground py-12 md:py-16">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1628] via-[#0f2035] to-[#142d45] text-primary-foreground py-12 md:py-16">
          {/* Ambient orbs */}
          <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-20 -right-20 w-[400px] h-[400px] bg-accent/15 rounded-full blur-[100px]" />
@@ -135,6 +135,13 @@ export default function DirectorioDetallePage() {
             </div>
           </div>
         </div>
+
+        {/* Wave SVG separator */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 60" fill="none" className="w-full h-auto" preserveAspectRatio="none">
+            <path d="M0 60V20C240 45 480 0 720 20C960 40 1200 10 1440 30V60H0Z" fill="#fafaf7" />
+          </svg>
+        </div>
       </section>
 
       {/* Main Content */}
@@ -145,7 +152,7 @@ export default function DirectorioDetallePage() {
           <div className="lg:col-span-2 space-y-8">
 
             {/* General Info Card */}
-            <div className="bg-card border rounded-xl p-6 shadow-sm">
+            <div className="bg-white border border-gray-200/80 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
               <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                 <Info className="w-5 h-5 text-primary" />
                 Información General
@@ -192,7 +199,7 @@ export default function DirectorioDetallePage() {
             </div>
 
             {/* Cost & Registration Card */}
-            <div className="bg-card border rounded-xl p-6 shadow-sm">
+            <div className="bg-white border border-gray-200/80 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
               <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-primary" />
                 Coste y Registro
@@ -282,7 +289,7 @@ export default function DirectorioDetallePage() {
 
           {/* Right Column: Sidebar */}
           <div className="space-y-6">
-            <div className="bg-secondary/30 border rounded-xl p-5 sticky top-24">
+            <div className="bg-white border border-gray-200/80 rounded-xl p-5 sticky top-24 shadow-sm hover:shadow-md transition-shadow duration-300">
               <h3 className="font-bold mb-4">Otros directorios {directorio.categoria}</h3>
               <div className="space-y-3">
                  {directorios
@@ -291,7 +298,7 @@ export default function DirectorioDetallePage() {
                     .slice(0, 5)
                     .map(d => (
                       <Link key={d.slug} href={`/directorios/${d.slug}`}>
-                        <a className="block p-3 rounded-lg hover:bg-background border border-transparent hover:border-border transition-all group">
+                        <a className="block p-3 rounded-lg hover:bg-[#fafaf7] border border-transparent hover:border-gray-200/80 transition-all duration-200 group">
                           <div className="flex items-center justify-between mb-1">
                             <span className="font-medium text-sm group-hover:text-primary transition-colors">{d.nombre}</span>
                             {d.tipo === 'premium' && <Crown className="w-3 h-3 text-accent" />}
