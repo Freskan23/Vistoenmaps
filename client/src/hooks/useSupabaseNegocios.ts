@@ -66,6 +66,22 @@ async function fetchAndMerge(): Promise<CachedData> {
       num_resenas: sn.num_resenas || 0,
       servicios_destacados: sn.servicios_destacados || (sn.descripcion ? [sn.descripcion] : []),
       url_google_maps: sn.url_google_maps || '',
+      // Campos extendidos
+      descripcion: sn.descripcion || undefined,
+      email: sn.email || undefined,
+      web: sn.web || undefined,
+      fotos: sn.fotos || undefined,
+      redes_sociales: sn.redes_sociales || undefined,
+      youtube_videos: sn.youtube_videos || undefined,
+      resenas_empleados: sn.resenas_empleados || undefined,
+      resenas_clientes: sn.resenas_clientes || undefined,
+      citaciones: sn.citaciones || undefined,
+      menciones_medios: sn.menciones_medios || undefined,
+      productos: sn.productos || undefined,
+      servicios_detallados: sn.servicios_detallados || undefined,
+      valor_anadido: sn.valor_anadido || undefined,
+      anos_experiencia: sn.anos_experiencia || undefined,
+      certificaciones: sn.certificaciones || undefined,
     }));
 
     // Merge negocios: estaticos + DB (evitar duplicados por slug+categoria)
