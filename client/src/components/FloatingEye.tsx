@@ -64,8 +64,11 @@ export default function FloatingEye() {
         }}
       />
 
-      {/* Eye — big and proud */}
-      <div className="relative pointer-events-auto cursor-pointer drop-shadow-2xl hover:scale-105 transition-transform duration-300">
+      {/* Eye — big and proud. Tap opens mobile menu */}
+      <div
+        className="relative pointer-events-auto cursor-pointer drop-shadow-2xl hover:scale-105 transition-transform duration-300"
+        onClick={() => window.dispatchEvent(new CustomEvent("openMobileMenu"))}
+      >
         <EyeLogo size={140} glow />
       </div>
     </div>

@@ -41,6 +41,13 @@ export default function Header({ variant = "solid" }: HeaderProps) {
     setMenuOpen(false);
   }, [location]);
 
+  // Open menu from FloatingEye tap
+  useEffect(() => {
+    const open = () => setMenuOpen(true);
+    window.addEventListener("openMobileMenu", open);
+    return () => window.removeEventListener("openMobileMenu", open);
+  }, []);
+
   // Lock body scroll when menu is open
   useEffect(() => {
     if (menuOpen) {
