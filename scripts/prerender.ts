@@ -1,7 +1,7 @@
 /**
  * Pre-rendering script for SEO.
- * Generates static HTML files with embedded meta tags and Schema.org JSON-LD
- * for each route, so search engines can index the content without JavaScript.
+ * Generates static HTML files with REAL visible content inside <div id="root">
+ * so search engines can index without JavaScript.
  *
  * Run after `vite build`: tsx scripts/prerender.ts
  */
@@ -37,62 +37,64 @@ if (!fs.existsSync(templatePath)) {
 }
 const template = fs.readFileSync(templatePath, "utf-8");
 
+function esc(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
 interface PageData {
   route: string;
   title: string;
   description: string;
   canonical: string;
   schemaJson: object[];
-  h1: string;
-  bodyText: string;
+  /** HTML content to render inside #root for crawlers */
+  ssrHtml: string;
 }
 
 function generatePage(data: PageData) {
-  const { route, title, description, canonical, schemaJson, h1, bodyText } = data;
-
-  // Build meta tags
-  const metaTags = [
-    `<title>${title}</title>`,
-    `<meta name="description" content="${description.replace(/"/g, "&quot;")}" />`,
-    `<link rel="canonical" href="${canonical}" />`,
-    `<meta property="og:title" content="${title}" />`,
-    `<meta property="og:description" content="${description.replace(/"/g, "&quot;")}" />`,
-    `<meta property="og:url" content="${canonical}" />`,
-    `<meta property="og:type" content="website" />`,
-    `<meta property="og:site_name" content="Visto en Maps" />`,
-  ].join("\n    ");
+  const { route, title, description, canonical, schemaJson, ssrHtml } = data;
 
   // Build Schema.org JSON-LD
   const schemaScripts = schemaJson
     .map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</script>`)
     .join("\n");
 
-  // SEO-friendly content for crawlers (hidden visually, visible to bots)
-  const seoContent = `<div id="seo-content" style="position:absolute;left:-9999px;top:-9999px;"><h1>${h1}</h1><p>${bodyText.replace(/</g, "&lt;")}</p></div>`;
-
-  // Inject into template
   let html = template;
 
   // Replace existing title
   if (html.includes("<title>")) {
-    html = html.replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`);
+    html = html.replace(/<title>[^<]*<\/title>/, `<title>${esc(title)}</title>`);
   } else {
-    html = html.replace("</head>", `    <title>${title}</title>\n  </head>`);
+    html = html.replace("</head>", `    <title>${esc(title)}</title>\n  </head>`);
   }
 
-  // Remove existing generic description meta (avoid duplicates)
+  // Remove existing description meta
   html = html.replace(/<meta\s+name="description"\s+content="[^"]*"\s*\/?>\s*/g, "");
 
   // Inject SEO meta tags before </head>
+  const metaBlock = [
+    `<meta name="description" content="${esc(description)}" />`,
+    `<link rel="canonical" href="${canonical}" />`,
+    `<meta property="og:title" content="${esc(title)}" />`,
+    `<meta property="og:description" content="${esc(description)}" />`,
+    `<meta property="og:url" content="${canonical}" />`,
+    `<meta property="og:type" content="website" />`,
+    `<meta property="og:site_name" content="Visto en Maps" />`,
+  ].join("\n    ");
+
+  html = html.replace("</head>", `    ${metaBlock}\n  </head>`);
+
+  // Inject schema BEFORE #root, and SSR HTML INSIDE #root
+  // React will hydrate over this content when JS loads
   html = html.replace(
-    "</head>",
-    `    <meta name="description" content="${description.replace(/"/g, "&quot;")}" />\n    <link rel="canonical" href="${canonical}" />\n    <meta property="og:title" content="${title}" />\n    <meta property="og:description" content="${description.replace(/"/g, "&quot;")}" />\n    <meta property="og:url" content="${canonical}" />\n    <meta property="og:type" content="website" />\n    <meta property="og:site_name" content="Visto en Maps" />\n  </head>`
+    '<div id="root"></div>',
+    `${schemaScripts}\n<div id="root">${ssrHtml}</div>`
   );
 
-  // Inject schema + SEO content inside <body> before <div id="root">
+  // Also handle case where root already has content
   html = html.replace(
-    '<div id="root">',
-    `${schemaScripts}\n${seoContent}\n<div id="root">`
+    /<div id="root">(?:<\/div>)?/,
+    `${schemaScripts}\n<div id="root">${ssrHtml}</div>`
   );
 
   // Write file
@@ -105,14 +107,49 @@ function generatePage(data: PageData) {
   fs.writeFileSync(filePath, html, "utf-8");
 }
 
-// Generate all pages
+// ─── SSR HTML Generators ──────────────────────────────────────────────────
+
+function renderNegocioCard(n: any): string {
+  return `<article class="negocio-card">
+    <h3><a href="/${n.categoria_slug}/${n.ciudad_slug}/${n.barrio_slug}/${n.slug}">${esc(n.nombre)}</a></h3>
+    <p>${esc(n.direccion)}</p>
+    <p>⭐ ${n.valoracion_media}/5 (${n.num_resenas} reseñas)</p>
+    ${n.telefono ? `<p>📞 <a href="tel:${n.telefono}">${esc(n.telefono)}</a></p>` : ""}
+    ${n.horario ? `<p>🕐 ${esc(n.horario)}</p>` : ""}
+    ${n.web ? `<p>🌐 <a href="${esc(n.web)}" rel="nofollow">${esc(n.web)}</a></p>` : ""}
+  </article>`;
+}
+
+function renderBreadcrumb(items: { label: string; href: string }[]): string {
+  return `<nav aria-label="breadcrumb"><ol>${items
+    .map((item, i) =>
+      i < items.length - 1
+        ? `<li><a href="${item.href}">${esc(item.label)}</a></li>`
+        : `<li>${esc(item.label)}</li>`
+    )
+    .join("")}</ol></nav>`;
+}
+
+function renderCategoryLinks(catSlug: string): string {
+  const ciuWithNegocios = ciudades.filter((c: any) =>
+    negocios.some((n: any) => n.categoria_slug === catSlug && n.ciudad_slug === c.slug)
+  );
+  return `<ul>${ciuWithNegocios
+    .map((c: any) => {
+      const count = negocios.filter((n: any) => n.categoria_slug === catSlug && n.ciudad_slug === c.slug).length;
+      return `<li><a href="/${catSlug}/${c.slug}">${esc(c.nombre)} (${count})</a></li>`;
+    })
+    .join("")}</ul>`;
+}
+
+// ─── Generate All Pages ───────────────────────────────────────────────────
 let count = 0;
 
 // Home
 generatePage({
   route: "/",
   title: "Visto en Maps — Directorio de profesionales verificados en España",
-  description: "Encuentra cerrajeros, fontaneros, electricistas, pintores, empresas de limpieza y reformas en tu barrio. Verificados en Google Maps.",
+  description: `Encuentra profesionales verificados en ${ciudades.length} ciudades de España. ${negocios.length} negocios con teléfono, dirección, valoraciones y horarios.`,
   canonical: BASE_URL,
   schemaJson: [{
     "@context": "https://schema.org",
@@ -126,8 +163,48 @@ generatePage({
       "query-input": "required name=search_term_string",
     },
   }],
-  h1: "Visto en Maps — Directorio de profesionales verificados en España",
-  bodyText: `Encuentra cerrajeros, fontaneros, electricistas, pintores, empresas de limpieza y reformas cerca de ti. ${categorias.length} categorías, ${ciudades.length} ciudades, ${negocios.length} negocios verificados.`,
+  ssrHtml: `
+    <header><h1>Visto en Maps — El profesional que necesitas, a un clic</h1>
+    <p>+${negocios.length} negocios verificados en Google Maps · ${ciudades.length} ciudades · ${categorias.length} categorías</p></header>
+    <main>
+    <section><h2>¿Qué necesitas hoy?</h2>
+    <ul>${categorias.map((c: any) => `<li><a href="/${c.slug}">${esc(c.nombre)}</a> — ${esc(c.descripcion)}</li>`).join("")}</ul>
+    </section>
+    <section><h2>Ciudades</h2>
+    <ul>${ciudades.map((c: any) => {
+      const cnt = negocios.filter((n: any) => n.ciudad_slug === c.slug).length;
+      return `<li><a href="/cerrajeros/${c.slug}">${esc(c.nombre)}</a> (${cnt} negocios)</li>`;
+    }).join("")}</ul>
+    </section>
+    </main>`,
+});
+count++;
+
+// Eventos
+generatePage({
+  route: "/eventos",
+  title: "Eventos y conciertos en España | Visto en Maps",
+  description: "Próximos eventos, conciertos y espectáculos en España. Descubre qué hacer en tu ciudad.",
+  canonical: `${BASE_URL}/eventos`,
+  schemaJson: [{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+    { "@type": "ListItem", position: 2, name: "Eventos", item: `${BASE_URL}/eventos` },
+  ]}],
+  ssrHtml: `<header><h1>Eventos y conciertos en España</h1><p>Próximos eventos, conciertos y espectáculos en las principales ciudades de España.</p></header>`,
+});
+count++;
+
+// Blog
+generatePage({
+  route: "/blog",
+  title: "Los mejores de tu ciudad — Rankings y guías | Visto en Maps",
+  description: "Rankings de los mejores negocios y profesionales por ciudad. Guías actualizadas con valoraciones reales de Google Maps.",
+  canonical: `${BASE_URL}/blog`,
+  schemaJson: [{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+    { "@type": "ListItem", position: 2, name: "Blog", item: `${BASE_URL}/blog` },
+  ]}],
+  ssrHtml: `<header><h1>Los mejores de tu ciudad</h1><p>Rankings actualizados con valoraciones reales. Sin publicidad, sin tratos. Solo datos.</p></header>`,
 });
 count++;
 
@@ -135,18 +212,13 @@ count++;
 generatePage({
   route: "/directorios",
   title: "Directorios de negocios en España | Visto en Maps",
-  description: "Los mejores directorios para dar de alta tu negocio en España. Directorios premium, gratuitos y plataformas de reseñas verificadas.",
+  description: "Los mejores directorios para dar de alta tu negocio en España.",
   canonical: `${BASE_URL}/directorios`,
-  schemaJson: [{
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
-      { "@type": "ListItem", position: 2, name: "Directorios", item: `${BASE_URL}/directorios` },
-    ],
-  }],
-  h1: "Directorios de negocios en España",
-  bodyText: "Guía completa de directorios donde dar de alta tu negocio en España. Directorios premium como Google Business, Páginas Amarillas, Cylex, QDQ. Plataformas de reseñas: Trustpilot, Yelp, TripAdvisor. Directorios de servicios: Cronoshare, Habitissimo. Mejora tu SEO local con citaciones NAP consistentes.",
+  schemaJson: [{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+    { "@type": "ListItem", position: 2, name: "Directorios", item: `${BASE_URL}/directorios` },
+  ]}],
+  ssrHtml: `<header><h1>Directorios de negocios en España</h1><p>Guía completa de directorios donde dar de alta tu negocio.</p></header>`,
 });
 count++;
 
@@ -154,11 +226,10 @@ count++;
 generatePage({
   route: "/contacto",
   title: "Contacto | Visto en Maps",
-  description: "Contacta con el equipo de Visto en Maps. Sugerencias, añadir tu negocio al directorio o reportar errores.",
+  description: "Contacta con Visto en Maps. Añade tu negocio al directorio.",
   canonical: `${BASE_URL}/contacto`,
   schemaJson: [{ "@context": "https://schema.org", "@type": "ContactPage", name: "Contacto", url: `${BASE_URL}/contacto` }],
-  h1: "Contacto — Visto en Maps",
-  bodyText: "Contacta con nosotros para sugerencias, añadir tu negocio al directorio o reportar errores.",
+  ssrHtml: `<header><h1>Contacto — Visto en Maps</h1><p>¿Tienes un negocio y no apareces aquí? Contacta con nosotros.</p></header>`,
 });
 count++;
 
@@ -167,7 +238,7 @@ for (const cat of categorias) {
   generatePage({
     route: `/${cat.slug}`,
     title: `${cat.nombre} en España | Visto en Maps`,
-    description: `${cat.nombre} en las principales ciudades de España. Encuentra profesionales verificados en Google Maps con teléfono, dirección y valoraciones.`,
+    description: `${cat.nombre} en las principales ciudades de España. Profesionales verificados en Google Maps.`,
     canonical: `${BASE_URL}/${cat.slug}`,
     schemaJson: [{
       "@context": "https://schema.org",
@@ -177,8 +248,12 @@ for (const cat of categorias) {
         { "@type": "ListItem", position: 2, name: cat.nombre, item: `${BASE_URL}/${cat.slug}` },
       ],
     }],
-    h1: `${cat.nombre} en España`,
-    bodyText: `${cat.descripcion}. Encuentra ${cat.nombre.toLowerCase()} en ${ciudades.map((c: any) => c.nombre).join(", ")}.`,
+    ssrHtml: `
+      ${renderBreadcrumb([{ label: "Inicio", href: "/" }, { label: cat.nombre, href: `/${cat.slug}` }])}
+      <header><h1>${esc(cat.nombre)} en España</h1><p>${esc(cat.descripcion)}</p></header>
+      <main><h2>Ciudades con ${esc(cat.nombre.toLowerCase())}</h2>
+      ${renderCategoryLinks(cat.slug)}
+      </main>`,
   });
   count++;
 
@@ -189,10 +264,14 @@ for (const cat of categorias) {
       (n: any) => n.categoria_slug === cat.slug && n.ciudad_slug === ciu.slug
     );
 
+    const barriosWithNegocios = cityBarrios.filter((b: any) =>
+      negocios.some((n: any) => n.categoria_slug === cat.slug && n.ciudad_slug === ciu.slug && n.barrio_slug === b.slug)
+    );
+
     generatePage({
       route: `/${cat.slug}/${ciu.slug}`,
       title: `${cat.nombre} en ${ciu.nombre} | Visto en Maps`,
-      description: `${cityNegocios.length} ${cat.nombre.toLowerCase()} en ${ciu.nombre}. Barrios: ${cityBarrios.map((b: any) => b.nombre).join(", ")}. Verificados en Google Maps.`,
+      description: `${cityNegocios.length} ${cat.nombre.toLowerCase()} en ${ciu.nombre}. Verificados en Google Maps con valoraciones reales.`,
       canonical: `${BASE_URL}/${cat.slug}/${ciu.slug}`,
       schemaJson: [{
         "@context": "https://schema.org",
@@ -203,8 +282,24 @@ for (const cat of categorias) {
           { "@type": "ListItem", position: 3, name: ciu.nombre, item: `${BASE_URL}/${cat.slug}/${ciu.slug}` },
         ],
       }],
-      h1: `${cat.nombre} en ${ciu.nombre}`,
-      bodyText: `${cityNegocios.length} profesionales de ${cat.nombre.toLowerCase()} en ${ciu.nombre}. Barrios: ${cityBarrios.map((b: any) => b.nombre).join(", ")}.`,
+      ssrHtml: `
+        ${renderBreadcrumb([
+          { label: "Inicio", href: "/" },
+          { label: cat.nombre, href: `/${cat.slug}` },
+          { label: ciu.nombre, href: `/${cat.slug}/${ciu.slug}` },
+        ])}
+        <header><h1>${esc(cat.nombre)} en ${esc(ciu.nombre)}</h1>
+        <p>${cityNegocios.length} profesionales verificados</p></header>
+        <main>
+        <h2>Barrios</h2>
+        <ul>${barriosWithNegocios.map((b: any) => {
+          const bCount = negocios.filter((n: any) => n.categoria_slug === cat.slug && n.ciudad_slug === ciu.slug && n.barrio_slug === b.slug).length;
+          return `<li><a href="/${cat.slug}/${ciu.slug}/${b.slug}">${esc(b.nombre)} (${bCount})</a></li>`;
+        }).join("")}</ul>
+        <h2>Todos los ${esc(cat.nombre.toLowerCase())} en ${esc(ciu.nombre)}</h2>
+        ${cityNegocios.slice(0, 30).map(renderNegocioCard).join("")}
+        ${cityNegocios.length > 30 ? `<p>... y ${cityNegocios.length - 30} más</p>` : ""}
+        </main>`,
     });
     count++;
 
@@ -217,27 +312,33 @@ for (const cat of categorias) {
           n.barrio_slug === bar.slug
       );
 
+      if (barNegocios.length === 0) continue;
+
       generatePage({
         route: `/${cat.slug}/${ciu.slug}/${bar.slug}`,
         title: `${cat.nombre} en ${bar.nombre}, ${ciu.nombre} | Visto en Maps`,
-        description: `${barNegocios.length} ${cat.nombre.toLowerCase()} en ${bar.nombre}, ${ciu.nombre}. Teléfonos, horarios, valoraciones y dirección. Verificados en Google Maps.`,
+        description: `${barNegocios.length} ${cat.nombre.toLowerCase()} en ${bar.nombre}, ${ciu.nombre}. Teléfonos, horarios y valoraciones.`,
         canonical: `${BASE_URL}/${cat.slug}/${ciu.slug}/${bar.slug}`,
-        schemaJson: [
-          ...barNegocios.map((n: any) => ({
-            "@context": "https://schema.org",
-            "@type": "LocalBusiness",
-            name: n.nombre,
-            address: { "@type": "PostalAddress", streetAddress: n.direccion, addressLocality: ciu.nombre, addressCountry: "ES" },
-            telephone: n.telefono,
-            geo: { "@type": "GeoCoordinates", latitude: n.coordenadas.lat, longitude: n.coordenadas.lng },
-            aggregateRating: { "@type": "AggregateRating", ratingValue: n.valoracion_media, reviewCount: n.num_resenas },
-            openingHours: n.horario,
-          })),
-        ],
-        h1: `${cat.nombre} en ${bar.nombre}, ${ciu.nombre}`,
-        bodyText: barNegocios
-          .map((n: any) => `${n.nombre}: ${n.valoracion_media} estrellas, ${n.num_resenas} reseñas. ${n.direccion}. Tel: ${n.telefono}.`)
-          .join(" "),
+        schemaJson: barNegocios.slice(0, 10).map((n: any) => ({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: n.nombre,
+          address: { "@type": "PostalAddress", streetAddress: n.direccion, addressLocality: ciu.nombre, addressCountry: "ES" },
+          telephone: n.telefono,
+          geo: { "@type": "GeoCoordinates", latitude: n.coordenadas.lat, longitude: n.coordenadas.lng },
+          aggregateRating: n.num_resenas > 0 ? { "@type": "AggregateRating", ratingValue: n.valoracion_media, reviewCount: n.num_resenas } : undefined,
+          openingHours: n.horario,
+        })),
+        ssrHtml: `
+          ${renderBreadcrumb([
+            { label: "Inicio", href: "/" },
+            { label: cat.nombre, href: `/${cat.slug}` },
+            { label: ciu.nombre, href: `/${cat.slug}/${ciu.slug}` },
+            { label: bar.nombre, href: `/${cat.slug}/${ciu.slug}/${bar.slug}` },
+          ])}
+          <header><h1>${esc(cat.nombre)} en ${esc(bar.nombre)}, ${esc(ciu.nombre)}</h1>
+          <p>${barNegocios.length} profesionales verificados en este barrio</p></header>
+          <main>${barNegocios.map(renderNegocioCard).join("")}</main>`,
       });
       count++;
 
@@ -246,7 +347,7 @@ for (const cat of categorias) {
         generatePage({
           route: `/${cat.slug}/${ciu.slug}/${bar.slug}/${neg.slug}`,
           title: `${neg.nombre} — ${cat.nombre} en ${bar.nombre}, ${ciu.nombre} | Visto en Maps`,
-          description: `${neg.nombre}: ${cat.nombre.toLowerCase()} en ${bar.nombre}, ${ciu.nombre}. ${neg.valoracion_media} estrellas, ${neg.num_resenas} reseñas. ${neg.direccion}. Tel: ${neg.telefono}.`,
+          description: `${neg.nombre}: ${neg.valoracion_media}⭐ (${neg.num_resenas} reseñas). ${neg.direccion}. Tel: ${neg.telefono}.`,
           canonical: `${BASE_URL}/${cat.slug}/${ciu.slug}/${bar.slug}/${neg.slug}`,
           schemaJson: [{
             "@context": "https://schema.org",
@@ -255,11 +356,30 @@ for (const cat of categorias) {
             address: { "@type": "PostalAddress", streetAddress: neg.direccion, addressLocality: ciu.nombre, addressCountry: "ES" },
             telephone: neg.telefono,
             geo: { "@type": "GeoCoordinates", latitude: neg.coordenadas.lat, longitude: neg.coordenadas.lng },
-            aggregateRating: { "@type": "AggregateRating", ratingValue: neg.valoracion_media, reviewCount: neg.num_resenas, bestRating: 5 },
+            aggregateRating: neg.num_resenas > 0 ? { "@type": "AggregateRating", ratingValue: neg.valoracion_media, reviewCount: neg.num_resenas, bestRating: 5 } : undefined,
             openingHours: neg.horario,
+            ...(neg.web ? { url: neg.web } : {}),
           }],
-          h1: neg.nombre,
-          bodyText: `${neg.nombre}: ${cat.nombre.toLowerCase()} en ${bar.nombre}, ${ciu.nombre}. Valoración: ${neg.valoracion_media}/5 (${neg.num_resenas} reseñas). Dirección: ${neg.direccion}. Teléfono: ${neg.telefono}. Horario: ${neg.horario}. Servicios: ${neg.servicios_destacados.join(", ")}.`,
+          ssrHtml: `
+            ${renderBreadcrumb([
+              { label: "Inicio", href: "/" },
+              { label: cat.nombre, href: `/${cat.slug}` },
+              { label: ciu.nombre, href: `/${cat.slug}/${ciu.slug}` },
+              { label: bar.nombre, href: `/${cat.slug}/${ciu.slug}/${bar.slug}` },
+              { label: neg.nombre, href: `/${cat.slug}/${ciu.slug}/${bar.slug}/${neg.slug}` },
+            ])}
+            <main>
+            <article>
+              <h1>${esc(neg.nombre)}</h1>
+              <p>⭐ ${neg.valoracion_media}/5 (${neg.num_resenas} reseñas)</p>
+              <p>📍 ${esc(neg.direccion)}</p>
+              ${neg.telefono ? `<p>📞 <a href="tel:${neg.telefono}">${esc(neg.telefono)}</a></p>` : ""}
+              ${neg.horario ? `<p>🕐 ${esc(neg.horario)}</p>` : ""}
+              ${neg.web ? `<p>🌐 <a href="${esc(neg.web)}" rel="nofollow">${esc(neg.web)}</a></p>` : ""}
+              ${neg.servicios_destacados?.length ? `<p>Servicios: ${neg.servicios_destacados.map(esc).join(", ")}</p>` : ""}
+              ${neg.url_google_maps ? `<p><a href="${esc(neg.url_google_maps)}" rel="nofollow">Ver en Google Maps</a></p>` : ""}
+            </article>
+            </main>`,
         });
         count++;
       }
@@ -267,4 +387,4 @@ for (const cat of categorias) {
   }
 }
 
-console.log(`Pre-rendered: ${count} pages -> ${distDir}`);
+console.log(`✅ Pre-rendered: ${count} pages -> ${distDir}`);
