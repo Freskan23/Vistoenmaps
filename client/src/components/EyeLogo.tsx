@@ -308,11 +308,13 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
     const handleOver = (e: PointerEvent) => {
       const target = e.target as Element;
       if (isCTA(target)) {
-        // Don't re-trigger if already nodding
         clearTimeout(nodTimer.current);
-        setIsNodding(true);
-        // Nod lasts ~900ms (3 quick bobs)
-        nodTimer.current = setTimeout(() => setIsNodding(false), 900);
+        // Reset animation: force false → true in next frame
+        setIsNodding(false);
+        requestAnimationFrame(() => {
+          setIsNodding(true);
+          nodTimer.current = setTimeout(() => setIsNodding(false), 750);
+        });
       }
     };
 
@@ -381,22 +383,27 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
               0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
               50% { opacity: 1; transform: translateX(-50%) scale(1.15); }
             }
-            @keyframes eyeNod {
-              0%   { transform: translateY(0) rotate(0deg); }
-              12%  { transform: translateY(6%) rotate(3deg); }
-              24%  { transform: translateY(-1%) rotate(-1deg); }
-              36%  { transform: translateY(5%) rotate(2.5deg); }
-              48%  { transform: translateY(0) rotate(-0.5deg); }
-              60%  { transform: translateY(4%) rotate(2deg); }
-              75%  { transform: translateY(0) rotate(0deg); }
-              100% { transform: translateY(0) rotate(0deg); }
-            }
-            .eye-nodding {
-              animation: eyeNod 0.9s ease-in-out;
-            }
           `}</style>
         </>
       )}
+
+      {/* Nod animation styles — always available */}
+      <style>{`
+        @keyframes eyeNod {
+          0%   { transform: translateY(0) rotate(0deg); }
+          10%  { transform: translateY(10px) rotate(4deg); }
+          22%  { transform: translateY(-3px) rotate(-1.5deg); }
+          34%  { transform: translateY(8px) rotate(3.5deg); }
+          46%  { transform: translateY(-2px) rotate(-1deg); }
+          58%  { transform: translateY(6px) rotate(2.5deg); }
+          72%  { transform: translateY(-1px) rotate(-0.5deg); }
+          85%  { transform: translateY(3px) rotate(1deg); }
+          100% { transform: translateY(0) rotate(0deg); }
+        }
+        .eye-nodding {
+          animation: eyeNod 0.75s cubic-bezier(0.36, 0, 0.66, 1);
+        }
+      `}</style>
 
       {/* Pin container */}
       <div
