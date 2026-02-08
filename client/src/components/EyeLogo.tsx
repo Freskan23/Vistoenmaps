@@ -30,6 +30,8 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
   const idleTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
   const pupilDriftRAF = useRef<number>(0);
   const nodTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const wanderRAF = useRef<number>(0);
+  const hasOrientationRef = useRef(false);
 
   const uid = useId().replace(/:/g, '');
 
@@ -99,6 +101,42 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
       clearTimeout(saccadeTimer.current);
     };
   }, [scale]);
+
+  // ─── Wandering gaze (móvil sin acelerómetro) ──────────────────
+  // Movimiento errante lento cuando no hay interacción — el ojo mira
+  // alrededor curioso. Solo se activa si no hay acelerómetro ni pointer.
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) return;
+
+    // Solo en táctil (no hay pointermove continuo)
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    if (!isTouch) return;
+
+    let mounted = true;
+
+    const animate = (time: number) => {
+      if (!mounted || !irisRef.current) return;
+      // No interferir si el acelerómetro está activo o si no está en idle
+      if (hasOrientationRef.current || modeRef.current !== 'idle') {
+        wanderRAF.current = requestAnimationFrame(animate);
+        return;
+      }
+      // Lissajous — dos frecuencias irracionales para que nunca se repita
+      const ox = Math.sin(time * 0.0004) * maxOffset * 0.7 + Math.sin(time * 0.00097) * maxOffset * 0.3;
+      const oy = Math.cos(time * 0.00053) * maxOffset * 0.5 + Math.sin(time * 0.00031) * maxOffset * 0.35;
+      irisRef.current.style.transition = 'transform 0.5s ease-out';
+      irisRef.current.style.transform = `translate(${ox}px, ${oy}px)`;
+      wanderRAF.current = requestAnimationFrame(animate);
+    };
+
+    wanderRAF.current = requestAnimationFrame(animate);
+
+    return () => {
+      mounted = false;
+      cancelAnimationFrame(wanderRAF.current);
+    };
+  }, [maxOffset, scale]);
 
   // ─── Pupil micro-drift (organic tremor) ─────────────────────────
   // Continuous subtle movement — like the natural tremor of a living eye.
@@ -221,15 +259,34 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
 
     const handleOrientation = (e: DeviceOrientationEvent) => {
       if (e.gamma !== null && e.beta !== null) {
+        hasOrientationRef.current = true;
         tiltX = e.gamma;
         tiltY = e.beta - 45;
         updateIris(pointerX, pointerY, tiltX, tiltY);
       }
     };
 
+    // Touch: seguir el dedo por la pantalla
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const t = e.touches[0];
+        pointerX = t.clientX;
+        pointerY = t.clientY;
+        updateIris(pointerX, pointerY, tiltX, tiltY);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      pointerX = null;
+      pointerY = null;
+      scheduleIdle();
+    };
+
     document.addEventListener('pointermove', handlePointer, { passive: true });
     document.addEventListener('pointerdown', handlePointer, { passive: true });
     document.addEventListener('pointerup', handlePointerLeave, { passive: true });
+    document.addEventListener('touchmove', handleTouchMove, { passive: true });
+    document.addEventListener('touchend', handleTouchEnd, { passive: true });
     window.addEventListener('deviceorientation', handleOrientation, { passive: true });
 
     // iOS permission request on first touch
@@ -245,6 +302,8 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
       document.removeEventListener('pointermove', handlePointer);
       document.removeEventListener('pointerdown', handlePointer);
       document.removeEventListener('pointerup', handlePointerLeave);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('deviceorientation', handleOrientation);
     };
   }, [updateIris, scheduleIdle]);
@@ -292,7 +351,7 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
     return () => { mounted = false; };
   }, []);
 
-  // ─── CTA nod detection (asiente al hover sobre botones/CTAs) ───
+  // ─── CTA nod detection (asiente al hover/touch sobre botones/CTAs) ───
   useEffect(() => {
     const isCTA = (el: Element | null): boolean => {
       if (!el) return false;
@@ -300,27 +359,36 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
       if (tag === 'BUTTON') return true;
       if (tag === 'A' && (el as HTMLAnchorElement).href) return true;
       if (el.getAttribute('role') === 'button') return true;
-      // Links with CTA-like classes
       if (el.closest('button, a[href], [role="button"]')) return true;
       return false;
     };
 
+    const triggerNod = () => {
+      clearTimeout(nodTimer.current);
+      setIsNodding(false);
+      requestAnimationFrame(() => {
+        setIsNodding(true);
+        nodTimer.current = setTimeout(() => setIsNodding(false), 750);
+      });
+    };
+
+    // Desktop: pointerover (hover)
     const handleOver = (e: PointerEvent) => {
       const target = e.target as Element;
-      if (isCTA(target)) {
-        clearTimeout(nodTimer.current);
-        // Reset animation: force false → true in next frame
-        setIsNodding(false);
-        requestAnimationFrame(() => {
-          setIsNodding(true);
-          nodTimer.current = setTimeout(() => setIsNodding(false), 750);
-        });
-      }
+      if (isCTA(target)) triggerNod();
+    };
+
+    // Móvil: touchstart sobre CTAs
+    const handleTouch = (e: TouchEvent) => {
+      const target = e.target as Element;
+      if (isCTA(target)) triggerNod();
     };
 
     document.addEventListener('pointerover', handleOver, { passive: true });
+    document.addEventListener('touchstart', handleTouch, { passive: true });
     return () => {
       document.removeEventListener('pointerover', handleOver);
+      document.removeEventListener('touchstart', handleTouch);
       clearTimeout(nodTimer.current);
     };
   }, []);
