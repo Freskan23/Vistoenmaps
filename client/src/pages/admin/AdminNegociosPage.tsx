@@ -8,7 +8,6 @@ import {
   XCircle,
   Clock,
   Search,
-  Filter,
   Eye,
   MapPin,
   Mail,
@@ -90,7 +89,6 @@ export default function AdminNegociosPage() {
 
       if (error) throw error;
 
-      // Actualizar localmente
       setNegocios((prev) =>
         prev.map((n) => (n.id === id ? { ...n, estado: nuevoEstado } : n))
       );
@@ -135,21 +133,21 @@ export default function AdminNegociosPage() {
     switch (estado) {
       case 'pendiente':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-amber-500/15 text-amber-400">
             <Clock className="w-3 h-3" />
             Pendiente
           </span>
         );
       case 'aprobado':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-emerald-500/15 text-emerald-400">
             <CheckCircle2 className="w-3 h-3" />
             Aprobado
           </span>
         );
       case 'rechazado':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-red-500/15 text-red-400">
             <XCircle className="w-3 h-3" />
             Rechazado
           </span>
@@ -159,24 +157,20 @@ export default function AdminNegociosPage() {
     }
   };
 
-  const filterCounts = {
-    todos: negocios.length,
-  };
-
   return (
     <AdminLayout>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Negocios</h1>
-            <p className="text-sm text-gray-500 mt-1">
+            <h1 className="text-2xl font-bold text-white">Negocios</h1>
+            <p className="text-sm text-white/40 mt-1">
               Gestiona los negocios registrados en la plataforma
             </p>
           </div>
           <button
             onClick={loadNegocios}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white/[0.06] border border-white/[0.08] rounded-xl text-sm font-medium text-white/70 hover:bg-white/[0.1] hover:text-white/90 transition-all backdrop-blur-sm"
           >
             <RefreshCw className={cn('w-4 h-4', loading && 'animate-spin')} />
             Actualizar
@@ -187,27 +181,27 @@ export default function AdminNegociosPage() {
         <div className="flex flex-col sm:flex-row gap-3">
           {/* Search */}
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
             <input
               type="text"
               placeholder="Buscar por nombre, ciudad, email..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+              className="w-full pl-10 pr-4 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-sm text-white/90 placeholder:text-white/30 focus:ring-2 focus:ring-accent/30 focus:border-accent/30 outline-none transition-all backdrop-blur-sm"
             />
           </div>
 
           {/* Filter tabs */}
-          <div className="flex bg-white border border-gray-200 rounded-lg p-1 gap-1">
+          <div className="flex bg-white/[0.04] border border-white/[0.08] rounded-xl p-1 gap-1 backdrop-blur-sm">
             {(['pendiente', 'aprobado', 'rechazado', 'todos'] as FilterEstado[]).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
                 className={cn(
-                  'px-3 py-1.5 rounded-md text-xs font-medium transition-all capitalize',
+                  'px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
                   filter === f
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    ? 'bg-accent text-white shadow-lg shadow-accent/20'
+                    : 'text-white/40 hover:text-white/70 hover:bg-white/[0.06]'
                 )}
               >
                 {f === 'todos' ? 'Todos' : f === 'pendiente' ? 'Pendientes' : f === 'aprobado' ? 'Aprobados' : 'Rechazados'}
@@ -220,22 +214,22 @@ export default function AdminNegociosPage() {
         {loading ? (
           <div className="space-y-3">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="bg-white rounded-xl border border-gray-200 p-5 animate-pulse">
+              <div key={i} className="bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/[0.06] p-5 animate-pulse">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gray-200 rounded-lg" />
+                  <div className="w-12 h-12 bg-white/[0.08] rounded-xl" />
                   <div className="flex-1 space-y-2">
-                    <div className="h-4 bg-gray-200 rounded w-48" />
-                    <div className="h-3 bg-gray-200 rounded w-32" />
+                    <div className="h-4 bg-white/[0.08] rounded w-48" />
+                    <div className="h-3 bg-white/[0.06] rounded w-32" />
                   </div>
                 </div>
               </div>
             ))}
           </div>
         ) : filteredNegocios.length === 0 ? (
-          <div className="bg-white rounded-xl border border-gray-200 p-10 text-center">
-            <Store className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500 font-medium">No hay negocios {filter !== 'todos' ? filter + 's' : ''}</p>
-            <p className="text-sm text-gray-400 mt-1">
+          <div className="bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/[0.06] p-10 text-center">
+            <Store className="w-12 h-12 text-white/20 mx-auto mb-3" />
+            <p className="text-white/50 font-medium">No hay negocios {filter !== 'todos' ? filter + 's' : ''}</p>
+            <p className="text-sm text-white/30 mt-1">
               {search ? 'Prueba con otros terminos de busqueda' : 'Aun no hay registros con este filtro'}
             </p>
           </div>
@@ -246,7 +240,7 @@ export default function AdminNegociosPage() {
               return (
                 <div
                   key={neg.id}
-                  className="bg-white rounded-xl border border-gray-200 overflow-hidden transition-shadow hover:shadow-sm"
+                  className="bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/[0.06] overflow-hidden transition-all hover:border-white/[0.12]"
                 >
                   {/* Row principal */}
                   <div
@@ -255,28 +249,28 @@ export default function AdminNegociosPage() {
                   >
                     <div
                       className={cn(
-                        'w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0',
-                        neg.estado === 'pendiente' && 'bg-amber-100',
-                        neg.estado === 'aprobado' && 'bg-green-100',
-                        neg.estado === 'rechazado' && 'bg-red-100'
+                        'w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0',
+                        neg.estado === 'pendiente' && 'bg-amber-500/15',
+                        neg.estado === 'aprobado' && 'bg-emerald-500/15',
+                        neg.estado === 'rechazado' && 'bg-red-500/15'
                       )}
                     >
                       <Store
                         className={cn(
                           'w-5 h-5',
-                          neg.estado === 'pendiente' && 'text-amber-600',
-                          neg.estado === 'aprobado' && 'text-green-600',
-                          neg.estado === 'rechazado' && 'text-red-600'
+                          neg.estado === 'pendiente' && 'text-amber-400',
+                          neg.estado === 'aprobado' && 'text-emerald-400',
+                          neg.estado === 'rechazado' && 'text-red-400'
                         )}
                       />
                     </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="font-semibold text-gray-900 truncate">{neg.nombre}</p>
+                        <p className="font-semibold text-white/90 truncate">{neg.nombre}</p>
                         {estadoBadge(neg.estado)}
                       </div>
-                      <p className="text-sm text-gray-500 mt-0.5 truncate">
+                      <p className="text-sm text-white/40 mt-0.5 truncate">
                         {[neg.categoria_slug, neg.ciudad_nombre || neg.ciudad, neg.provincia]
                           .filter(Boolean)
                           .join(' · ')}
@@ -294,7 +288,7 @@ export default function AdminNegociosPage() {
                             updateEstado(neg.id, 'aprobado');
                           }}
                           disabled={actionLoading === neg.id}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/20 text-emerald-400 text-xs font-medium rounded-lg hover:bg-emerald-500/30 transition-colors disabled:opacity-50 border border-emerald-500/20"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5" />
                           Aprobar
@@ -305,7 +299,7 @@ export default function AdminNegociosPage() {
                             updateEstado(neg.id, 'rechazado');
                           }}
                           disabled={actionLoading === neg.id}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-red-200 text-red-600 text-xs font-medium rounded-lg hover:bg-red-50 transition-colors disabled:opacity-50"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium rounded-lg hover:bg-red-500/20 transition-colors disabled:opacity-50"
                         >
                           <XCircle className="w-3.5 h-3.5" />
                           Rechazar
@@ -321,7 +315,7 @@ export default function AdminNegociosPage() {
                           updateEstado(neg.id, 'rechazado');
                         }}
                         disabled={actionLoading === neg.id}
-                        className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 text-gray-600 text-xs font-medium rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                        className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.06] border border-white/[0.08] text-white/50 text-xs font-medium rounded-lg hover:bg-white/[0.1] hover:text-white/70 transition-colors disabled:opacity-50"
                       >
                         <XCircle className="w-3.5 h-3.5" />
                         Rechazar
@@ -335,29 +329,29 @@ export default function AdminNegociosPage() {
                           updateEstado(neg.id, 'aprobado');
                         }}
                         disabled={actionLoading === neg.id}
-                        className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 text-gray-600 text-xs font-medium rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                        className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.06] border border-white/[0.08] text-white/50 text-xs font-medium rounded-lg hover:bg-white/[0.1] hover:text-white/70 transition-colors disabled:opacity-50"
                       >
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         Aprobar
                       </button>
                     )}
 
-                    <button className="p-1 text-gray-400">
+                    <button className="p-1 text-white/30">
                       {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
                     </button>
                   </div>
 
                   {/* Detalle expandido */}
                   {isExpanded && (
-                    <div className="px-5 pb-5 border-t border-gray-100 pt-4">
+                    <div className="px-5 pb-5 border-t border-white/[0.06] pt-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {/* Info del negocio */}
                         <div className="space-y-3">
-                          <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                          <h3 className="text-[11px] font-semibold text-white/30 uppercase tracking-widest">
                             Datos del negocio
                           </h3>
                           {neg.descripcion && (
-                            <p className="text-sm text-gray-600">{neg.descripcion}</p>
+                            <p className="text-sm text-white/60">{neg.descripcion}</p>
                           )}
                           <div className="space-y-2">
                             {neg.categoria_slug && (
@@ -387,7 +381,7 @@ export default function AdminNegociosPage() {
 
                         {/* Contacto */}
                         <div className="space-y-3">
-                          <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">
+                          <h3 className="text-[11px] font-semibold text-white/30 uppercase tracking-widest">
                             Contacto
                           </h3>
                           <div className="space-y-2">
@@ -419,7 +413,7 @@ export default function AdminNegociosPage() {
                             )}
                           </div>
 
-                          <div className="text-xs text-gray-400 mt-4">
+                          <div className="text-[11px] text-white/20 mt-4 font-mono">
                             ID: {neg.id}
                             <br />
                             User: {neg.user_id}
@@ -431,11 +425,11 @@ export default function AdminNegociosPage() {
 
                       {/* Acciones mobile */}
                       {neg.estado === 'pendiente' && (
-                        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100 sm:hidden">
+                        <div className="flex items-center gap-2 mt-4 pt-4 border-t border-white/[0.06] sm:hidden">
                           <button
                             onClick={() => updateEstado(neg.id, 'aprobado')}
                             disabled={actionLoading === neg.id}
-                            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-500/20 text-emerald-400 text-sm font-medium rounded-xl hover:bg-emerald-500/30 transition-colors disabled:opacity-50 border border-emerald-500/20"
                           >
                             <CheckCircle2 className="w-4 h-4" />
                             Aprobar
@@ -443,7 +437,7 @@ export default function AdminNegociosPage() {
                           <button
                             onClick={() => updateEstado(neg.id, 'rechazado')}
                             disabled={actionLoading === neg.id}
-                            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-red-200 text-red-600 text-sm font-medium rounded-lg hover:bg-red-50 transition-colors disabled:opacity-50"
+                            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium rounded-xl hover:bg-red-500/20 transition-colors disabled:opacity-50"
                           >
                             <XCircle className="w-4 h-4" />
                             Rechazar
@@ -478,19 +472,19 @@ function DetailRow({
 }) {
   return (
     <div className="flex items-start gap-2 text-sm">
-      {Icon && <Icon className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />}
-      <span className="text-gray-500 min-w-[80px]">{label}:</span>
+      {Icon && <Icon className="w-4 h-4 text-white/25 mt-0.5 flex-shrink-0" />}
+      <span className="text-white/40 min-w-[80px]">{label}:</span>
       {isLink ? (
         <a
           href={href || value}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-primary hover:underline truncate"
+          className="text-accent hover:text-accent/80 truncate transition-colors"
         >
           {value}
         </a>
       ) : (
-        <span className="text-gray-900 truncate">{value}</span>
+        <span className="text-white/80 truncate">{value}</span>
       )}
     </div>
   );

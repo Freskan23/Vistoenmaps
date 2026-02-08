@@ -7,10 +7,6 @@ import {
   Search,
   Shield,
   Store,
-  Mail,
-  Phone,
-  MapPin,
-  Calendar,
   RefreshCw,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -82,14 +78,14 @@ export default function AdminUsuariosPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Usuarios</h1>
-            <p className="text-sm text-gray-500 mt-1">
+            <h1 className="text-2xl font-bold text-white">Usuarios</h1>
+            <p className="text-sm text-white/40 mt-1">
               {usuarios.length} usuarios registrados
             </p>
           </div>
           <button
             onClick={loadUsuarios}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white/[0.06] border border-white/[0.08] rounded-xl text-sm font-medium text-white/70 hover:bg-white/[0.1] hover:text-white/90 transition-all backdrop-blur-sm"
           >
             <RefreshCw className={cn('w-4 h-4', loading && 'animate-spin')} />
             Actualizar
@@ -99,25 +95,25 @@ export default function AdminUsuariosPage() {
         {/* Filtros */}
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
             <input
               type="text"
               placeholder="Buscar por email, negocio, ciudad..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+              className="w-full pl-10 pr-4 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-sm text-white/90 placeholder:text-white/30 focus:ring-2 focus:ring-accent/30 focus:border-accent/30 outline-none transition-all backdrop-blur-sm"
             />
           </div>
-          <div className="flex bg-white border border-gray-200 rounded-lg p-1 gap-1">
+          <div className="flex bg-white/[0.04] border border-white/[0.08] rounded-xl p-1 gap-1 backdrop-blur-sm">
             {(['todos', 'business', 'admin'] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilterRol(f)}
                 className={cn(
-                  'px-3 py-1.5 rounded-md text-xs font-medium transition-all capitalize',
+                  'px-3 py-1.5 rounded-lg text-xs font-medium transition-all',
                   filterRol === f
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    ? 'bg-accent text-white shadow-lg shadow-accent/20'
+                    : 'text-white/40 hover:text-white/70 hover:bg-white/[0.06]'
                 )}
               >
                 {f === 'todos' ? 'Todos' : f === 'business' ? 'Negocios' : 'Admins'}
@@ -128,20 +124,20 @@ export default function AdminUsuariosPage() {
 
         {/* Tabla */}
         {loading ? (
-          <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-3">
+          <div className="bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/[0.06] p-5 space-y-3">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="h-14 bg-gray-100 rounded animate-pulse" />
+              <div key={i} className="h-14 bg-white/[0.04] rounded-xl animate-pulse" />
             ))}
           </div>
         ) : filteredUsuarios.length === 0 ? (
-          <div className="bg-white rounded-xl border border-gray-200 p-10 text-center">
-            <Users className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500 font-medium">No se encontraron usuarios</p>
+          <div className="bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/[0.06] p-10 text-center">
+            <Users className="w-12 h-12 text-white/20 mx-auto mb-3" />
+            <p className="text-white/50 font-medium">No se encontraron usuarios</p>
           </div>
         ) : (
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          <div className="bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/[0.06] overflow-hidden">
             {/* Header tabla (desktop) */}
-            <div className="hidden md:grid grid-cols-[1fr_1fr_120px_100px_100px] gap-4 px-5 py-3 bg-gray-50 border-b border-gray-200 text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <div className="hidden md:grid grid-cols-[1fr_1fr_120px_100px_100px] gap-4 px-5 py-3 bg-white/[0.04] border-b border-white/[0.06] text-[11px] font-medium text-white/30 uppercase tracking-widest">
               <span>Email</span>
               <span>Negocio</span>
               <span>Ciudad</span>
@@ -149,11 +145,11 @@ export default function AdminUsuariosPage() {
               <span>Registro</span>
             </div>
 
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-white/[0.04]">
               {filteredUsuarios.map((u) => (
                 <div
                   key={u.id}
-                  className="px-5 py-3.5 hover:bg-gray-50 transition-colors"
+                  className="px-5 py-3.5 hover:bg-white/[0.03] transition-colors"
                 >
                   {/* Desktop */}
                   <div className="hidden md:grid grid-cols-[1fr_1fr_120px_100px_100px] gap-4 items-center">
@@ -161,32 +157,32 @@ export default function AdminUsuariosPage() {
                       <div
                         className={cn(
                           'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0',
-                          u.rol === 'admin' ? 'bg-purple-100' : 'bg-blue-100'
+                          u.rol === 'admin' ? 'bg-purple-500/15' : 'bg-blue-500/15'
                         )}
                       >
                         {u.rol === 'admin' ? (
-                          <Shield className="w-4 h-4 text-purple-600" />
+                          <Shield className="w-4 h-4 text-purple-400" />
                         ) : (
-                          <Store className="w-4 h-4 text-blue-600" />
+                          <Store className="w-4 h-4 text-blue-400" />
                         )}
                       </div>
-                      <span className="text-sm text-gray-900 truncate">{u.email}</span>
+                      <span className="text-sm text-white/80 truncate">{u.email}</span>
                     </div>
-                    <span className="text-sm text-gray-600 truncate">
+                    <span className="text-sm text-white/50 truncate">
                       {u.nombre_negocio || '—'}
                     </span>
-                    <span className="text-sm text-gray-600">{u.ciudad || '—'}</span>
+                    <span className="text-sm text-white/50">{u.ciudad || '—'}</span>
                     <span
                       className={cn(
-                        'text-xs font-medium px-2 py-0.5 rounded-full inline-block w-fit',
+                        'text-[11px] font-medium px-2 py-0.5 rounded-full inline-block w-fit',
                         u.rol === 'admin'
-                          ? 'bg-purple-100 text-purple-700'
-                          : 'bg-blue-100 text-blue-700'
+                          ? 'bg-purple-500/15 text-purple-400'
+                          : 'bg-blue-500/15 text-blue-400'
                       )}
                     >
                       {u.rol === 'admin' ? 'Admin' : 'Negocio'}
                     </span>
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-white/30">
                       {formatDate(u.created_at)}
                     </span>
                   </div>
@@ -197,28 +193,28 @@ export default function AdminUsuariosPage() {
                       <div
                         className={cn(
                           'w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0',
-                          u.rol === 'admin' ? 'bg-purple-100' : 'bg-blue-100'
+                          u.rol === 'admin' ? 'bg-purple-500/15' : 'bg-blue-500/15'
                         )}
                       >
                         {u.rol === 'admin' ? (
-                          <Shield className="w-3.5 h-3.5 text-purple-600" />
+                          <Shield className="w-3.5 h-3.5 text-purple-400" />
                         ) : (
-                          <Store className="w-3.5 h-3.5 text-blue-600" />
+                          <Store className="w-3.5 h-3.5 text-blue-400" />
                         )}
                       </div>
-                      <span className="text-sm font-medium text-gray-900 truncate">{u.email}</span>
+                      <span className="text-sm font-medium text-white/80 truncate">{u.email}</span>
                       <span
                         className={cn(
                           'text-[10px] font-medium px-1.5 py-0.5 rounded-full ml-auto',
                           u.rol === 'admin'
-                            ? 'bg-purple-100 text-purple-700'
-                            : 'bg-blue-100 text-blue-700'
+                            ? 'bg-purple-500/15 text-purple-400'
+                            : 'bg-blue-500/15 text-blue-400'
                         )}
                       >
                         {u.rol === 'admin' ? 'Admin' : 'Negocio'}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-500 pl-9">
+                    <p className="text-xs text-white/30 pl-9">
                       {[u.nombre_negocio, u.ciudad].filter(Boolean).join(' · ') || 'Sin datos'}
                       {' · '}
                       {formatDate(u.created_at)}

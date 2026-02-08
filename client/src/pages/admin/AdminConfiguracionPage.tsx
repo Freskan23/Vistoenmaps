@@ -44,10 +44,10 @@ export default function AdminConfiguracionPage() {
   ];
 
   const colorMap: Record<string, { bg: string; icon: string }> = {
-    green: { bg: 'bg-green-100', icon: 'text-green-600' },
-    blue: { bg: 'bg-blue-100', icon: 'text-blue-600' },
-    purple: { bg: 'bg-purple-100', icon: 'text-purple-600' },
-    gray: { bg: 'bg-gray-100', icon: 'text-gray-600' },
+    green:  { bg: 'bg-emerald-500/15', icon: 'text-emerald-400' },
+    blue:   { bg: 'bg-blue-500/15',    icon: 'text-blue-400' },
+    purple: { bg: 'bg-purple-500/15',  icon: 'text-purple-400' },
+    gray:   { bg: 'bg-white/[0.08]',   icon: 'text-white/60' },
   };
 
   return (
@@ -55,23 +55,23 @@ export default function AdminConfiguracionPage() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Configuracion</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-white">Configuracion</h1>
+          <p className="text-sm text-white/40 mt-1">
             Ajustes y enlaces rapidos de la plataforma
           </p>
         </div>
 
         {/* Info admin */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-semibold text-gray-900 mb-3">Cuenta de administrador</h2>
+        <div className="bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/[0.06] p-5">
+          <h2 className="font-semibold text-white/90 mb-3">Cuenta de administrador</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
             <div>
-              <span className="text-gray-500">Email:</span>{' '}
-              <span className="text-gray-900 font-medium">{user?.email}</span>
+              <span className="text-white/40">Email:</span>{' '}
+              <span className="text-white/80 font-medium">{user?.email}</span>
             </div>
             <div>
-              <span className="text-gray-500">Rol:</span>{' '}
-              <span className="inline-flex items-center gap-1 text-purple-700 font-medium">
+              <span className="text-white/40">Rol:</span>{' '}
+              <span className="inline-flex items-center gap-1 text-purple-400 font-medium">
                 <Shield className="w-3.5 h-3.5" />
                 Administrador
               </span>
@@ -81,7 +81,7 @@ export default function AdminConfiguracionPage() {
 
         {/* Enlaces rapidos */}
         <div>
-          <h2 className="font-semibold text-gray-900 mb-3">Enlaces rapidos</h2>
+          <h2 className="font-semibold text-white/90 mb-3">Enlaces rapidos</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {links.map((link) => {
               const c = colorMap[link.color] || colorMap.gray;
@@ -91,19 +91,19 @@ export default function AdminConfiguracionPage() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white rounded-xl border border-gray-200 p-5 hover:border-primary/30 hover:shadow-md transition-all group flex items-start gap-4"
+                  className="bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/[0.06] p-5 hover:border-accent/20 hover:bg-white/[0.06] transition-all group flex items-start gap-4"
                 >
-                  <div className={`w-10 h-10 rounded-lg ${c.bg} flex items-center justify-center flex-shrink-0`}>
+                  <div className={`w-10 h-10 rounded-xl ${c.bg} flex items-center justify-center flex-shrink-0`}>
                     <link.icon className={`w-5 h-5 ${c.icon}`} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                      <p className="font-semibold text-white/80 group-hover:text-accent transition-colors">
                         {link.label}
                       </p>
-                      <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-primary" />
+                      <ExternalLink className="w-3.5 h-3.5 text-white/20 group-hover:text-accent/60 transition-colors" />
                     </div>
-                    <p className="text-sm text-gray-500 mt-1">{link.description}</p>
+                    <p className="text-sm text-white/40 mt-1">{link.description}</p>
                   </div>
                 </a>
               );
@@ -112,24 +112,24 @@ export default function AdminConfiguracionPage() {
         </div>
 
         {/* Datos tecnicos */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-semibold text-gray-900 mb-3">Datos tecnicos</h2>
+        <div className="bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/[0.06] p-5">
+          <h2 className="font-semibold text-white/90 mb-3">Datos tecnicos</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
             <div>
-              <span className="text-gray-500">Supabase Project:</span>{' '}
-              <code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">efywsccaxaxntmkeuqec</code>
+              <span className="text-white/40">Supabase Project:</span>{' '}
+              <code className="text-xs bg-white/[0.08] px-1.5 py-0.5 rounded text-white/60 font-mono">efywsccaxaxntmkeuqec</code>
             </div>
             <div>
-              <span className="text-gray-500">Dominio:</span>{' '}
-              <code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">vistoenmaps.vercel.app</code>
+              <span className="text-white/40">Dominio:</span>{' '}
+              <code className="text-xs bg-white/[0.08] px-1.5 py-0.5 rounded text-white/60 font-mono">vistoenmaps.vercel.app</code>
             </div>
             <div>
-              <span className="text-gray-500">API Email:</span>{' '}
-              <code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">Resend</code>
+              <span className="text-white/40">API Email:</span>{' '}
+              <code className="text-xs bg-white/[0.08] px-1.5 py-0.5 rounded text-white/60 font-mono">Resend</code>
             </div>
             <div>
-              <span className="text-gray-500">Framework:</span>{' '}
-              <code className="text-xs bg-gray-100 px-1.5 py-0.5 rounded text-gray-700">React + Vite + Supabase</code>
+              <span className="text-white/40">Framework:</span>{' '}
+              <code className="text-xs bg-white/[0.08] px-1.5 py-0.5 rounded text-white/60 font-mono">React + Vite + Supabase</code>
             </div>
           </div>
         </div>

@@ -48,7 +48,6 @@ export default function AdminDashboardPage() {
 
   const loadData = async () => {
     try {
-      // Cargar stats en paralelo
       const [
         { count: totalNegocios },
         { count: pendientes },
@@ -101,8 +100,8 @@ export default function AdminDashboardPage() {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+          <p className="text-sm text-white/40 mt-1">
             Resumen general de la plataforma
           </p>
         </div>
@@ -111,58 +110,32 @@ export default function AdminDashboardPage() {
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="bg-white rounded-xl p-5 border border-gray-200 animate-pulse">
-                <div className="h-4 bg-gray-200 rounded w-20 mb-3" />
-                <div className="h-8 bg-gray-200 rounded w-12" />
+              <div key={i} className="bg-white/[0.04] backdrop-blur-sm rounded-2xl p-5 border border-white/[0.06] animate-pulse">
+                <div className="h-4 bg-white/10 rounded w-20 mb-3" />
+                <div className="h-8 bg-white/10 rounded w-12" />
               </div>
             ))}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <StatCard
-              label="Total Negocios"
-              value={stats.totalNegocios}
-              icon={Store}
-              color="blue"
-            />
-            <StatCard
-              label="Pendientes"
-              value={stats.pendientes}
-              icon={Clock}
-              color="amber"
-              highlight={stats.pendientes > 0}
-            />
-            <StatCard
-              label="Aprobados"
-              value={stats.aprobados}
-              icon={CheckCircle2}
-              color="green"
-            />
-            <StatCard
-              label="Rechazados"
-              value={stats.rechazados}
-              icon={XCircle}
-              color="red"
-            />
-            <StatCard
-              label="Usuarios"
-              value={stats.totalUsuarios}
-              icon={Users}
-              color="purple"
-            />
+            <StatCard label="Total Negocios" value={stats.totalNegocios} icon={Store} color="blue" />
+            <StatCard label="Pendientes" value={stats.pendientes} icon={Clock} color="amber" highlight={stats.pendientes > 0} />
+            <StatCard label="Aprobados" value={stats.aprobados} icon={CheckCircle2} color="green" />
+            <StatCard label="Rechazados" value={stats.rechazados} icon={XCircle} color="red" />
+            <StatCard label="Usuarios" value={stats.totalUsuarios} icon={Users} color="purple" />
           </div>
         )}
 
         {/* Alerta de pendientes */}
         {stats.pendientes > 0 && (
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center gap-3">
-            <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0" />
-            <p className="text-sm text-amber-800 flex-1">
-              Tienes <strong>{stats.pendientes} negocio{stats.pendientes > 1 ? 's' : ''}</strong> pendiente{stats.pendientes > 1 ? 's' : ''} de aprobacion.
+          <div className="bg-amber-500/10 backdrop-blur-sm border border-amber-500/20 rounded-2xl p-4 flex items-center gap-3">
+            <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0" />
+            <p className="text-sm text-amber-200/90 flex-1">
+              Tienes <strong className="text-amber-300">{stats.pendientes} negocio{stats.pendientes > 1 ? 's' : ''}</strong> pendiente{stats.pendientes > 1 ? 's' : ''} de aprobacion.
             </p>
             <Link
               href="/admin/negocios"
-              className="text-sm font-medium text-amber-700 hover:text-amber-900 flex items-center gap-1"
+              className="text-sm font-medium text-amber-400 hover:text-amber-300 flex items-center gap-1 transition-colors"
             >
               Revisar <ArrowRight className="w-4 h-4" />
             </Link>
@@ -170,15 +143,15 @@ export default function AdminDashboardPage() {
         )}
 
         {/* Negocios pendientes recientes */}
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <div className="p-5 border-b border-gray-100 flex items-center justify-between">
+        <div className="bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/[0.06] overflow-hidden">
+          <div className="p-5 border-b border-white/[0.06] flex items-center justify-between">
             <div>
-              <h2 className="font-semibold text-gray-900">Negocios pendientes</h2>
-              <p className="text-sm text-gray-500 mt-0.5">Ultimas solicitudes de registro</p>
+              <h2 className="font-semibold text-white/90">Negocios pendientes</h2>
+              <p className="text-sm text-white/40 mt-0.5">Ultimas solicitudes de registro</p>
             </div>
             <Link
               href="/admin/negocios"
-              className="text-sm font-medium text-primary hover:underline flex items-center gap-1"
+              className="text-sm font-medium text-accent hover:text-accent/80 flex items-center gap-1 transition-colors"
             >
               Ver todos <ArrowRight className="w-4 h-4" />
             </Link>
@@ -187,24 +160,24 @@ export default function AdminDashboardPage() {
           {loading ? (
             <div className="p-5 space-y-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="h-12 bg-gray-100 rounded animate-pulse" />
+                <div key={i} className="h-12 bg-white/[0.04] rounded-xl animate-pulse" />
               ))}
             </div>
           ) : recientes.length === 0 ? (
             <div className="p-10 text-center">
-              <CheckCircle2 className="w-10 h-10 text-green-400 mx-auto mb-3" />
-              <p className="text-sm text-gray-500">No hay negocios pendientes</p>
+              <CheckCircle2 className="w-10 h-10 text-green-400/60 mx-auto mb-3" />
+              <p className="text-sm text-white/40">No hay negocios pendientes</p>
             </div>
           ) : (
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-white/[0.04]">
               {recientes.map((neg) => (
-                <div key={neg.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50 transition-colors">
-                  <div className="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center flex-shrink-0">
-                    <Store className="w-5 h-5 text-amber-600" />
+                <div key={neg.id} className="px-5 py-3.5 flex items-center gap-4 hover:bg-white/[0.03] transition-colors">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center flex-shrink-0">
+                    <Store className="w-5 h-5 text-amber-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-900 truncate">{neg.nombre}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="font-medium text-white/90 truncate">{neg.nombre}</p>
+                    <p className="text-xs text-white/40">
                       {neg.ciudad && neg.provincia
                         ? `${neg.ciudad}, ${neg.provincia}`
                         : neg.categoria_slug || 'Sin categoria'}
@@ -214,7 +187,7 @@ export default function AdminDashboardPage() {
                   </div>
                   <Link
                     href="/admin/negocios"
-                    className="text-xs font-medium text-primary hover:underline"
+                    className="text-xs font-medium text-accent hover:text-accent/80 transition-colors"
                   >
                     Revisar
                   </Link>
@@ -226,66 +199,43 @@ export default function AdminDashboardPage() {
 
         {/* Quick Links */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <QuickLink
-            href="/admin/negocios"
-            icon={Store}
-            label="Gestionar Negocios"
-            description="Aprobar, rechazar o editar negocios"
-          />
-          <QuickLink
-            href="/admin/usuarios"
-            icon={Users}
-            label="Gestionar Usuarios"
-            description="Ver todos los usuarios registrados"
-          />
-          <QuickLink
-            href="/admin/notificaciones"
-            icon={TrendingUp}
-            label="Notificaciones"
-            description="Ver alertas y notificaciones del sistema"
-          />
+          <QuickLink href="/admin/negocios" icon={Store} label="Gestionar Negocios" description="Aprobar, rechazar o editar negocios" />
+          <QuickLink href="/admin/usuarios" icon={Users} label="Gestionar Usuarios" description="Ver todos los usuarios registrados" />
+          <QuickLink href="/admin/notificaciones" icon={TrendingUp} label="Notificaciones" description="Ver alertas y notificaciones" />
         </div>
       </div>
     </AdminLayout>
   );
 }
 
-// --- Subcomponents ---
-
 function StatCard({
-  label,
-  value,
-  icon: Icon,
-  color,
-  highlight,
+  label, value, icon: Icon, color, highlight,
 }: {
-  label: string;
-  value: number;
-  icon: React.ElementType;
-  color: string;
-  highlight?: boolean;
+  label: string; value: number; icon: React.ElementType; color: string; highlight?: boolean;
 }) {
-  const colorMap: Record<string, { bg: string; text: string; icon: string }> = {
-    blue: { bg: 'bg-blue-50', text: 'text-blue-600', icon: 'text-blue-500' },
-    amber: { bg: 'bg-amber-50', text: 'text-amber-600', icon: 'text-amber-500' },
-    green: { bg: 'bg-green-50', text: 'text-green-600', icon: 'text-green-500' },
-    red: { bg: 'bg-red-50', text: 'text-red-600', icon: 'text-red-500' },
-    purple: { bg: 'bg-purple-50', text: 'text-purple-600', icon: 'text-purple-500' },
+  const colorMap: Record<string, { bg: string; text: string; icon: string; glow: string }> = {
+    blue:   { bg: 'bg-blue-500/15',   text: 'text-blue-400',   icon: 'text-blue-400',   glow: '' },
+    amber:  { bg: 'bg-amber-500/15',  text: 'text-amber-400',  icon: 'text-amber-400',  glow: 'shadow-[0_0_20px_rgba(245,158,11,0.15)]' },
+    green:  { bg: 'bg-emerald-500/15', text: 'text-emerald-400', icon: 'text-emerald-400', glow: '' },
+    red:    { bg: 'bg-red-500/15',    text: 'text-red-400',    icon: 'text-red-400',    glow: '' },
+    purple: { bg: 'bg-purple-500/15', text: 'text-purple-400', icon: 'text-purple-400', glow: '' },
   };
 
   const c = colorMap[color] || colorMap.blue;
 
   return (
     <div
-      className={`bg-white rounded-xl p-5 border ${
-        highlight ? 'border-amber-300 ring-2 ring-amber-100' : 'border-gray-200'
+      className={`bg-white/[0.04] backdrop-blur-sm rounded-2xl p-5 border transition-all ${
+        highlight
+          ? 'border-amber-500/30 ' + c.glow
+          : 'border-white/[0.06] hover:border-white/[0.12]'
       }`}
     >
       <div className="flex items-center gap-3 mb-3">
-        <div className={`w-9 h-9 rounded-lg ${c.bg} flex items-center justify-center`}>
-          <Icon className={`w-5 h-5 ${c.icon}`} />
+        <div className={`w-9 h-9 rounded-xl ${c.bg} flex items-center justify-center`}>
+          <Icon className={`w-[18px] h-[18px] ${c.icon}`} />
         </div>
-        <span className="text-sm text-gray-500">{label}</span>
+        <span className="text-[13px] text-white/50">{label}</span>
       </div>
       <p className={`text-2xl font-bold ${c.text}`}>{value}</p>
     </div>
@@ -293,26 +243,20 @@ function StatCard({
 }
 
 function QuickLink({
-  href,
-  icon: Icon,
-  label,
-  description,
+  href, icon: Icon, label, description,
 }: {
-  href: string;
-  icon: React.ElementType;
-  label: string;
-  description: string;
+  href: string; icon: React.ElementType; label: string; description: string;
 }) {
   return (
     <Link
       href={href}
-      className="bg-white rounded-xl border border-gray-200 p-5 hover:border-primary/30 hover:shadow-md transition-all group"
+      className="bg-white/[0.04] backdrop-blur-sm rounded-2xl border border-white/[0.06] p-5 hover:border-accent/20 hover:bg-white/[0.06] transition-all group"
     >
-      <Icon className="w-6 h-6 text-gray-400 group-hover:text-primary transition-colors mb-3" />
-      <p className="font-semibold text-gray-900 group-hover:text-primary transition-colors">
+      <Icon className="w-6 h-6 text-white/30 group-hover:text-accent transition-colors mb-3" />
+      <p className="font-semibold text-white/80 group-hover:text-accent transition-colors">
         {label}
       </p>
-      <p className="text-sm text-gray-500 mt-1">{description}</p>
+      <p className="text-sm text-white/40 mt-1">{description}</p>
     </Link>
   );
 }
