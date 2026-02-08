@@ -20,6 +20,7 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
   const [squintAmount, setSquintAmount] = useState(0);       // 0..1
   const [pupilScale, setPupilScale] = useState(1);            // 0.7..1.3
   const [mode, setMode] = useState<EyeMode>('idle');
+  const [isNodding, setIsNodding] = useState(false);
 
   // Refs for animation loops (avoid stale closures)
   const modeRef = useRef<EyeMode>('idle');
@@ -28,6 +29,7 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
   const saccadeTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const idleTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
   const pupilDriftRAF = useRef<number>(0);
+  const nodTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const uid = useId().replace(/:/g, '');
 
@@ -290,6 +292,37 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
     return () => { mounted = false; };
   }, []);
 
+  // ─── CTA nod detection (asiente al hover sobre botones/CTAs) ───
+  useEffect(() => {
+    const isCTA = (el: Element | null): boolean => {
+      if (!el) return false;
+      const tag = el.tagName;
+      if (tag === 'BUTTON') return true;
+      if (tag === 'A' && (el as HTMLAnchorElement).href) return true;
+      if (el.getAttribute('role') === 'button') return true;
+      // Links with CTA-like classes
+      if (el.closest('button, a[href], [role="button"]')) return true;
+      return false;
+    };
+
+    const handleOver = (e: PointerEvent) => {
+      const target = e.target as Element;
+      if (isCTA(target)) {
+        // Don't re-trigger if already nodding
+        clearTimeout(nodTimer.current);
+        setIsNodding(true);
+        // Nod lasts ~900ms (3 quick bobs)
+        nodTimer.current = setTimeout(() => setIsNodding(false), 900);
+      }
+    };
+
+    document.addEventListener('pointerover', handleOver, { passive: true });
+    return () => {
+      document.removeEventListener('pointerover', handleOver);
+      clearTimeout(nodTimer.current);
+    };
+  }, []);
+
   // ─── Eye touch handlers ────────────────────────────────────────
   const handleEyeDown = useCallback(() => {
     setIsEyeTouched(true);
@@ -348,17 +381,31 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
               0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
               50% { opacity: 1; transform: translateX(-50%) scale(1.15); }
             }
+            @keyframes eyeNod {
+              0%   { transform: translateY(0) rotate(0deg); }
+              12%  { transform: translateY(6%) rotate(3deg); }
+              24%  { transform: translateY(-1%) rotate(-1deg); }
+              36%  { transform: translateY(5%) rotate(2.5deg); }
+              48%  { transform: translateY(0) rotate(-0.5deg); }
+              60%  { transform: translateY(4%) rotate(2deg); }
+              75%  { transform: translateY(0) rotate(0deg); }
+              100% { transform: translateY(0) rotate(0deg); }
+            }
+            .eye-nodding {
+              animation: eyeNod 0.9s ease-in-out;
+            }
           `}</style>
         </>
       )}
 
       {/* Pin container */}
       <div
-        className="relative"
+        className={`relative${isNodding ? ' eye-nodding' : ''}`}
         style={{
           width: w,
           height: h,
           filter: `drop-shadow(0 ${Math.max(2, 12 * scale)}px ${Math.max(4, 30 * scale)}px rgba(0,0,0,0.55))`,
+          transformOrigin: 'center bottom',
         }}
       >
         {/* Pin SVG */}
