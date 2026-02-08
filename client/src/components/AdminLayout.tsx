@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import logo from '@/assets/logo.png';
+import EyeLogo from '@/components/EyeLogo';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -119,9 +119,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div className="p-5 border-b border-white/[0.06]">
           <div className="flex items-center justify-between">
             <Link href="/admin" className="flex items-center gap-3 group">
-              <div className="relative">
-                <img src={logo} alt="Visto en Maps" className="h-9 w-auto group-hover:scale-105 transition-transform" />
-              </div>
+              <EyeLogo size={36} />
               <div>
                 <p className="text-[13px] font-bold text-white/90 tracking-tight">Visto en Maps</p>
                 <p className="text-[9px] text-accent/70 uppercase tracking-[0.2em] font-semibold flex items-center gap-1">
@@ -220,7 +218,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           >
             <Menu className="w-5 h-5 text-white/70" />
           </button>
-          <img src={logo} alt="Visto en Maps" className="h-7 w-auto" />
+          <EyeLogo size={28} />
           <span className="text-[10px] text-accent/60 font-semibold uppercase tracking-[0.15em]">Admin</span>
         </header>
 

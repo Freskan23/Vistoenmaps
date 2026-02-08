@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { toast } from 'sonner';
 import Header from '@/components/Header';
+import EyeLogo from '@/components/EyeLogo';
 import { Mail, Lock } from 'lucide-react';
 
 export default function LoginPage() {
@@ -42,7 +43,11 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 flex flex-col">
       <Header />
       <div className="flex-1 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
+        <div className="w-full max-w-md">
+          <div className="flex justify-center mb-6">
+            <EyeLogo size={64} />
+          </div>
+        <Card>
           <CardHeader>
             <CardTitle>Iniciar Sesion</CardTitle>
             <CardDescription>Accede a tu cuenta para ver tus recomendaciones de directorios</CardDescription>
@@ -90,6 +95,7 @@ export default function LoginPage() {
             </CardFooter>
           </form>
         </Card>
+        </div>
       </div>
     </div>
   );

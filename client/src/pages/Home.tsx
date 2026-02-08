@@ -5,6 +5,7 @@ import CategoryIcon from "@/components/CategoryIcon";
 import SearchBar from "@/components/SearchBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import EyeLogo from "@/components/EyeLogo";
 import { motion } from "framer-motion";
 import SEOHead from "@/components/SEOHead";
 
@@ -73,6 +74,14 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="mb-6"
+              >
+                <EyeLogo size={100} />
+              </motion.div>
               <div className="flex items-center gap-2 mb-5">
                 <MapPin className="w-5 h-5 text-accent" />
                 <span className="text-sm font-semibold text-primary-foreground/70 uppercase tracking-wider">

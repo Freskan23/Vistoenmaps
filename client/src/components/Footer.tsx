@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { categorias, ciudades } from "@/data";
-import logo from "@/assets/logo.png";
+import EyeLogo from "@/components/EyeLogo";
 
 export default function Footer() {
   return (
@@ -12,13 +12,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="bg-white/10 p-2 rounded-xl backdrop-blur-sm">
-                <img
-                  src={logo}
-                  alt="Visto en Maps"
-                  className="h-8 w-auto object-contain brightness-0 invert"
-                />
-              </div>
+              <EyeLogo size={32} />
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
               Directorio de profesionales y negocios locales verificados en Google Maps. 
