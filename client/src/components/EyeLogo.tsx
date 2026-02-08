@@ -30,7 +30,6 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
   const idleTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
   const pupilDriftRAF = useRef<number>(0);
   const nodTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const wanderRAF = useRef<number>(0);
   const hasOrientationRef = useRef(false);
 
   const uid = useId().replace(/:/g, '');
@@ -65,78 +64,68 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
     idleTimeout.current = setTimeout(goIdle, 2000);
   }, [goIdle]);
 
-  // ─── Micro-saccades (idle mode) ────────────────────────────────
+  // ─── Idle motion: saccades (desktop) + wandering gaze (móvil) ──
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (mq.matches) return;
 
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
     let mounted = true;
-    const doSaccade = () => {
-      if (!mounted || modeRef.current !== 'idle' || !irisRef.current) return;
-      // Tiny random jump: ±1–3px scaled
-      const sx = (Math.random() - 0.5) * 6 * scale;
-      const sy = (Math.random() - 0.5) * 4 * scale;
-      irisRef.current.style.transition = 'transform 0.06s ease-out';
-      irisRef.current.style.transform = `translate(${sx}px, ${sy}px)`;
-      // Return to center after brief pause
-      setTimeout(() => {
-        if (!mounted || modeRef.current !== 'idle' || !irisRef.current) return;
-        irisRef.current.style.transition = 'transform 0.3s ease-out';
-        irisRef.current.style.transform = 'translate(0px, 0px)';
-      }, 80 + Math.random() * 120);
-    };
 
-    const loop = () => {
-      if (!mounted) return;
-      const delay = 800 + Math.random() * 2200;
-      saccadeTimer.current = setTimeout(() => {
-        doSaccade();
-        loop();
-      }, delay);
-    };
-    loop();
+    if (isTouch) {
+      // ── MOBILE: Wandering gaze con intervalos ──────────────
+      // Cada 1.5-3s, el ojo elige un nuevo punto aleatorio.
+      // Movimiento amplio y visible. Se detiene si acelerómetro activo.
+      const wanderRange = maxOffset * 0.9; // Casi todo el rango
+
+      const moveToRandom = () => {
+        if (!mounted || !irisRef.current) return;
+        if (hasOrientationRef.current || modeRef.current !== 'idle') {
+          // Si el acelerómetro tomó el control, no interferir
+          saccadeTimer.current = setTimeout(moveToRandom, 2000);
+          return;
+        }
+        const tx = (Math.random() - 0.5) * 2 * wanderRange;
+        const ty = (Math.random() - 0.5) * 2 * wanderRange * 0.7;
+        irisRef.current.style.transition = 'transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1)';
+        irisRef.current.style.transform = `translate(${tx}px, ${ty}px)`;
+        const delay = 1500 + Math.random() * 1500;
+        saccadeTimer.current = setTimeout(moveToRandom, delay);
+      };
+
+      // Arrancar tras breve pausa
+      saccadeTimer.current = setTimeout(moveToRandom, 800);
+    } else {
+      // ── DESKTOP: Micro-saccades clásicas ──────────────────
+      const doSaccade = () => {
+        if (!mounted || modeRef.current !== 'idle' || !irisRef.current) return;
+        const sx = (Math.random() - 0.5) * 6 * scale;
+        const sy = (Math.random() - 0.5) * 4 * scale;
+        irisRef.current.style.transition = 'transform 0.06s ease-out';
+        irisRef.current.style.transform = `translate(${sx}px, ${sy}px)`;
+        setTimeout(() => {
+          if (!mounted || modeRef.current !== 'idle' || !irisRef.current) return;
+          irisRef.current.style.transition = 'transform 0.3s ease-out';
+          irisRef.current.style.transform = 'translate(0px, 0px)';
+        }, 80 + Math.random() * 120);
+      };
+
+      const loop = () => {
+        if (!mounted) return;
+        const delay = 800 + Math.random() * 2200;
+        saccadeTimer.current = setTimeout(() => {
+          doSaccade();
+          loop();
+        }, delay);
+      };
+      loop();
+    }
 
     return () => {
       mounted = false;
       clearTimeout(saccadeTimer.current);
     };
-  }, [scale]);
-
-  // ─── Wandering gaze (móvil sin acelerómetro) ──────────────────
-  // Movimiento errante lento cuando no hay interacción — el ojo mira
-  // alrededor curioso. Solo se activa si no hay acelerómetro ni pointer.
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (mq.matches) return;
-
-    // Solo en táctil (no hay pointermove continuo)
-    const isTouch = window.matchMedia('(pointer: coarse)').matches;
-    if (!isTouch) return;
-
-    let mounted = true;
-
-    const animate = (time: number) => {
-      if (!mounted || !irisRef.current) return;
-      // No interferir si el acelerómetro está activo o si no está en idle
-      if (hasOrientationRef.current || modeRef.current !== 'idle') {
-        wanderRAF.current = requestAnimationFrame(animate);
-        return;
-      }
-      // Lissajous — dos frecuencias irracionales para que nunca se repita
-      const ox = Math.sin(time * 0.0004) * maxOffset * 0.7 + Math.sin(time * 0.00097) * maxOffset * 0.3;
-      const oy = Math.cos(time * 0.00053) * maxOffset * 0.5 + Math.sin(time * 0.00031) * maxOffset * 0.35;
-      irisRef.current.style.transition = 'transform 0.5s ease-out';
-      irisRef.current.style.transform = `translate(${ox}px, ${oy}px)`;
-      wanderRAF.current = requestAnimationFrame(animate);
-    };
-
-    wanderRAF.current = requestAnimationFrame(animate);
-
-    return () => {
-      mounted = false;
-      cancelAnimationFrame(wanderRAF.current);
-    };
-  }, [maxOffset, scale]);
+  }, [scale, maxOffset]);
 
   // ─── Pupil micro-drift (organic tremor) ─────────────────────────
   // Continuous subtle movement — like the natural tremor of a living eye.
