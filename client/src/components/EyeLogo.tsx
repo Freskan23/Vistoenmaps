@@ -10,7 +10,17 @@ interface EyeLogoProps {
 export default function EyeLogo({ size = 40, className = '', glow = false }: EyeLogoProps) {
   const irisRef = useRef<HTMLDivElement>(null);
   const eyeRef = useRef<HTMLDivElement>(null);
-  const [blinking, setBlinking] = useState(false);
+  const upperLidRef = useRef<HTMLDivElement>(null);
+  const lowerLidRef = useRef<HTMLDivElement>(null);
+
+  const [isBlinking, setIsBlinking] = useState(false);
+  const [isEyeTouched, setIsEyeTouched] = useState(false);
+  const [squintAmount, setSquintAmount] = useState(0); // 0 to 1
+
+  // Accelerometer state
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [accelSupported, setAccelSupported] = useState(false);
+
   // Unique ID prefix to avoid SVG gradient ID collisions when multiple EyeLogos on page
   const uid = useId().replace(/:/g, '');
 
@@ -26,34 +36,97 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
   const pupilSize = 42 * scale;
   const maxOffset = 20 * scale;
 
-  // Mouse tracking
-  const moveEye = useCallback((mx: number, my: number) => {
+  // Smooth iris movement
+  const updateIrisPosition = useCallback((mx: number | null, my: number | null, tiltX: number, tiltY: number) => {
     if (!irisRef.current || !eyeRef.current) return;
+
     const rect = eyeRef.current.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-    const angle = Math.atan2(my - cy, mx - cx);
-    const rawDist = Math.hypot(mx - cx, my - cy);
-    const dist = Math.min(rawDist * 0.05, maxOffset);
-    irisRef.current.style.transform = `translate(${Math.cos(angle) * dist}px, ${Math.sin(angle) * dist}px)`;
-  }, [maxOffset]);
+
+    let targetX = 0;
+    let targetY = 0;
+    let distanceToCenter = 1000; // default far away
+
+    if (mx !== null && my !== null) {
+      const dx = mx - cx;
+      const dy = my - cy;
+      const angle = Math.atan2(dy, dx);
+      distanceToCenter = Math.hypot(dx, dy);
+      const dist = Math.min(distanceToCenter * 0.05, maxOffset);
+      targetX = Math.cos(angle) * dist;
+      targetY = Math.sin(angle) * dist;
+    } else {
+      // Use tilt if no pointer
+      targetX = Math.max(-1, Math.min(1, tiltX / 30)) * maxOffset;
+      targetY = Math.max(-1, Math.min(1, tiltY / 30)) * maxOffset;
+    }
+
+    irisRef.current.style.transform = `translate(${targetX}px, ${targetY}px)`;
+
+    // Proximity Squinting (Fear)
+    // If pointer is within 250px (scaled), start squinting
+    const threshold = 250 * scale;
+    if (mx !== null && my !== null && distanceToCenter < threshold) {
+      const fear = 1 - (distanceToCenter / threshold);
+      setSquintAmount(Math.pow(fear, 1.2) * 0.7); // Max 70% squint
+    } else {
+      setSquintAmount(0);
+    }
+  }, [maxOffset, scale]);
 
   useEffect(() => {
-    // Check reduced motion preference
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (mq.matches) return;
 
-    const handleMouse = (e: MouseEvent) => moveEye(e.clientX, e.clientY);
-    const handleTouch = (e: TouchEvent) => moveEye(e.touches[0].clientX, e.touches[0].clientY);
+    let pointerX: number | null = null;
+    let pointerY: number | null = null;
+    let currentTiltX = 0;
+    let currentTiltY = 0;
 
-    document.addEventListener('mousemove', handleMouse, { passive: true });
-    document.addEventListener('touchmove', handleTouch, { passive: true });
+    const handlePointer = (e: PointerEvent) => {
+      pointerX = e.clientX;
+      pointerY = e.clientY;
+      updateIrisPosition(pointerX, pointerY, currentTiltX, currentTiltY);
+    };
+
+    const handlePointerLeave = () => {
+      pointerX = null;
+      pointerY = null;
+      updateIrisPosition(null, null, currentTiltX, currentTiltY);
+    };
+
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      // gamma: left to right (-90 to 90)
+      // beta: front to back (-180 to 180)
+      if (e.gamma !== null && e.beta !== null) {
+        currentTiltX = e.gamma;
+        currentTiltY = e.beta - 45; // Offset for typical viewing angle
+        setTilt({ x: currentTiltX, y: currentTiltY });
+        updateIrisPosition(pointerX, pointerY, currentTiltX, currentTiltY);
+      }
+    };
+
+    // Use pointer events for unified mouse/touch
+    document.addEventListener('pointermove', handlePointer, { passive: true });
+    document.addEventListener('pointerdown', handlePointer, { passive: true });
+    document.addEventListener('pointerup', handlePointerLeave, { passive: true });
+    window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+
+    // Check if orientation is supported and request permission if needed
+    if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+      setAccelSupported(true);
+    } else if (window.DeviceOrientationEvent) {
+      setAccelSupported(true);
+    }
 
     return () => {
-      document.removeEventListener('mousemove', handleMouse);
-      document.removeEventListener('touchmove', handleTouch);
+      document.removeEventListener('pointermove', handlePointer);
+      document.removeEventListener('pointerdown', handlePointer);
+      document.removeEventListener('pointerup', handlePointerLeave);
+      window.removeEventListener('deviceorientation', handleOrientation);
     };
-  }, [moveEye]);
+  }, [updateIrisPosition]);
 
   // Blink loop
   useEffect(() => {
@@ -62,17 +135,17 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
 
     let mounted = true;
     const doBlink = () => {
-      if (!mounted) return;
-      setBlinking(true);
+      if (!mounted || isEyeTouched) return;
+      setIsBlinking(true);
       setTimeout(() => {
         if (!mounted) return;
-        setBlinking(false);
+        setIsBlinking(false);
         // Occasional double blink
         if (Math.random() < 0.2) {
           setTimeout(() => {
-            if (!mounted) return;
-            setBlinking(true);
-            setTimeout(() => mounted && setBlinking(false), 150);
+            if (!mounted || isEyeTouched) return;
+            setIsBlinking(true);
+            setTimeout(() => mounted && setIsBlinking(false), 150);
           }, 280);
         }
       }, 150);
@@ -89,7 +162,20 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
     loop();
 
     return () => { mounted = false; };
-  }, []);
+  }, [isEyeTouched]);
+
+  const requestAccelPermission = async () => {
+    if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+      try {
+        const permission = await (DeviceOrientationEvent as any).requestPermission();
+        if (permission === 'granted') {
+          // Permission granted
+        }
+      } catch (err) {
+        console.error('Error requesting device orientation permission:', err);
+      }
+    }
+  };
 
   // Highlight sizes
   const hlMain = Math.max(3, 13 * scale);
@@ -212,7 +298,13 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
       {/* Eye socket */}
       <div
         ref={eyeRef}
-        className="absolute overflow-hidden"
+        className="absolute overflow-hidden cursor-pointer"
+        onPointerDown={(e) => {
+          setIsEyeTouched(true);
+          requestAccelPermission();
+        }}
+        onPointerUp={() => setIsEyeTouched(false)}
+        onPointerLeave={() => setIsEyeTouched(false)}
         style={{
           top: eyeTop,
           left: '50%',
@@ -221,35 +313,38 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
           height: eyeSize,
           borderRadius: '50%',
           zIndex: 5,
+          touchAction: 'none'
         }}
       >
-        {/* Eyelids for blink */}
+        {/* Eyelids for blink/squint/touch */}
         <div
+          ref={upperLidRef}
           style={{
             position: 'absolute',
             width: '100%',
-            height: '52%',
+            height: '55%',
             left: 0,
             top: 0,
             background: 'linear-gradient(180deg, #d07a0e 0%, #c06a00 100%)',
             transformOrigin: 'top center',
-            transform: blinking ? 'scaleY(1)' : 'scaleY(0)',
-            transition: 'transform 0.12s ease-in',
+            transform: isEyeTouched || isBlinking ? 'scaleY(1)' : `scaleY(${squintAmount})`,
+            transition: isBlinking || isEyeTouched ? 'transform 0.1s ease-in' : 'transform 0.15s ease-out',
             zIndex: 20,
             pointerEvents: 'none',
           }}
         />
         <div
+          ref={lowerLidRef}
           style={{
             position: 'absolute',
             width: '100%',
-            height: '52%',
+            height: '55%',
             left: 0,
             bottom: 0,
             background: 'linear-gradient(0deg, #b85c00 0%, #c06a00 100%)',
             transformOrigin: 'bottom center',
-            transform: blinking ? 'scaleY(1)' : 'scaleY(0)',
-            transition: 'transform 0.12s ease-in',
+            transform: isEyeTouched || isBlinking ? 'scaleY(1)' : `scaleY(${squintAmount})`,
+            transition: isBlinking || isEyeTouched ? 'transform 0.1s ease-in' : 'transform 0.15s ease-out',
             zIndex: 20,
             pointerEvents: 'none',
           }}
