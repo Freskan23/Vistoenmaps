@@ -22,6 +22,7 @@ import AdminUsuariosPage from "./pages/admin/AdminUsuariosPage";
 import AdminNotificacionesPage from "./pages/admin/AdminNotificacionesPage";
 import AdminConfiguracionPage from "./pages/admin/AdminConfiguracionPage";
 import { AuthProvider } from "./context/AuthContext";
+import FloatingEye from "./components/FloatingEye";
 
 function Router() {
   return (
@@ -58,6 +59,7 @@ function App() {
           <TooltipProvider>
             <Toaster />
             <Router />
+            <FloatingEye />
           </TooltipProvider>
         </AuthProvider>
       </ThemeProvider>
