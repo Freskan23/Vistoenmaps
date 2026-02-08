@@ -177,6 +177,7 @@ export default function MiNegocioPage() {
     };
 
     let error;
+    const isNew = !existingId;
 
     if (existingId) {
       const result = await supabase
@@ -203,7 +204,29 @@ export default function MiNegocioPage() {
       return;
     }
 
-    toast.success(existingId ? 'Negocio actualizado' : 'Negocio creado — pendiente de aprobacion por el equipo de Visto en Maps');
+    // Notificar al admin por email cuando se crea un negocio nuevo
+    if (isNew) {
+      try {
+        await fetch('/api/notify-admin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nombre: form.nombre,
+            categoria: form.categoria_slug,
+            ciudad: form.ciudad,
+            provincia: form.provincia,
+            email: form.email,
+            telefono: form.telefono,
+            user_id: user.id,
+          }),
+        });
+      } catch {
+        // No bloquear si falla el email
+        console.warn('No se pudo enviar notificacion al admin');
+      }
+    }
+
+    toast.success(isNew ? 'Negocio creado — pendiente de aprobacion por el equipo de Visto en Maps' : 'Negocio actualizado');
     // Redirect to dashboard after save
     setLocation('/dashboard');
   };
