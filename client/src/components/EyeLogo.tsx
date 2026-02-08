@@ -99,19 +99,47 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
     const handleOrientation = (e: DeviceOrientationEvent) => {
       // gamma: left to right (-90 to 90)
       // beta: front to back (-180 to 180)
-      if (e.gamma !== null && e.beta !== null) {
-        currentTiltX = e.gamma;
-        currentTiltY = e.beta - 45; // Offset for typical viewing angle
+      let g = e.gamma;
+      let b = e.beta;
+
+      if (typeof g === 'number' && typeof b === 'number') {
+        // Handle screen orientation if available
+        const orientation = (window.screen as any).orientation?.angle || (window as any).orientation || 0;
+
+        if (orientation === 90) {
+          [g, b] = [-b, g];
+        } else if (orientation === -90 || orientation === 270) {
+          [g, b] = [b, -g];
+        } else if (orientation === 180) {
+          [g, b] = [-g, -b];
+        }
+
+        currentTiltX = g;
+        currentTiltY = b - 45; // Offset for typical viewing angle
         setTilt({ x: currentTiltX, y: currentTiltY });
         updateIrisPosition(pointerX, pointerY, currentTiltX, currentTiltY);
       }
     };
 
     // Use pointer events for unified mouse/touch
+    // Added globally so the eye follows the user's interaction anywhere on the page
     document.addEventListener('pointermove', handlePointer, { passive: true });
     document.addEventListener('pointerdown', handlePointer, { passive: true });
     document.addEventListener('pointerup', handlePointerLeave, { passive: true });
+    document.addEventListener('pointercancel', handlePointerLeave, { passive: true });
+
+    // Attempt to listen to both standard and absolute orientation
     window.addEventListener('deviceorientation', handleOrientation, { passive: true });
+    window.addEventListener('deviceorientationabsolute', handleOrientation as any, { passive: true });
+
+    // One-time interaction to unlock audio/sensors if browser requires it
+    const unlockSensors = () => {
+      requestAccelPermission();
+      document.removeEventListener('pointerdown', unlockSensors);
+      document.removeEventListener('keydown', unlockSensors);
+    };
+    document.addEventListener('pointerdown', unlockSensors, { passive: true });
+    document.addEventListener('keydown', unlockSensors, { passive: true });
 
     // Check if orientation is supported and request permission if needed
     if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
@@ -124,7 +152,9 @@ export default function EyeLogo({ size = 40, className = '', glow = false }: Eye
       document.removeEventListener('pointermove', handlePointer);
       document.removeEventListener('pointerdown', handlePointer);
       document.removeEventListener('pointerup', handlePointerLeave);
+      document.removeEventListener('pointercancel', handlePointerLeave);
       window.removeEventListener('deviceorientation', handleOrientation);
+      window.removeEventListener('deviceorientationabsolute', handleOrientation as any);
     };
   }, [updateIrisPosition]);
 

@@ -221,47 +221,30 @@ export default function Header({ variant = "solid" }: HeaderProps) {
             <X className="w-4 h-4" />
           </button>
 
-          {/* ---- Logo Section ---- */}
-          <div className="w-full pt-14 pb-5 px-6 flex flex-col items-center">
-            <div
-              className={cn(
-                "transition-all duration-500 ease-out",
-                menuOpen ? "opacity-100 scale-100" : "opacity-0 scale-75"
-              )}
-              style={{ transitionDelay: menuOpen ? "200ms" : "0ms" }}
-            >
-              <div className="overflow-hidden" style={{ width: 55, height: 72 }}>
-                <EyeLogo size={72} />
+          {/* ---- Top Section: Logo & Search ---- */}
+          <div className="w-full pt-12 pb-8 px-6">
+            <div className={cn(
+              "flex flex-col items-center transition-all duration-700 ease-out",
+              menuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"
+            )}>
+              <div className="mb-4">
+                <EyeLogo size={100} />
+              </div>
+              <div className="text-center mb-8">
+                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 block mb-1">
+                  Visto en
+                </span>
+                <span
+                  className="block text-4xl font-black tracking-tighter bg-gradient-to-r from-[#fcc44e] via-[#f5a623] to-[#C45B28] bg-clip-text text-transparent"
+                  style={{ fontFamily: "'Outfit', 'Inter', sans-serif", lineHeight: 0.8 }}
+                >
+                  Maps
+                </span>
+              </div>
+              <div className="w-full max-w-sm">
+                <SearchBar variant="hero" />
               </div>
             </div>
-            <div
-              className={cn(
-                "w-full mt-3 text-center transition-all duration-500 ease-out",
-                menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-              )}
-              style={{ transitionDelay: menuOpen ? "300ms" : "0ms" }}
-            >
-              <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40 block">
-                Visto en
-              </span>
-              <span
-                className="block text-xl font-black tracking-tight bg-gradient-to-r from-[#fcc44e] via-[#f5a623] to-[#C45B28] bg-clip-text text-transparent"
-                style={{ fontFamily: "'Outfit', 'Inter', sans-serif" }}
-              >
-                Maps
-              </span>
-            </div>
-          </div>
-
-          {/* ---- Search Bar (mobile) ---- */}
-          <div
-            className={cn(
-              "w-full px-5 pb-4 transition-all duration-500 ease-out",
-              menuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
-            )}
-            style={{ transitionDelay: menuOpen ? "350ms" : "0ms" }}
-          >
-            <SearchBar variant="hero" />
           </div>
 
           {/* ---- Divider ---- */}
