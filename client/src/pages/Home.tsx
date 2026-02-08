@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { MapPin, ArrowRight } from "lucide-react";
+import { MapPin, ArrowRight, CheckCircle2, Clock, Shield, Sparkles, Star, Eye } from "lucide-react";
 import { categorias } from "@/data";
 import CategoryIcon from "@/components/CategoryIcon";
 import SearchBar from "@/components/SearchBar";
@@ -9,9 +9,19 @@ import EyeLogo from "@/components/EyeLogo";
 import { motion } from "framer-motion";
 import SEOHead from "@/components/SEOHead";
 
+// Color accents per category for visual variety
+const catColors = [
+  { bg: "from-amber-500/20 to-orange-500/10", icon: "text-amber-500", border: "border-amber-500/20", hover: "hover:border-amber-500/40 hover:shadow-amber-500/10" },
+  { bg: "from-blue-500/20 to-cyan-500/10", icon: "text-blue-500", border: "border-blue-500/20", hover: "hover:border-blue-500/40 hover:shadow-blue-500/10" },
+  { bg: "from-yellow-500/20 to-amber-500/10", icon: "text-yellow-600", border: "border-yellow-500/20", hover: "hover:border-yellow-500/40 hover:shadow-yellow-500/10" },
+  { bg: "from-purple-500/20 to-pink-500/10", icon: "text-purple-500", border: "border-purple-500/20", hover: "hover:border-purple-500/40 hover:shadow-purple-500/10" },
+  { bg: "from-emerald-500/20 to-teal-500/10", icon: "text-emerald-500", border: "border-emerald-500/20", hover: "hover:border-emerald-500/40 hover:shadow-emerald-500/10" },
+  { bg: "from-rose-500/20 to-red-500/10", icon: "text-rose-500", border: "border-rose-500/20", hover: "hover:border-rose-500/40 hover:shadow-rose-500/10" },
+];
+
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-[#fafaf7]">
       <SEOHead
         title="Visto en Maps — Directorio de profesionales y negocios locales"
         description="Encuentra profesionales y negocios locales verificados en Google Maps. Cerrajeros, fontaneros, electricistas y más servicios cerca de ti en toda España."
@@ -55,179 +65,312 @@ export default function Home() {
         }}
       />
 
-      {/* Hero Section — Mesh gradient with ambient orbs */}
+      {/* ===== HERO: EL OJO COMO PROTAGONISTA ABSOLUTO ===== */}
       <section className="relative overflow-hidden -mt-16 pt-16">
-        {/* Base background */}
-        <div className="absolute inset-0 bg-primary" />
-        {/* Ambient gradient orbs */}
+        {/* Vibrant gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628] via-[#0f2035] to-[#142d45]" />
+
+        {/* Dramatic light effects radiating from center */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-accent/20 rounded-full blur-[120px]" />
-          <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-primary-foreground/5 rounded-full blur-[100px]" />
-          <div className="absolute top-1/2 left-1/3 w-[300px] h-[300px] bg-accent/10 rounded-full blur-[80px]" />
+          {/* Main eye glow - cyan radiating from where the eye will be */}
+          <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-cyan-500/15 rounded-full blur-[120px]" />
+          {/* Warm golden glow from pin */}
+          <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-amber-500/12 rounded-full blur-[80px]" />
+          {/* Side ambient */}
+          <div className="absolute -top-20 right-[10%] w-[300px] h-[300px] bg-accent/15 rounded-full blur-[100px]" />
+          <div className="absolute bottom-[30%] left-[5%] w-[300px] h-[300px] bg-cyan-500/8 rounded-full blur-[100px]" />
         </div>
 
-        <div className="relative container py-24 md:py-32">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Left: Text + Search */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="mb-6"
-              >
-                <EyeLogo size={100} />
-              </motion.div>
-              <div className="flex items-center gap-2 mb-5">
-                <MapPin className="w-5 h-5 text-accent" />
-                <span className="text-sm font-semibold text-primary-foreground/70 uppercase tracking-wider">
-                  Directorio local verificado
-                </span>
-              </div>
-              <motion.h1
-                initial={{ opacity: 0, letterSpacing: "0.02em" }}
-                animate={{ opacity: 1, letterSpacing: "-0.03em" }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="text-[clamp(2.5rem,5vw+1rem,4.5rem)] leading-[1.05] font-extrabold text-white mb-6"
-              >
-                Encuentra profesionales{" "}
-                <span className="text-accent">cerca de ti</span>
-              </motion.h1>
-              <p className="text-lg text-white/70 leading-relaxed mb-8 max-w-lg">
-                El directorio de profesionales y negocios locales con presencia verificada en Google Maps.
-              </p>
-              <div className="max-w-md">
-                <SearchBar variant="hero" />
-              </div>
+        {/* Subtle radial grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
+          }}
+        />
 
-              {/* Suggestion chips */}
-              <div className="flex flex-wrap gap-2 mt-5">
-                {categorias.slice(0, 4).map((cat) => (
-                  <Link key={cat.slug} href={`/${cat.slug}`}>
-                    <span className="px-3.5 py-1.5 bg-white/10 backdrop-blur-sm text-white/80 text-sm rounded-full border border-white/15 hover:bg-white/20 hover:text-white transition-colors cursor-pointer">
-                      {cat.nombre}
-                    </span>
-                  </Link>
-                ))}
-              </div>
+        <div className="relative container py-12 md:py-16 lg:py-20">
+          {/* THE EYE — Center stage, massive, impossible to miss */}
+          <div className="flex flex-col items-center text-center">
+            {/* Pin drop animation — falls from above like a Google Maps pin */}
+            <motion.div
+              initial={{ opacity: 0, y: -120, scale: 0.6 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{
+                duration: 0.8,
+                ease: [0.34, 1.56, 0.64, 1], // Spring-like bounce
+              }}
+              className="relative mb-4"
+            >
+              {/* Shadow on "ground" that grows as pin lands */}
+              <motion.div
+                initial={{ opacity: 0, scaleX: 0.3 }}
+                animate={{ opacity: 0.3, scaleX: 1 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-20 h-3 bg-black/40 rounded-[50%] blur-sm"
+              />
+              <EyeLogo size={160} glow />
             </motion.div>
 
-            {/* Right: Category quick-access grid (desktop only) */}
+            {/* Tagline — appears after pin lands */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="hidden lg:block"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              className="inline-flex items-center gap-2 bg-accent/15 backdrop-blur-sm border border-accent/25 rounded-full px-4 py-1.5 mb-5"
             >
-              <div className="grid grid-cols-2 gap-3">
-                {categorias.map((cat, index) => (
-                  <motion.div
-                    key={cat.slug}
-                    initial={{ opacity: 0, y: 12 }}
+              <Eye className="w-3.5 h-3.5 text-accent" />
+              <span className="text-[11px] font-bold text-accent uppercase tracking-widest">
+                Te estamos observando
+              </span>
+            </motion.div>
+
+            {/* Main headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="text-[clamp(2rem,5vw+0.5rem,3.8rem)] leading-[1.08] font-extrabold text-white mb-4 max-w-3xl"
+            >
+              Encuentra{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-accent">
+                profesionales
+              </span>
+              {" "}verificados cerca de ti
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.85 }}
+              className="text-base md:text-lg text-white/50 leading-relaxed mb-8 max-w-xl"
+            >
+              Cerrajeros, fontaneros, electricistas y más. Todos con presencia real y verificada en Google Maps.
+            </motion.p>
+
+            {/* Search bar — centered, prominent */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.0 }}
+              className="w-full max-w-lg mb-6"
+            >
+              <SearchBar variant="hero" />
+            </motion.div>
+
+            {/* Suggestion chips */}
+            <div className="flex flex-wrap justify-center gap-2 mb-8">
+              {categorias.slice(0, 4).map((cat, i) => (
+                <Link key={cat.slug} href={`/${cat.slug}`}>
+                  <motion.span
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.4 + index * 0.05 }}
+                    transition={{ duration: 0.3, delay: 1.1 + i * 0.08 }}
+                    className="px-3.5 py-1.5 bg-white/8 backdrop-blur-sm text-white/70 text-sm rounded-full border border-white/10 hover:bg-white/15 hover:text-white hover:border-white/25 transition-all cursor-pointer"
                   >
-                    <Link href={`/${cat.slug}`}>
-                      <div className="group flex items-center gap-3 bg-white/8 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/15 transition-all duration-200 cursor-pointer">
-                        <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-white/20 transition-colors">
-                          <CategoryIcon iconName={cat.icono} className="w-5 h-5 text-white/80" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <span className="text-white font-medium text-sm block">{cat.nombre}</span>
-                          <span className="text-white/40 text-xs block truncate">{cat.descripcion.split('.')[0]}</span>
-                        </div>
-                        <ArrowRight className="w-4 h-4 text-white/30 group-hover:text-white/60 transition-colors shrink-0" />
-                      </div>
-                    </Link>
-                  </motion.div>
-                ))}
+                    {cat.nombre}
+                  </motion.span>
+                </Link>
+              ))}
+            </div>
+
+            {/* Trust badges */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 1.3 }}
+              className="flex items-center justify-center gap-6 pt-4 border-t border-white/8"
+            >
+              <div className="flex items-center gap-1.5 text-white/40 text-xs">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400/80" />
+                <span>100% verificados</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-white/40 text-xs">
+                <Clock className="w-3.5 h-3.5 text-blue-400/80" />
+                <span>Urgencias 24/7</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-white/40 text-xs">
+                <MapPin className="w-3.5 h-3.5 text-accent/80" />
+                <span>Toda España</span>
               </div>
             </motion.div>
           </div>
         </div>
+
+        {/* Bottom wave separator */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 60" fill="none" className="w-full h-auto" preserveAspectRatio="none">
+            <path d="M0 60V20C240 45 480 0 720 20C960 40 1200 10 1440 30V60H0Z" fill="#fafaf7" />
+          </svg>
+        </div>
       </section>
 
-      {/* Categories Section */}
-      <section className="container py-16 md:py-24">
-        <div className="mb-10">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight mb-2">
-            Categorías de servicios
-          </h2>
-          <p className="text-muted-foreground">
-            Explora profesionales por tipo de servicio en toda España
-          </p>
-        </div>
+      {/* ===== CATEGORIES SECTION ===== */}
+      <section className="container py-12 md:py-16">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="flex items-end justify-between mb-8"
+        >
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-1 h-6 bg-accent rounded-full" />
+              <span className="text-xs font-bold text-accent uppercase tracking-wider">Servicios</span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
+              Categorías de servicios
+            </h2>
+            <p className="text-muted-foreground mt-1">
+              Explora profesionales por tipo de servicio en toda España
+            </p>
+          </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {categorias.map((cat, index) => (
-            <motion.div
-              key={cat.slug}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.4, delay: index * 0.06 }}
-            >
-              <Link href={`/${cat.slug}`}>
-                <div className="group relative bg-card border border-border/60 shadow-sm hover:shadow-lg rounded-xl p-6 transition-all duration-300 hover:scale-[1.02] cursor-pointer">
-                  <div className="relative">
-                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                      <CategoryIcon iconName={cat.icono} className="w-6 h-6 text-primary" />
-                    </div>
-                    <h3 className="font-bold text-lg text-foreground mb-1.5 group-hover:text-primary transition-colors">
-                      {cat.nombre}
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-4">
-                      {cat.descripcion}
-                    </p>
-                    <div className="flex items-center gap-1 text-sm font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                      Ver profesionales
-                      <ArrowRight className="w-4 h-4" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {categorias.map((cat, index) => {
+            const color = catColors[index % catColors.length];
+            return (
+              <motion.div
+                key={cat.slug}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ duration: 0.4, delay: index * 0.06 }}
+              >
+                <Link href={`/${cat.slug}`}>
+                  <div className={`group relative bg-white border ${color.border} shadow-sm ${color.hover} hover:shadow-xl rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden`}>
+                    {/* Subtle gradient bg on hover */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${color.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+                    <div className="relative">
+                      <div className="flex items-start gap-4">
+                        <div className={`w-12 h-12 bg-gradient-to-br ${color.bg} rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                          <CategoryIcon iconName={cat.icono} className={`w-6 h-6 ${color.icon}`} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-bold text-base text-foreground mb-1 group-hover:text-primary transition-colors">
+                            {cat.nombre}
+                          </h3>
+                          <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                            {cat.descripcion}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 text-sm font-semibold text-accent mt-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
+                        Ver profesionales
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
-      {/* Trust Section */}
-      <section className="bg-gradient-to-b from-background via-secondary/30 to-background">
-        <div className="container py-14 md:py-20">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4 }}
-            >
-              <div className="text-3xl font-extrabold text-primary tracking-tight mb-1">100%</div>
-              <p className="text-sm text-muted-foreground">Negocios verificados en Google Maps</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-            >
-              <div className="text-3xl font-extrabold text-primary tracking-tight mb-1">24/7</div>
-              <p className="text-sm text-muted-foreground">Servicios de urgencia disponibles</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-            >
-              <div className="text-3xl font-extrabold text-primary tracking-tight mb-1">España</div>
-              <p className="text-sm text-muted-foreground">Cobertura en ciudades y barrios</p>
-            </motion.div>
+      {/* ===== TRUST / WHY US SECTION ===== */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#fafaf7] via-primary/[0.04] to-[#fafaf7]" />
+        <div className="relative container py-14 md:py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4 }}
+            className="text-center mb-10"
+          >
+            <div className="inline-flex items-center gap-2 bg-primary/5 border border-primary/10 rounded-full px-4 py-1.5 mb-4">
+              <Shield className="w-4 h-4 text-primary" />
+              <span className="text-xs font-bold text-primary uppercase tracking-wider">
+                Confianza garantizada
+              </span>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-foreground tracking-tight">
+              ¿Por qué Visto en Maps?
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                icon: CheckCircle2,
+                color: "text-emerald-500",
+                bg: "from-emerald-500/15 to-emerald-500/5",
+                title: "100% Verificados",
+                desc: "Todos los negocios tienen presencia real y verificada en Google Maps",
+              },
+              {
+                icon: Clock,
+                color: "text-blue-500",
+                bg: "from-blue-500/15 to-blue-500/5",
+                title: "Urgencias 24/7",
+                desc: "Servicios de cerrajería, fontanería y electricidad disponibles a cualquier hora",
+              },
+              {
+                icon: Star,
+                color: "text-amber-500",
+                bg: "from-amber-500/15 to-amber-500/5",
+                title: "Toda España",
+                desc: "Cobertura en las principales ciudades y barrios de todo el territorio nacional",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                className="bg-white border border-border/50 rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                <div className={`w-14 h-14 bg-gradient-to-br ${item.bg} rounded-2xl flex items-center justify-center mx-auto mb-4`}>
+                  <item.icon className={`w-7 h-7 ${item.color}`} />
+                </div>
+                <h3 className="font-bold text-lg text-foreground mb-2">{item.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
+      </section>
+
+      {/* ===== CTA SECTION with EyeLogo ===== */}
+      <section className="container pb-12 md:pb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="relative bg-gradient-to-br from-[#0a1628] via-[#0f2035] to-[#142d45] rounded-3xl p-8 md:p-12 overflow-hidden"
+        >
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-[300px] h-[300px] bg-accent/15 rounded-full blur-[80px]" />
+            <div className="absolute -bottom-20 -left-20 w-[200px] h-[200px] bg-cyan-500/10 rounded-full blur-[60px]" />
+          </div>
+          <div className="relative flex flex-col md:flex-row items-center gap-6 md:gap-10">
+            {/* EyeLogo in CTA — watching you, reminding you */}
+            <div className="shrink-0 hidden md:block">
+              <EyeLogo size={80} glow />
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h2 className="text-xl md:text-2xl font-extrabold text-white mb-2">
+                ¿Tienes un negocio local?
+              </h2>
+              <p className="text-white/50 text-sm md:text-base">
+                Registra tu negocio gratis y aparece en nuestro directorio verificado. Aumenta tu visibilidad online.
+              </p>
+            </div>
+            <Link
+              href="/register"
+              className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-white font-bold px-6 py-3 rounded-xl transition-all hover:scale-105 shadow-lg shadow-accent/25 shrink-0"
+            >
+              Registrar mi negocio
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </motion.div>
       </section>
 
       <Footer />

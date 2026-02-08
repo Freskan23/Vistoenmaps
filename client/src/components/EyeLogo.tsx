@@ -1,14 +1,18 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, useId } from 'react';
 
 interface EyeLogoProps {
   size?: number;
   className?: string;
+  /** Show animated glow pulse behind the logo */
+  glow?: boolean;
 }
 
-export default function EyeLogo({ size = 40, className = '' }: EyeLogoProps) {
+export default function EyeLogo({ size = 40, className = '', glow = false }: EyeLogoProps) {
   const irisRef = useRef<HTMLDivElement>(null);
   const eyeRef = useRef<HTMLDivElement>(null);
   const [blinking, setBlinking] = useState(false);
+  // Unique ID prefix to avoid SVG gradient ID collisions when multiple EyeLogos on page
+  const uid = useId().replace(/:/g, '');
 
   // Scale factor: everything is designed at height=340px, we scale from there
   const scale = size / 340;
@@ -99,9 +103,59 @@ export default function EyeLogo({ size = 40, className = '' }: EyeLogoProps) {
       style={{
         width: w,
         height: h,
-        filter: `drop-shadow(0 ${Math.max(2, 12 * scale)}px ${Math.max(4, 30 * scale)}px rgba(0,0,0,0.55))`,
       }}
     >
+      {/* Glow pulse effect behind the pin */}
+      {glow && (
+        <>
+          <div
+            className="absolute animate-pulse"
+            style={{
+              top: eyeTop + eyeSize * 0.15,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: eyeSize * 2,
+              height: eyeSize * 2,
+              marginLeft: 0,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(0,220,255,0.25) 0%, rgba(0,220,255,0.08) 40%, transparent 70%)',
+              zIndex: 0,
+              pointerEvents: 'none',
+            }}
+          />
+          <div
+            style={{
+              position: 'absolute',
+              top: eyeTop + eyeSize * 0.3,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: eyeSize * 1.4,
+              height: eyeSize * 1.4,
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(252,196,78,0.2) 0%, transparent 65%)',
+              zIndex: 0,
+              pointerEvents: 'none',
+              animation: 'eyeGlowPulse 3s ease-in-out infinite',
+            }}
+          />
+          <style>{`
+            @keyframes eyeGlowPulse {
+              0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+              50% { opacity: 1; transform: translateX(-50%) scale(1.15); }
+            }
+          `}</style>
+        </>
+      )}
+
+      {/* Pin container */}
+      <div
+        className="relative"
+        style={{
+          width: w,
+          height: h,
+          filter: `drop-shadow(0 ${Math.max(2, 12 * scale)}px ${Math.max(4, 30 * scale)}px rgba(0,0,0,0.55))`,
+        }}
+      >
       {/* Pin SVG */}
       <svg
         viewBox="0 0 260 340"
@@ -109,22 +163,22 @@ export default function EyeLogo({ size = 40, className = '' }: EyeLogoProps) {
         className="absolute inset-0 w-full h-full"
       >
         <defs>
-          <linearGradient id="elGMain" x1="0.1" y1="0" x2="0.9" y2="1">
+          <linearGradient id={`${uid}Main`} x1="0.1" y1="0" x2="0.9" y2="1">
             <stop offset="0%" stopColor="#fcc44e" />
             <stop offset="20%" stopColor="#f5a623" />
             <stop offset="50%" stopColor="#e88d0c" />
             <stop offset="80%" stopColor="#d47508" />
             <stop offset="100%" stopColor="#b85c00" />
           </linearGradient>
-          <linearGradient id="elGShine" x1="0" y1="0" x2="0.6" y2="0.8">
+          <linearGradient id={`${uid}Shine`} x1="0" y1="0" x2="0.6" y2="0.8">
             <stop offset="0%" stopColor="rgba(255,230,160,0.45)" />
             <stop offset="100%" stopColor="rgba(255,200,100,0)" />
           </linearGradient>
-          <linearGradient id="elGDark" x1="0.6" y1="0" x2="1" y2="0.8">
+          <linearGradient id={`${uid}Dark`} x1="0.6" y1="0" x2="1" y2="0.8">
             <stop offset="0%" stopColor="rgba(0,0,0,0)" />
             <stop offset="100%" stopColor="rgba(0,0,0,0.2)" />
           </linearGradient>
-          <linearGradient id="elGTail" x1="0.3" y1="0" x2="0.7" y2="1">
+          <linearGradient id={`${uid}Tail`} x1="0.3" y1="0" x2="0.7" y2="1">
             <stop offset="0%" stopColor="#c06800" />
             <stop offset="100%" stopColor="#8a4400" />
           </linearGradient>
@@ -133,22 +187,22 @@ export default function EyeLogo({ size = 40, className = '' }: EyeLogoProps) {
         {/* Main pin body */}
         <path
           d="M 138 14 C 78 14, 28 60, 28 122 C 28 162, 52 192, 80 224 C 108 256, 126 278, 134 298 C 138 308, 140 316, 140 320 C 136 324, 128 330, 116 334 C 98 340, 76 332, 66 318 C 58 306, 60 290, 66 278 L 68 274 C 64 270, 54 274, 48 288 C 38 310, 48 336, 78 342 C 102 346, 130 336, 142 322 C 146 316, 148 308, 152 296 C 158 274, 172 252, 194 226 C 222 192, 248 158, 248 122 C 248 60, 198 14, 138 14 Z"
-          fill="url(#elGMain)"
+          fill={`url(#${uid}Main)`}
         />
         {/* Left shine */}
         <path
           d="M 138 14 C 78 14, 28 60, 28 122 C 28 162, 52 192, 80 224 C 100 248, 116 270, 128 290 L 128 290 C 110 258, 82 228, 62 198 C 44 170, 50 140, 50 122 C 50 72, 90 32, 138 24 Z"
-          fill="url(#elGShine)"
+          fill={`url(#${uid}Shine)`}
         />
         {/* Right shadow */}
         <path
           d="M 138 14 C 198 14, 248 60, 248 122 C 248 158, 222 192, 194 226 C 172 252, 158 274, 152 296 L 148 306 C 152 280, 166 256, 188 230 C 216 196, 234 164, 234 122 C 234 68, 192 26, 138 20 Z"
-          fill="url(#elGDark)"
+          fill={`url(#${uid}Dark)`}
         />
         {/* Tail depth */}
         <path
           d="M 134 298 C 138 308, 140 316, 140 320 C 136 324, 128 330, 116 334 C 98 340, 76 332, 66 318 C 58 306, 60 290, 66 278 L 68 274 C 64 270, 54 274, 48 288 C 38 310, 48 336, 78 342"
-          fill="url(#elGTail)"
+          fill={`url(#${uid}Tail)`}
           opacity="0.35"
         />
         {/* Glow */}
@@ -324,6 +378,7 @@ export default function EyeLogo({ size = 40, className = '' }: EyeLogoProps) {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
