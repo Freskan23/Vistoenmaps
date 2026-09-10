@@ -338,7 +338,9 @@ export default function BarrioPage() {
               ) : (
                 <div className="h-[300px] md:h-[400px] bg-secondary flex flex-col items-center justify-center gap-3">
                   <MapPin className="w-10 h-10 text-muted-foreground/40" />
-                  <p className="text-sm text-muted-foreground">Mapa no disponible</p>
+                  <p className="text-sm text-muted-foreground">
+                    Ve la ubicación de todos estos negocios en el mapa
+                  </p>
                   <a
                     href={`https://www.google.com/maps/search/${encodeURIComponent(cat.nombre + " " + bar.nombre + " " + ciu.nombre)}`}
                     target="_blank"
@@ -372,8 +374,8 @@ export default function BarrioPage() {
                     }}
                     className="text-sm bg-white border border-border/60 rounded-xl px-3 py-2 text-foreground shadow-sm hover:border-primary/40 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer"
                   >
-                    <option value="rating">Mejor valoracion</option>
-                    <option value="reviews">Mas resenas</option>
+                    <option value="rating">Mejor valoración</option>
+                    <option value="reviews">Más reseñas</option>
                     <option value="name">Nombre A-Z</option>
                   </select>
                 </div>
@@ -462,10 +464,10 @@ export default function BarrioPage() {
                           }}
                           className="text-sm bg-white border border-border/60 rounded-xl px-3 py-2 text-foreground shadow-sm hover:border-primary/40 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all cursor-pointer"
                         >
-                          <option value={0}>Todas las resenas</option>
-                          <option value={50}>50+ resenas</option>
-                          <option value={100}>100+ resenas</option>
-                          <option value={200}>200+ resenas</option>
+                          <option value={0}>Todas las reseñas</option>
+                          <option value={50}>50+ reseñas</option>
+                          <option value={100}>100+ reseñas</option>
+                          <option value={200}>200+ reseñas</option>
                         </select>
                       </div>
                     </div>

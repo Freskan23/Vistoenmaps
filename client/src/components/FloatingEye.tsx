@@ -42,6 +42,16 @@ export default function FloatingEye() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHome]);
 
+  // En movil el ojo de 140px tapaba contenido de la pagina: se reduce.
+  const [esMovil, setEsMovil] = useState<boolean>(
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+  useEffect(() => {
+    const onResize = () => setEsMovil(window.innerWidth < 768);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   if (hidden) return null;
 
   // En Home: mostrar solo si pasó el hero. En resto: siempre visible.
@@ -69,7 +79,7 @@ export default function FloatingEye() {
         className="relative pointer-events-auto cursor-pointer drop-shadow-2xl hover:scale-105 transition-transform duration-300"
         onClick={() => window.dispatchEvent(new CustomEvent("openMobileMenu"))}
       >
-        <EyeLogo size={140} glow />
+        <EyeLogo size={esMovil ? 72 : 140} glow />
       </div>
     </div>
   );

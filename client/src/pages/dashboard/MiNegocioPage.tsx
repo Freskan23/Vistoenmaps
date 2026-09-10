@@ -529,7 +529,7 @@ export default function MiNegocioPage() {
                 <Sparkles className="w-5 h-5 text-primary" />
                 Datos basicos
               </CardTitle>
-              <CardDescription>Informacion principal de tu negocio</CardDescription>
+              <CardDescription>Información principal de tu negocio</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -925,7 +925,7 @@ export default function MiNegocioPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label>Descripcion</Label>
+                      <Label>Descripción</Label>
                       <Input
                         placeholder="Breve descripcion del servicio"
                         value={servicio.descripcion}
@@ -981,7 +981,7 @@ export default function MiNegocioPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label>Descripcion</Label>
+                      <Label>Descripción</Label>
                       <Input
                         placeholder="Breve descripcion del producto"
                         value={producto.descripcion}
@@ -1022,7 +1022,7 @@ export default function MiNegocioPage() {
                 <Users className="w-5 h-5 text-primary" />
                 Resenas de clientes
               </CardTitle>
-              <CardDescription>Anade resenas reales de tus clientes</CardDescription>
+              <CardDescription>Anade reseñas reales de tus clientes</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {form.resenas_clientes.map((resena, index) => (
@@ -1046,7 +1046,7 @@ export default function MiNegocioPage() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label>Valoracion</Label>
+                      <Label>Valoración</Label>
                       <Select
                         value={String(resena.valoracion)}
                         onValueChange={(v) => updateResenaCliente(index, 'valoracion', Number(v))}
@@ -1150,7 +1150,7 @@ export default function MiNegocioPage() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label>Valoracion</Label>
+                      <Label>Valoración</Label>
                       <Select
                         value={String(resena.valoracion)}
                         onValueChange={(v) => updateResenaEmpleado(index, 'valoracion', Number(v))}
