@@ -37,6 +37,22 @@ export default function CategoriaPage() {
 
   if (!cat) return <NotFound />;
 
+  // Solo ciudades que tienen negocios de esta categoria, de mas a menos:
+  // enseñar 1.000 ciudades vacias no sirve de nada y queda rarisimo.
+  // Un solo recorrido por los negocios para no bloquear el movil.
+  const conteoPorCiudad: Record<string, number> = {};
+  for (const neg of allNegocios) {
+    if (neg.categoria_slug === cat.slug) {
+      conteoPorCiudad[neg.ciudad_slug] = (conteoPorCiudad[neg.ciudad_slug] || 0) + 1;
+    }
+  }
+  const ciudadesConNegocios = allCiudades
+    .filter((ciudad) => (conteoPorCiudad[ciudad.slug] || 0) > 0)
+    .sort(
+      (a, b) =>
+        (conteoPorCiudad[b.slug] || 0) - (conteoPorCiudad[a.slug] || 0)
+    );
+
   return (
     <div className="min-h-screen flex flex-col bg-[#fafaf7]">
       <SEOHead
@@ -186,8 +202,8 @@ export default function CategoriaPage() {
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {allCiudades.map((ciudad, index) => {
-            const negociosCount = filterByCiudad(allNegocios, cat.slug, ciudad.slug).length;
+          {ciudadesConNegocios.map((ciudad, index) => {
+            const negociosCount = conteoPorCiudad[ciudad.slug] || 0;
             const color = cardColors[index % cardColors.length];
             return (
               <React.Fragment key={ciudad.slug}>

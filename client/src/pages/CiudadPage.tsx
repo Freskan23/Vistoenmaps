@@ -39,8 +39,20 @@ export default function CiudadPage() {
 
   if (!cat || !ciu) return <NotFound />;
 
-  const barriosData = allBarrios.filter((b) => b.ciudad_slug === ciu.slug);
-  const totalNegocios = filterByCiudad(allNegocios, cat.slug, ciu.slug).length;
+  // Solo barrios con negocios de esta categoria: nada de tarjetas con
+  // "0 profesionales", que quedan rarisimas.
+  const conteoPorBarrio: Record<string, number> = {};
+  let totalNegocios = 0;
+  for (const neg of allNegocios) {
+    if (neg.categoria_slug === cat.slug && neg.ciudad_slug === ciu.slug) {
+      conteoPorBarrio[neg.barrio_slug] = (conteoPorBarrio[neg.barrio_slug] || 0) + 1;
+      totalNegocios++;
+    }
+  }
+  const barriosData = allBarrios
+    .filter((b) => b.ciudad_slug === ciu.slug && (conteoPorBarrio[b.slug] || 0) > 0)
+    .sort((a, b) => (conteoPorBarrio[b.slug] || 0) - (conteoPorBarrio[a.slug] || 0));
+
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fafaf7]">
@@ -179,7 +191,7 @@ export default function CiudadPage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {barriosData.map((barrio, index) => {
-            const count = countByBarrio(allNegocios, cat.slug, ciu.slug, barrio.slug);
+            const count = conteoPorBarrio[barrio.slug] || 0;
             const accent = CARD_ACCENTS[index % CARD_ACCENTS.length];
             return (
               <motion.div
