@@ -56,7 +56,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
-import { MapView } from "@/components/Map";
+import { MapView, type MapaSimple } from "@/components/Map";
 import NotFound from "./NotFound";
 import { toast } from "sonner";
 
@@ -120,7 +120,7 @@ export default function NegocioPage() {
     horario_contacto: "",
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const mapRef = useRef<google.maps.Map | null>(null);
+  const mapRef = useRef<MapaSimple | null>(null);
 
   const cat = getCategoria(categoria);
   const { allCiudades } = useAllCiudades();
@@ -206,19 +206,16 @@ export default function NegocioPage() {
   }
   if (!ciu || !bar || !neg) return <NotFound />;
 
-  const hasApiKey = !!import.meta.env.VITE_FRONTEND_FORGE_API_KEY;
+  // OpenStreetMap no necesita clave de API: el mapa se muestra siempre.
   const heroPhoto = neg.fotos?.[0];
 
   /* ---- Map handler ---- */
-  const handleMapReady = (map: google.maps.Map) => {
-    mapRef.current = map;
-    // Fichas sin coordenadas: no se pone marcador.
+  const handleMapReady = (mapa: MapaSimple) => {
+    mapRef.current = mapa;
+    // Fichas sin coordenadas: no se pone chincheta.
     if (!neg.coordenadas) return;
-    new google.maps.marker.AdvancedMarkerElement({
-      map,
-      position: { lat: neg.coordenadas.lat, lng: neg.coordenadas.lng },
-      title: neg.nombre,
-    });
+    mapa.addMarker(neg.coordenadas, neg.nombre);
+    mapa.fitTo([neg.coordenadas]);
   };
 
   /* ---- Form validation ---- */
@@ -1214,7 +1211,7 @@ export default function NegocioPage() {
                 {...fadeIn}
                 className="rounded-xl overflow-hidden border border-border/60 shadow-sm"
               >
-                {hasApiKey ? (
+                {neg.coordenadas ? (
                   <MapView
                     initialCenter={neg.coordenadas}
                     initialZoom={16}
@@ -1229,15 +1226,6 @@ export default function NegocioPage() {
                     <p className="text-sm text-muted-foreground text-center px-4">
                       {neg.direccion}
                     </p>
-                    <a
-                      href={neg.url_google_maps}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm font-medium text-[#1B4965] hover:underline flex items-center gap-1"
-                    >
-                      Ver en Google Maps
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
                   </div>
                 )}
               </motion.div>

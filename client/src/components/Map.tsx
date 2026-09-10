@@ -1,155 +1,124 @@
 /**
- * GOOGLE MAPS FRONTEND INTEGRATION - ESSENTIAL GUIDE
+ * MapView — mapa con OpenStreetMap + Leaflet.
  *
- * USAGE FROM PARENT COMPONENT:
- * ======
+ * Gratis y sin clave de API: no depende de Google Maps ni de facturacion.
+ * Las teselas las sirve OpenStreetMap y solo hay que citar la autoria.
  *
- * const mapRef = useRef<google.maps.Map | null>(null);
+ * Se mantiene la misma forma de usarlo que antes para no tocar las paginas:
+ *   <MapView initialCenter={{lat, lng}} initialZoom={14} onMapReady={(m) => ...} />
  *
- * <MapView
- *   initialCenter={{ lat: 40.7128, lng: -74.0060 }}
- *   initialZoom={15}
- *   onMapReady={(map) => {
- *     mapRef.current = map; // Store to control map from parent anytime, google map itself is in charge of the re-rendering, not react state.
- * </MapView>
- *
- * ======
- * Available Libraries and Core Features:
- * -------------------------------
- * 📍 MARKER (from `marker` library)
- * - Attaches to map using { map, position }
- * new google.maps.marker.AdvancedMarkerElement({
- *   map,
- *   position: { lat: 37.7749, lng: -122.4194 },
- *   title: "San Francisco",
- * });
- *
- * -------------------------------
- * 🏢 PLACES (from `places` library)
- * - Does not attach directly to map; use data with your map manually.
- * const place = new google.maps.places.Place({ id: PLACE_ID });
- * await place.fetchFields({ fields: ["displayName", "location"] });
- * map.setCenter(place.location);
- * new google.maps.marker.AdvancedMarkerElement({ map, position: place.location });
- *
- * -------------------------------
- * 🧭 GEOCODER (from `geocoding` library)
- * - Standalone service; manually apply results to map.
- * const geocoder = new google.maps.Geocoder();
- * geocoder.geocode({ address: "New York" }, (results, status) => {
- *   if (status === "OK" && results[0]) {
- *     map.setCenter(results[0].geometry.location);
- *     new google.maps.marker.AdvancedMarkerElement({
- *       map,
- *       position: results[0].geometry.location,
- *     });
- *   }
- * });
- *
- * -------------------------------
- * 📐 GEOMETRY (from `geometry` library)
- * - Pure utility functions; not attached to map.
- * const dist = google.maps.geometry.spherical.computeDistanceBetween(p1, p2);
- *
- * -------------------------------
- * 🛣️ ROUTES (from `routes` library)
- * - Combines DirectionsService (standalone) + DirectionsRenderer (map-attached)
- * const directionsService = new google.maps.DirectionsService();
- * const directionsRenderer = new google.maps.DirectionsRenderer({ map });
- * directionsService.route(
- *   { origin, destination, travelMode: "DRIVING" },
- *   (res, status) => status === "OK" && directionsRenderer.setDirections(res)
- * );
- *
- * -------------------------------
- * 🌦️ MAP LAYERS (attach directly to map)
- * - new google.maps.TrafficLayer().setMap(map);
- * - new google.maps.TransitLayer().setMap(map);
- * - new google.maps.BicyclingLayer().setMap(map);
- *
- * -------------------------------
- * ✅ SUMMARY
- * - “map-attached” → AdvancedMarkerElement, DirectionsRenderer, Layers.
- * - “standalone” → Geocoder, DirectionsService, DistanceMatrixService, ElevationService.
- * - “data-only” → Place, Geometry utilities.
+ * `onMapReady` recibe un objeto con la API minima que usan las paginas:
+ *   - addMarker({lat, lng}, titulo, alPulsar)
+ *   - clearMarkers()
+ *   - fitTo([{lat, lng}, ...])
  */
 
-/// <reference types="@types/google.maps" />
-
 import { useEffect, useRef } from "react";
-import { usePersistFn } from "@/hooks/usePersistFn";
-import { cn } from "@/lib/utils";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
-declare global {
-  interface Window {
-    google?: typeof google;
-  }
+export interface Punto {
+  lat: number;
+  lng: number;
 }
 
-const API_KEY = import.meta.env.VITE_FRONTEND_FORGE_API_KEY;
-const FORGE_BASE_URL =
-  import.meta.env.VITE_FRONTEND_FORGE_API_URL ||
-  "https://forge.butterfly-effect.dev";
-const MAPS_PROXY_URL = `${FORGE_BASE_URL}/v1/maps/proxy`;
-
-function loadMapScript() {
-  return new Promise(resolve => {
-    const script = document.createElement("script");
-    script.src = `${MAPS_PROXY_URL}/maps/api/js?key=${API_KEY}&v=weekly&libraries=marker,places,geocoding,geometry`;
-    script.async = true;
-    script.crossOrigin = "anonymous";
-    script.onload = () => {
-      resolve(null);
-      script.remove(); // Clean up immediately
-    };
-    script.onerror = () => {
-      console.error("Failed to load Google Maps script");
-    };
-    document.head.appendChild(script);
-  });
+export interface MapaSimple {
+  addMarker: (pos: Punto, titulo?: string, alPulsar?: () => void) => void;
+  clearMarkers: () => void;
+  fitTo: (puntos: Punto[]) => void;
+  instancia: L.Map;
 }
 
 interface MapViewProps {
   className?: string;
-  initialCenter?: google.maps.LatLngLiteral;
+  initialCenter?: Punto;
   initialZoom?: number;
-  onMapReady?: (map: google.maps.Map) => void;
+  onMapReady?: (mapa: MapaSimple) => void;
 }
+
+/** Chincheta propia en SVG: no dependemos de las imagenes de Leaflet. */
+const iconoChincheta = L.divIcon({
+  className: "vem-pin",
+  html: `<svg width="26" height="34" viewBox="0 0 26 34" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13 0C5.82 0 0 5.82 0 13c0 9.75 13 21 13 21s13-11.25 13-21c0-7.18-5.82-13-13-13z" fill="#1B4965"/>
+    <circle cx="13" cy="13" r="5.2" fill="#FCC44E"/>
+  </svg>`,
+  iconSize: [26, 34],
+  iconAnchor: [13, 34],
+  popupAnchor: [0, -30],
+});
 
 export function MapView({
-  className,
-  initialCenter = { lat: 37.7749, lng: -122.4194 },
-  initialZoom = 12,
+  className = "w-full h-full",
+  initialCenter = { lat: 40.4168, lng: -3.7038 },
+  initialZoom = 13,
   onMapReady,
 }: MapViewProps) {
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<google.maps.Map | null>(null);
-
-  const init = usePersistFn(async () => {
-    await loadMapScript();
-    if (!mapContainer.current) {
-      console.error("Map container not found");
-      return;
-    }
-    map.current = new window.google.maps.Map(mapContainer.current, {
-      zoom: initialZoom,
-      center: initialCenter,
-      mapTypeControl: true,
-      fullscreenControl: true,
-      zoomControl: true,
-      streetViewControl: true,
-      mapId: "DEMO_MAP_ID",
-    });
-    if (onMapReady) {
-      onMapReady(map.current);
-    }
-  });
+  const contenedor = useRef<HTMLDivElement>(null);
+  const mapa = useRef<L.Map | null>(null);
+  const marcadores = useRef<L.Marker[]>([]);
+  const yaAvisado = useRef(false);
 
   useEffect(() => {
-    init();
-  }, [init]);
+    if (!contenedor.current || mapa.current) return;
 
-  return (
-    <div ref={mapContainer} className={cn("w-full h-[500px]", className)} />
-  );
+    mapa.current = L.map(contenedor.current, {
+      center: [initialCenter.lat, initialCenter.lng],
+      zoom: initialZoom,
+      scrollWheelZoom: false, // que la rueda haga scroll de la pagina, no zoom
+    });
+
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(mapa.current);
+
+    if (onMapReady && !yaAvisado.current) {
+      yaAvisado.current = true;
+      const api: MapaSimple = {
+        instancia: mapa.current,
+        addMarker: (pos, titulo, alPulsar) => {
+          if (!mapa.current || !pos) return;
+          const m = L.marker([pos.lat, pos.lng], {
+            icon: iconoChincheta,
+            title: titulo,
+          }).addTo(mapa.current);
+          if (titulo) m.bindPopup(`<strong>${titulo}</strong>`);
+          if (alPulsar) m.on("click", alPulsar);
+          marcadores.current.push(m);
+        },
+        clearMarkers: () => {
+          marcadores.current.forEach((m) => m.remove());
+          marcadores.current = [];
+        },
+        fitTo: (puntos) => {
+          const validos = (puntos || []).filter((p) => p && p.lat && p.lng);
+          if (!mapa.current || validos.length === 0) return;
+          if (validos.length === 1) {
+            mapa.current.setView([validos[0].lat, validos[0].lng], 16);
+            return;
+          }
+          mapa.current.fitBounds(
+            L.latLngBounds(validos.map((p) => [p.lat, p.lng] as [number, number])),
+            { padding: [30, 30] }
+          );
+        },
+      };
+      onMapReady(api);
+    }
+
+    return () => {
+      mapa.current?.remove();
+      mapa.current = null;
+      marcadores.current = [];
+      yaAvisado.current = false;
+    };
+    // Solo al montar: el centro y el zoom iniciales no deben recrear el mapa.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return <div ref={contenedor} className={className} />;
 }
+
+export default MapView;

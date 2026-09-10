@@ -25,7 +25,7 @@ import SEOHead from "@/components/SEOHead";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
-import { MapView } from "@/components/Map";
+import { MapView, type MapaSimple } from "@/components/Map";
 
 type SortOption = "rating" | "reviews" | "name";
 
@@ -48,8 +48,7 @@ export default function BarrioPage() {
   const perPage = 10;
 
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
-  const mapRef = useRef<google.maps.Map | null>(null);
-  const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
+  const mapRef = useRef<MapaSimple | null>(null);
 
   const cat = getCategoria(categoria);
   const { allNegocios } = useAllNegocios();
@@ -154,33 +153,16 @@ export default function BarrioPage() {
     }
   }, []);
 
-  // Map: update markers when filtered results change
+  // Mapa: repinta las chinchetas cuando cambian los filtros
   const updateMarkers = useCallback(
-    (map: google.maps.Map) => {
-      // Clear old markers
-      markersRef.current.forEach((m) => (m.map = null));
-      markersRef.current = [];
-
-      filtered.forEach((neg) => {
-        // Hay fichas sin coordenadas: sin punto no hay marcador.
-        if (!neg.coordenadas) return;
-        const marker = new google.maps.marker.AdvancedMarkerElement({
-          map,
-          position: { lat: neg.coordenadas.lat, lng: neg.coordenadas.lng },
-          title: neg.nombre,
-        });
-        marker.addListener("click", () => scrollToCard(neg.slug));
-        markersRef.current.push(marker);
-      });
-
-      // Fit bounds if multiple markers
+    (mapa: MapaSimple) => {
+      mapa.clearMarkers();
       const conCoords = filtered.filter((n) => n.coordenadas);
-      if (conCoords.length > 1) {
-        const bounds = new google.maps.LatLngBounds();
-        conCoords.forEach((n) =>
-          bounds.extend({ lat: n.coordenadas.lat, lng: n.coordenadas.lng })
-        );
-        map.fitBounds(bounds, { top: 30, right: 30, bottom: 30, left: 30 });
+      conCoords.forEach((neg) => {
+        mapa.addMarker(neg.coordenadas, neg.nombre, () => scrollToCard(neg.slug));
+      });
+      if (conCoords.length > 0) {
+        mapa.fitTo(conCoords.map((n) => n.coordenadas));
       }
     },
     [filtered, scrollToCard]
@@ -194,14 +176,14 @@ export default function BarrioPage() {
   }, [updateMarkers]);
 
   const handleMapReady = useCallback(
-    (map: google.maps.Map) => {
-      mapRef.current = map;
-      updateMarkers(map);
+    (mapa: MapaSimple) => {
+      mapRef.current = mapa;
+      updateMarkers(mapa);
     },
     [updateMarkers]
   );
 
-  const hasApiKey = !!import.meta.env.VITE_FRONTEND_FORGE_API_KEY;
+  // OpenStreetMap no necesita clave de API: el mapa se muestra siempre.
 
   // Schema.org JSON-LD
   const schemaData = negociosData.map((n) => ({
@@ -328,29 +310,12 @@ export default function BarrioPage() {
           </div>
           {showMap && (
             <div className="rounded-xl overflow-hidden border border-border/60 shadow-sm">
-              {hasApiKey ? (
-                <MapView
+              <MapView
                   initialCenter={bar.coordenadas}
                   initialZoom={14}
                   onMapReady={handleMapReady}
                   className="h-[300px] md:h-[400px]"
                 />
-              ) : (
-                <div className="h-[300px] md:h-[400px] bg-secondary flex flex-col items-center justify-center gap-3">
-                  <MapPin className="w-10 h-10 text-muted-foreground/40" />
-                  <p className="text-sm text-muted-foreground">
-                    Ve la ubicación de todos estos negocios en el mapa
-                  </p>
-                  <a
-                    href={`https://www.google.com/maps/search/${encodeURIComponent(cat.nombre + " " + bar.nombre + " " + ciu.nombre)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm font-medium text-primary hover:underline"
-                  >
-                    Ver en Google Maps
-                  </a>
-                </div>
-              )}
             </div>
           )}
         </section>
