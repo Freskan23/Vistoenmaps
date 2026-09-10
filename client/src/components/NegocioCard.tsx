@@ -89,7 +89,7 @@ export default function NegocioCard({ negocio }: NegocioCardProps) {
 
       {/* Servicios */}
       <div className="flex flex-wrap gap-1.5 mb-4">
-        {negocio.servicios_destacados.slice(0, 3).map((servicio, index) => (
+        {(negocio.servicios_destacados || []).slice(0, 3).map((servicio, index) => (
           <span
             key={servicio}
             className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${
@@ -103,9 +103,9 @@ export default function NegocioCard({ negocio }: NegocioCardProps) {
             {servicio}
           </span>
         ))}
-        {negocio.servicios_destacados.length > 3 && (
+        {(negocio.servicios_destacados || []).length > 3 && (
           <span className="text-xs text-muted-foreground px-1">
-            +{negocio.servicios_destacados.length - 3} mas
+            +{(negocio.servicios_destacados || []).length - 3} mas
           </span>
         )}
       </div>
@@ -113,7 +113,7 @@ export default function NegocioCard({ negocio }: NegocioCardProps) {
       {/* CTAs */}
       <div className="flex gap-2 pt-3 border-t border-border/40">
         <a
-          href={`tel:${negocio.telefono.replace(/\s/g, "")}`}
+          href={`tel:${(negocio.telefono || "").replace(/\s/g, "")}`}
           className="flex-1 flex items-center justify-center gap-2 bg-accent text-white font-semibold text-sm py-2.5 rounded-xl hover:opacity-90 transition-opacity shadow-[0_2px_8px_rgba(234,88,12,0.25)]"
         >
           <Phone className="w-4 h-4" />

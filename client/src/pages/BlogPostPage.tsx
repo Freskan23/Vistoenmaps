@@ -364,9 +364,9 @@ export default function BlogPostPage() {
 
                     {/* Top 3 servicios_destacados */}
                     {neg.servicios_destacados &&
-                      neg.servicios_destacados.length > 0 && (
+                      (neg.servicios_destacados || []).length > 0 && (
                         <div className="flex flex-wrap gap-1.5 mt-3">
-                          {neg.servicios_destacados.slice(0, 3).map((s, i) => (
+                          {(neg.servicios_destacados || []).slice(0, 3).map((s, i) => (
                             <span
                               key={i}
                               className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${accent.pill}`}

@@ -84,12 +84,28 @@ async function fetchAndMerge(): Promise<CachedData> {
       certificaciones: sn.certificaciones || undefined,
     }));
 
-    // Merge negocios: estaticos + DB (evitar duplicados por slug+categoria)
+    // Merge negocios: estaticos + DB. Se evita el duplicado por slug y ademas
+    // por direccion: el mismo negocio puede estar dado de alta con otro nombre
+    // ("YoteaBRO" vs "YoteaBro Cerrajeros Chamartin") y son slugs distintos.
+    const normaliza = (s: string | null | undefined) =>
+      (s || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[̀-ͯ]/g, "")
+        .replace(/[^a-z0-9]/g, "");
+
     const existingSlugs = new Set(
       staticNegocios.map((n) => `${n.slug}__${n.categoria_slug}`)
     );
+    const existingDirs = new Set(
+      staticNegocios
+        .filter((n) => n.direccion)
+        .map((n) => `${normaliza(n.direccion)}__${n.categoria_slug}`)
+    );
     const newFromDb = dbNegocios.filter(
-      (n) => !existingSlugs.has(`${n.slug}__${n.categoria_slug}`)
+      (n) =>
+        !existingSlugs.has(`${n.slug}__${n.categoria_slug}`) &&
+        !(n.direccion && existingDirs.has(`${normaliza(n.direccion)}__${n.categoria_slug}`))
     );
     const allNegocios = [...staticNegocios, ...newFromDb];
 

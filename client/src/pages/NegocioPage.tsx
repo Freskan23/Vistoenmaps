@@ -212,6 +212,8 @@ export default function NegocioPage() {
   /* ---- Map handler ---- */
   const handleMapReady = (map: google.maps.Map) => {
     mapRef.current = map;
+    // Fichas sin coordenadas: no se pone marcador.
+    if (!neg.coordenadas) return;
     new google.maps.marker.AdvancedMarkerElement({
       map,
       position: { lat: neg.coordenadas.lat, lng: neg.coordenadas.lng },
@@ -344,19 +346,24 @@ export default function NegocioPage() {
       addressRegion: ciu.comunidad_autonoma,
       addressCountry: "ES",
     },
-    telephone: neg.telefono,
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: neg.coordenadas.lat,
-      longitude: neg.coordenadas.lng,
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: neg.valoracion_media,
-      reviewCount: neg.num_resenas,
-      bestRating: 5,
-    },
-    openingHours: neg.horario,
+    telephone: neg.telefono || undefined,
+    geo: neg.coordenadas
+      ? {
+          "@type": "GeoCoordinates",
+          latitude: neg.coordenadas.lat,
+          longitude: neg.coordenadas.lng,
+        }
+      : undefined,
+    aggregateRating:
+      neg.valoracion_media && neg.num_resenas
+        ? {
+            "@type": "AggregateRating",
+            ratingValue: neg.valoracion_media,
+            reviewCount: neg.num_resenas,
+            bestRating: 5,
+          }
+        : undefined,
+    openingHours: neg.horario || undefined,
     url: neg.web || neg.url_google_maps,
     sameAs: sameAsUrls.length > 0 ? sameAsUrls : undefined,
     image: neg.fotos && neg.fotos.length > 0 ? neg.fotos[0] : undefined,
@@ -535,15 +542,19 @@ export default function NegocioPage() {
             {/* Floating badges */}
             <div className="flex flex-wrap items-center gap-2.5 mt-6">
               {/* Rating badge */}
-              <div className="flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 backdrop-blur-sm border border-amber-400/20 rounded-full px-4 py-2">
-                <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
-                <span className="text-white font-bold text-sm">
-                  {neg.valoracion_media}
-                </span>
-                <span className="text-white/60 text-sm">
-                  · {neg.num_resenas} resenas
-                </span>
-              </div>
+              {neg.valoracion_media ? (
+                <div className="flex items-center gap-2 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 backdrop-blur-sm border border-amber-400/20 rounded-full px-4 py-2">
+                  <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
+                  <span className="text-white font-bold text-sm">
+                    {neg.valoracion_media}
+                  </span>
+                  {neg.num_resenas ? (
+                    <span className="text-white/60 text-sm">
+                      · {neg.num_resenas} opiniones
+                    </span>
+                  ) : null}
+                </div>
+              ) : null}
 
               {/* Years badge */}
               {neg.anos_experiencia && neg.anos_experiencia > 0 && (
@@ -719,14 +730,14 @@ export default function NegocioPage() {
                 ) : (
                   /* Fallback: servicios_destacados as tags */
                   neg.servicios_destacados &&
-                  neg.servicios_destacados.length > 0 && (
+                  (neg.servicios_destacados || []).length > 0 && (
                     <motion.div {...fadeIn}>
                       <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
                         <Briefcase className="w-5 h-5 text-[#1B4965]" />
                         Servicios destacados
                       </h2>
                       <div className="flex flex-wrap gap-2">
-                        {neg.servicios_destacados.map((s, i) => (
+                        {(neg.servicios_destacados || []).map((s, i) => (
                           <span
                             key={i}
                             className="text-sm bg-[#1B4965]/8 text-[#1B4965] px-3.5 py-1.5 rounded-full font-medium border border-[#1B4965]/10"
@@ -1304,8 +1315,11 @@ export default function NegocioPage() {
                     <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {neg.valoracion_media} estrellas de {neg.num_resenas}{" "}
-                    resenas
+                    {neg.valoracion_media && neg.num_resenas
+                      ? `${neg.valoracion_media} estrellas de ${neg.num_resenas} opiniones`
+                      : neg.valoracion_media
+                        ? `${neg.valoracion_media} estrellas`
+                        : "Datos contrastados con su ficha de Google"}
                   </p>
                 </div>
               </motion.div>

@@ -175,7 +175,7 @@ export function searchDirectory(query: string, limit = 10, allNegocios?: Negocio
   for (const neg of negociosList) {
     if (
       neg.nombre.toLowerCase().includes(q) ||
-      neg.servicios_destacados.some((s) => s.toLowerCase().includes(q))
+      (neg.servicios_destacados || []).some((s) => s.toLowerCase().includes(q))
     ) {
       const cat = getCategoria(neg.categoria_slug);
       const ciu = getCiudad(neg.ciudad_slug);

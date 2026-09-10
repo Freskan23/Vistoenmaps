@@ -67,7 +67,7 @@ export default function BarrioPage() {
   const allServices = useMemo(() => {
     const set = new Set<string>();
     negociosData.forEach((n) =>
-      n.servicios_destacados.forEach((s) => set.add(s))
+      (n.servicios_destacados || []).forEach((s) => set.add(s))
     );
     return Array.from(set).sort((a, b) => a.localeCompare(b, "es"));
   }, [negociosData]);
@@ -81,11 +81,11 @@ export default function BarrioPage() {
       list = list.filter((n) => n.valoracion_media >= minRating);
     }
     if (is24h) {
-      list = list.filter((n) => n.horario.toLowerCase().includes("24 horas"));
+      list = list.filter((n) => (n.horario || "").toLowerCase().includes("24 horas"));
     }
     if (isUrgente) {
       list = list.filter((n) =>
-        n.servicios_destacados.some(
+        (n.servicios_destacados || []).some(
           (s) => s.toLowerCase().includes("urgente") || s.toLowerCase().includes("urgencia")
         )
       );
@@ -95,16 +95,24 @@ export default function BarrioPage() {
     }
     if (selectedServices.length > 0) {
       list = list.filter((n) =>
-        selectedServices.some((sel) => n.servicios_destacados.includes(sel))
+        selectedServices.some((sel) => (n.servicios_destacados || []).includes(sel))
       );
     }
 
     list.sort((a, b) => {
+      // Los recomendados y las fichas verificadas mandan sobre cualquier
+      // criterio de orden, igual que en el resto del directorio.
+      const sa = a.super_destacado === true ? 1 : 0;
+      const sb = b.super_destacado === true ? 1 : 0;
+      if (sa !== sb) return sb - sa;
+      const da = a.destacado === true ? 1 : 0;
+      const db = b.destacado === true ? 1 : 0;
+      if (da !== db) return db - da;
       switch (sortBy) {
         case "rating":
-          return b.valoracion_media - a.valoracion_media;
+          return (b.valoracion_media ?? 0) - (a.valoracion_media ?? 0);
         case "reviews":
-          return b.num_resenas - a.num_resenas;
+          return (b.num_resenas ?? 0) - (a.num_resenas ?? 0);
         case "name":
           return a.nombre.localeCompare(b.nombre, "es");
         default:
@@ -154,6 +162,8 @@ export default function BarrioPage() {
       markersRef.current = [];
 
       filtered.forEach((neg) => {
+        // Hay fichas sin coordenadas: sin punto no hay marcador.
+        if (!neg.coordenadas) return;
         const marker = new google.maps.marker.AdvancedMarkerElement({
           map,
           position: { lat: neg.coordenadas.lat, lng: neg.coordenadas.lng },
@@ -164,9 +174,10 @@ export default function BarrioPage() {
       });
 
       // Fit bounds if multiple markers
-      if (filtered.length > 1) {
+      const conCoords = filtered.filter((n) => n.coordenadas);
+      if (conCoords.length > 1) {
         const bounds = new google.maps.LatLngBounds();
-        filtered.forEach((n) =>
+        conCoords.forEach((n) =>
           bounds.extend({ lat: n.coordenadas.lat, lng: n.coordenadas.lng })
         );
         map.fitBounds(bounds, { top: 30, right: 30, bottom: 30, left: 30 });
@@ -204,12 +215,14 @@ export default function BarrioPage() {
       addressRegion: ciu.comunidad_autonoma,
       addressCountry: "ES",
     },
-    telephone: n.telefono,
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: n.coordenadas.lat,
-      longitude: n.coordenadas.lng,
-    },
+    telephone: n.telefono || undefined,
+    geo: n.coordenadas
+      ? {
+          "@type": "GeoCoordinates",
+          latitude: n.coordenadas.lat,
+          longitude: n.coordenadas.lng,
+        }
+      : undefined,
     aggregateRating: {
       "@type": "AggregateRating",
       ratingValue: n.valoracion_media,
