@@ -150,7 +150,13 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+// En produccion NO se cargan las herramientas de desarrollo de Manus: metian ~358 KB
+// de JS inline en CADA pagina prerenderizada (33.000 paginas = decenas de GB).
+const esProduccion = process.env.NODE_ENV === "production" || process.argv.includes("build");
+
+const plugins = esProduccion
+  ? [react(), tailwindcss()]
+  : [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
 
 export default defineConfig({
   plugins,

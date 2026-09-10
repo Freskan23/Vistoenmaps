@@ -134,6 +134,11 @@ export interface Negocio {
   valor_anadido?: string[];
   anos_experiencia?: number;
   certificaciones?: string[];
+  // Fichas destacadas
+  destacado?: boolean;
+  super_destacado?: boolean;
+  meta_descripcion?: string;
+  fuente_trafikazo?: string;
 }
 
 export interface Destacado {

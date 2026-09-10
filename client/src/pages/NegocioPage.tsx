@@ -447,7 +447,18 @@ export default function NegocioPage() {
     <div className="min-h-screen flex flex-col bg-[#fafaf7]">
       <SEOHead
         title={`${neg.nombre} — ${cat.nombre} en ${bar.nombre}, ${ciu.nombre} | Visto en Maps`}
-        description={`${neg.nombre}: ${cat.nombre.toLowerCase()} en ${bar.nombre}, ${ciu.nombre}. ${neg.valoracion_media} estrellas, ${neg.num_resenas} resenas. ${neg.direccion}. Tel: ${neg.telefono}.`}
+        description={
+          neg.meta_descripcion ||
+          [
+            `${neg.nombre}: ${cat.nombre.toLowerCase()} en ${bar.nombre}, ${ciu.nombre}.`,
+            neg.valoracion_media ? `${neg.valoracion_media} estrellas.` : null,
+            neg.num_resenas ? `${neg.num_resenas} opiniones.` : null,
+            neg.direccion || null,
+            neg.telefono ? `Tel: ${neg.telefono}.` : null,
+          ]
+            .filter(Boolean)
+            .join(" ")
+        }
         canonical={`https://vistoenmaps.com/${cat.slug}/${ciu.slug}/${bar.slug}/${neg.slug}`}
       />
       <Header />

@@ -105,3 +105,9 @@ temp/
 *.sqlite
 *.sqlite3
 nul
+
+# Datos de trabajo del volcado de Trafikazo (no van al repo)
+_work/
+_trafikazo_export.json
+_node/
+.manus-logs/

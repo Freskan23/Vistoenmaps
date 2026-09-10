@@ -138,5 +138,348 @@
     "descripcion": "Comida rápida y para llevar. Pizzerías, hamburgueserías, kebabs y delivery.",
     "icono": "Pizza",
     "imagen": ""
+  },
+  {
+    "slug": "marketing-diseno",
+    "nombre": "Marketing y diseño",
+    "descripcion": "Agencias de marketing, SEO y diseño web valoradas por sus clientes.",
+    "icono": "Megaphone",
+    "imagen": ""
+  },
+  {
+    "slug": "arte-manualidades",
+    "nombre": "Arte y manualidades",
+    "descripcion": "Tiendas de bellas artes, manualidades y talleres creativos.",
+    "icono": "Palette",
+    "imagen": ""
+  },
+  {
+    "slug": "pavimentos-suelos",
+    "nombre": "Pavimentos y suelos",
+    "descripcion": "Hormigón impreso, microcemento, alicatados y todo tipo de suelos.",
+    "icono": "Grid3x3",
+    "imagen": ""
+  },
+  {
+    "slug": "taxis-transporte-pasajeros",
+    "nombre": "Taxis y VTC",
+    "descripcion": "Taxis, VTC y traslados al aeropuerto con valoraciones de pasajeros.",
+    "icono": "Car",
+    "imagen": ""
+  },
+  {
+    "slug": "tatuajes",
+    "nombre": "Tatuajes y piercings",
+    "descripcion": "Estudios de tatuaje y piercing valorados por quienes ya llevan la tinta.",
+    "icono": "Brush",
+    "imagen": ""
+  },
+  {
+    "slug": "ocio-nocturno",
+    "nombre": "Ocio nocturno",
+    "descripcion": "Tablaos, salas de fiestas y locales para salir de noche.",
+    "icono": "Music",
+    "imagen": ""
+  },
+  {
+    "slug": "talleres-mecanicos",
+    "nombre": "Talleres mecánicos",
+    "descripcion": "Talleres, chapa y pintura y neumáticos. Presupuestos claros y mecánicos de confianza.",
+    "icono": "Car",
+    "imagen": ""
+  },
+  {
+    "slug": "tejados-impermeabilizacion",
+    "nombre": "Tejados e impermeabilización",
+    "descripcion": "Reparación de tejados, cubiertas y goteras. Adiós humedades.",
+    "icono": "Home",
+    "imagen": ""
+  },
+  {
+    "slug": "control-plagas",
+    "nombre": "Control de plagas",
+    "descripcion": "Empresas de fumigación y control de plagas para casa y negocio.",
+    "icono": "Bug",
+    "imagen": ""
+  },
+  {
+    "slug": "nautica-embarcaciones",
+    "nombre": "Náutica y embarcaciones",
+    "descripcion": "Alquiler de barcos, motos de agua y actividades náuticas.",
+    "icono": "Sailboat",
+    "imagen": ""
+  },
+  {
+    "slug": "interiorismo-decoracion",
+    "nombre": "Interiorismo y decoración",
+    "descripcion": "Interioristas y decoradores que transforman tu espacio.",
+    "icono": "Sofa",
+    "imagen": ""
+  },
+  {
+    "slug": "academias-formacion",
+    "nombre": "Academias y formación",
+    "descripcion": "Academias, clases particulares y escuelas infantiles cerca de ti.",
+    "icono": "GraduationCap",
+    "imagen": ""
+  },
+  {
+    "slug": "tiendas",
+    "nombre": "Tiendas",
+    "descripcion": "Comercios de barrio y tiendas especializadas cerca de ti.",
+    "icono": "Store",
+    "imagen": ""
+  },
+  {
+    "slug": "peluquerias-estetica",
+    "nombre": "Peluquerías y estética",
+    "descripcion": "Peluquerías, barberías y centros de estética valorados por quienes ya se han sentado en la silla.",
+    "icono": "Scissors",
+    "imagen": ""
+  },
+  {
+    "slug": "eventos-bodas",
+    "nombre": "Eventos y bodas",
+    "descripcion": "Organización de bodas, catering y todo para tu celebración.",
+    "icono": "PartyPopper",
+    "imagen": ""
+  },
+  {
+    "slug": "mudanzas-trasteros",
+    "nombre": "Mudanzas y trasteros",
+    "descripcion": "Empresas de mudanzas, portes y alquiler de trasteros con valoraciones reales.",
+    "icono": "Truck",
+    "imagen": ""
+  },
+  {
+    "slug": "energia-solar",
+    "nombre": "Energía solar",
+    "descripcion": "Instaladores de placas solares y autoconsumo con opiniones reales.",
+    "icono": "Sun",
+    "imagen": ""
+  },
+  {
+    "slug": "aislamiento-eficiencia",
+    "nombre": "Aislamiento y eficiencia",
+    "descripcion": "Aislamiento térmico, insuflado y certificados energéticos.",
+    "icono": "Thermometer",
+    "imagen": ""
+  },
+  {
+    "slug": "moda-ropa",
+    "nombre": "Moda y ropa",
+    "descripcion": "Tiendas de ropa, calzado y complementos.",
+    "icono": "Shirt",
+    "imagen": ""
+  },
+  {
+    "slug": "reparacion-electrodomesticos",
+    "nombre": "Reparación de electrodomésticos",
+    "descripcion": "Servicio técnico de electrodomésticos: lavadoras, neveras, hornos y más.",
+    "icono": "Plug",
+    "imagen": ""
+  },
+  {
+    "slug": "jardineria",
+    "nombre": "Jardinería",
+    "descripcion": "Jardineros y mantenimiento de zonas verdes. Poda, césped y diseño de jardines.",
+    "icono": "Trees",
+    "imagen": ""
+  },
+  {
+    "slug": "transporte-logistica",
+    "nombre": "Transporte y logística",
+    "descripcion": "Transporte, mensajería y logística para empresas y particulares.",
+    "icono": "Package",
+    "imagen": ""
+  },
+  {
+    "slug": "ventanas-cerramientos",
+    "nombre": "Ventanas y cerramientos",
+    "descripcion": "Ventanas, persianas, toldos y pérgolas. Aluminio, PVC y cristalería.",
+    "icono": "Blinds",
+    "imagen": ""
+  },
+  {
+    "slug": "carpinteria-muebles",
+    "nombre": "Carpintería y muebles",
+    "descripcion": "Carpinteros, ebanistas y muebles a medida. Cocinas, armarios y trabajos en madera.",
+    "icono": "Hammer",
+    "imagen": ""
+  },
+  {
+    "slug": "inmobiliarias",
+    "nombre": "Inmobiliarias",
+    "descripcion": "Agencias inmobiliarias con opiniones reales. Compra, venta y alquiler sin sorpresas.",
+    "icono": "Home",
+    "imagen": ""
+  },
+  {
+    "slug": "tapiceria-cortinas",
+    "nombre": "Tapicería y cortinas",
+    "descripcion": "Tapiceros, cortinas y toldos a medida.",
+    "icono": "Sofa",
+    "imagen": ""
+  },
+  {
+    "slug": "servicios-empresa",
+    "nombre": "Servicios para empresas",
+    "descripcion": "Consultoría, coaching y servicios profesionales para tu negocio.",
+    "icono": "Briefcase",
+    "imagen": ""
+  },
+  {
+    "slug": "seguridad-alarmas",
+    "nombre": "Seguridad y alarmas",
+    "descripcion": "Alarmas, videovigilancia y empresas de seguridad para casa y negocio.",
+    "icono": "ShieldAlert",
+    "imagen": ""
+  },
+  {
+    "slug": "piscinas",
+    "nombre": "Piscinas",
+    "descripcion": "Construcción y mantenimiento de piscinas.",
+    "icono": "Waves",
+    "imagen": ""
+  },
+  {
+    "slug": "arquitectura",
+    "nombre": "Arquitectura",
+    "descripcion": "Estudios de arquitectura y aparejadores para tu proyecto o reforma.",
+    "icono": "Ruler",
+    "imagen": ""
+  },
+  {
+    "slug": "imprenta-rotulacion",
+    "nombre": "Imprenta y rotulación",
+    "descripcion": "Imprentas, rotulación y artes gráficas.",
+    "icono": "Printer",
+    "imagen": ""
+  },
+  {
+    "slug": "informatica-moviles",
+    "nombre": "Informática y móviles",
+    "descripcion": "Reparación de ordenadores y móviles, y servicios informáticos.",
+    "icono": "Laptop",
+    "imagen": ""
+  },
+  {
+    "slug": "ocio-infantil",
+    "nombre": "Ocio infantil",
+    "descripcion": "Campamentos, ludotecas y animación para los más pequeños.",
+    "icono": "Baby",
+    "imagen": ""
+  },
+  {
+    "slug": "residencias-mayores",
+    "nombre": "Residencias y mayores",
+    "descripcion": "Residencias, centros de día y ayuda a domicilio.",
+    "icono": "HeartHandshake",
+    "imagen": ""
+  },
+  {
+    "slug": "autoescuelas",
+    "nombre": "Autoescuelas",
+    "descripcion": "Autoescuelas con opiniones de alumnos que ya se han sacado el carné.",
+    "icono": "Car",
+    "imagen": ""
+  },
+  {
+    "slug": "ascensores",
+    "nombre": "Ascensores",
+    "descripcion": "Instalación y mantenimiento de ascensores y elevadores.",
+    "icono": "ArrowUpDown",
+    "imagen": ""
+  },
+  {
+    "slug": "fotografia-video",
+    "nombre": "Fotografía y vídeo",
+    "descripcion": "Fotógrafos y productoras de vídeo para bodas, eventos y empresa.",
+    "icono": "Camera",
+    "imagen": ""
+  },
+  {
+    "slug": "seguros",
+    "nombre": "Seguros",
+    "descripcion": "Corredurías de seguros y agentes con opiniones de asegurados.",
+    "icono": "ShieldCheck",
+    "imagen": ""
+  },
+  {
+    "slug": "mascotas-servicios",
+    "nombre": "Mascotas",
+    "descripcion": "Peluquería canina, adiestramiento y tiendas de animales.",
+    "icono": "PawPrint",
+    "imagen": ""
+  },
+  {
+    "slug": "clinicas-medicas",
+    "nombre": "Clínicas médicas",
+    "descripcion": "Clínicas, centros médicos y especialistas con valoraciones de pacientes.",
+    "icono": "Stethoscope",
+    "imagen": ""
+  },
+  {
+    "slug": "coworking-oficinas",
+    "nombre": "Coworking y oficinas",
+    "descripcion": "Espacios de coworking y alquiler de oficinas.",
+    "icono": "Building2",
+    "imagen": ""
+  },
+  {
+    "slug": "masajes-bienestar",
+    "nombre": "Masajes y bienestar",
+    "descripcion": "Quiromasaje, relajación y centros de bienestar.",
+    "icono": "Sparkles",
+    "imagen": ""
+  },
+  {
+    "slug": "ferreterias",
+    "nombre": "Ferreterías",
+    "descripcion": "Ferreterías y suministros para tus reformas y arreglos.",
+    "icono": "Wrench",
+    "imagen": ""
+  },
+  {
+    "slug": "deportes-clubes",
+    "nombre": "Deportes y clubes",
+    "descripcion": "Clubes deportivos, pádel, tenis y escuelas deportivas.",
+    "icono": "Trophy",
+    "imagen": ""
+  },
+  {
+    "slug": "alimentacion",
+    "nombre": "Alimentación",
+    "descripcion": "Panaderías, carnicerías, fruterías y tiendas de alimentación.",
+    "icono": "ShoppingBasket",
+    "imagen": ""
+  },
+  {
+    "slug": "floristerias",
+    "nombre": "Floristerías",
+    "descripcion": "Floristerías con ramos y arreglos florales para cada ocasión.",
+    "icono": "Flower2",
+    "imagen": ""
+  },
+  {
+    "slug": "musica-danza",
+    "nombre": "Música y danza",
+    "descripcion": "Escuelas de música, academias de baile y danza.",
+    "icono": "Music",
+    "imagen": ""
+  },
+  {
+    "slug": "joyerias",
+    "nombre": "Joyerías y relojerías",
+    "descripcion": "Joyerías, relojerías y reparación de joyas.",
+    "icono": "Gem",
+    "imagen": ""
+  },
+  {
+    "slug": "detectives",
+    "nombre": "Detectives",
+    "descripcion": "Detectives privados e investigación.",
+    "icono": "Search",
+    "imagen": ""
   }
 ]

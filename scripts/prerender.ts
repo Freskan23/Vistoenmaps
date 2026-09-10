@@ -37,8 +37,9 @@ if (!fs.existsSync(templatePath)) {
 }
 const template = fs.readFileSync(templatePath, "utf-8");
 
-function esc(s: string): string {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+function esc(s: string | null | undefined): string {
+  if (s === null || s === undefined) return "";
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 interface PageData {
@@ -95,17 +96,16 @@ function generatePage(data: PageData) {
 (function(){var r=document.getElementById('root');if(r){var o=new MutationObserver(function(m,obs){var s=document.getElementById('ssr-content');if(s&&r.children.length>1){s.remove();obs.disconnect()}});o.observe(r,{childList:true});setTimeout(function(){var s=document.getElementById('ssr-content');if(s)s.remove()},3000)}})();
 </script>`;
 
-  // Inject schema BEFORE #root, SSR HTML INSIDE #root, cleanup script after
-  html = html.replace(
-    '<div id="root"></div>',
-    `${schemaScripts}\n<div id="root">${wrappedSsr}</div>\n${cleanupScript}`
-  );
-
-  // Also handle case where root already has content
-  html = html.replace(
-    /<div id="root">(?:<\/div>)?/,
-    `${schemaScripts}\n<div id="root">${wrappedSsr}</div>\n${cleanupScript}`
-  );
+  // Inject schema BEFORE #root, SSR HTML INSIDE #root, cleanup script after.
+  // OJO: UNA sola sustitucion. Antes se hacian dos (la segunda con regex) y esa
+  // segunda volvia a inyectar sobre lo ya inyectado -> 4 copias del SSR por
+  // pagina y ficheros de 258 KB donde deberian ser 7 KB.
+  const bloqueRoot = `${schemaScripts}\n<div id="root">${wrappedSsr}</div>\n${cleanupScript}`;
+  if (html.includes('<div id="root"></div>')) {
+    html = html.replace('<div id="root"></div>', bloqueRoot);
+  } else {
+    html = html.replace(/<div id="root">(?:<\/div>)?/, bloqueRoot);
+  }
 
   // Write file
   const filePath = route === "/"
@@ -119,14 +119,46 @@ function generatePage(data: PageData) {
 
 // ─── SSR HTML Generators ──────────────────────────────────────────────────
 
+// Mismo orden que la web: recomendados primero, luego verificados, luego
+// por valoracion y numero de opiniones.
+function ordenar(lista: any[]): any[] {
+  return [...lista].sort((a, b) => {
+    const sa = a.super_destacado === true ? 1 : 0;
+    const sb = b.super_destacado === true ? 1 : 0;
+    if (sa !== sb) return sb - sa;
+    const da = a.destacado === true ? 1 : 0;
+    const db = b.destacado === true ? 1 : 0;
+    if (da !== db) return db - da;
+    const va = a.valoracion_media ?? 0;
+    const vb = b.valoracion_media ?? 0;
+    if (vb !== va) return vb - va;
+    return (b.num_resenas ?? 0) - (a.num_resenas ?? 0);
+  });
+}
+
+function renderDescripcion(n: any): string {
+  const nl = String.fromCharCode(10);
+  const parrafos = String(n.descripcion).split(nl + nl).filter((x: string) => x.trim());
+  return `<section><h2>Sobre ${esc(n.nombre)}</h2>${parrafos.map((par: string) => `<p>${esc(par.trim())}</p>`).join("")}</section>`;
+}
+
 function renderNegocioCard(n: any): string {
-  return `<article class="negocio-card">
+  const badge = n.super_destacado
+    ? `<p class="badge-recomendado"><strong>Recomendado</strong></p>`
+    : n.destacado
+      ? `<p class="badge-verificado"><strong>Ficha verificada</strong></p>`
+      : "";
+  const valoracion = n.valoracion_media
+    ? `<p>${n.valoracion_media}/5${n.num_resenas ? ` (${n.num_resenas} opiniones)` : ""}</p>`
+    : "";
+  return `<article class="negocio-card${n.super_destacado ? " super-destacado" : n.destacado ? " destacado" : ""}">
+    ${badge}
     <h3><a href="/${n.categoria_slug}/${n.ciudad_slug}/${n.barrio_slug}/${n.slug}">${esc(n.nombre)}</a></h3>
-    <p>${esc(n.direccion)}</p>
-    <p>⭐ ${n.valoracion_media}/5 (${n.num_resenas} reseñas)</p>
-    ${n.telefono ? `<p>📞 <a href="tel:${n.telefono}">${esc(n.telefono)}</a></p>` : ""}
-    ${n.horario ? `<p>🕐 ${esc(n.horario)}</p>` : ""}
-    ${n.web ? `<p>🌐 <a href="${esc(n.web)}" rel="nofollow">${esc(n.web)}</a></p>` : ""}
+    ${n.direccion ? `<p>${esc(n.direccion)}</p>` : ""}
+    ${valoracion}
+    ${n.telefono ? `<p><a href="tel:${esc(n.telefono)}">${esc(n.telefono)}</a></p>` : ""}
+    ${n.horario ? `<p>${esc(n.horario)}</p>` : ""}
+    ${n.web ? `<p><a href="${esc(n.web)}" rel="nofollow">${esc(n.web)}</a></p>` : ""}
   </article>`;
 }
 
@@ -270,9 +302,13 @@ for (const cat of categorias) {
   // Category + City
   for (const ciu of ciudades) {
     const cityBarrios = barrios.filter((b: any) => b.ciudad_slug === ciu.slug);
-    const cityNegocios = negocios.filter(
+    const cityNegocios = ordenar(negocios.filter(
       (n: any) => n.categoria_slug === cat.slug && n.ciudad_slug === ciu.slug
-    );
+    ));
+
+    // Sin negocios de esa categoria en esa ciudad no hay pagina que generar:
+    // evita decenas de miles de paginas vacias (y 38 GB de salida).
+    if (cityNegocios.length === 0) continue;
 
     const barriosWithNegocios = cityBarrios.filter((b: any) =>
       negocios.some((n: any) => n.categoria_slug === cat.slug && n.ciudad_slug === ciu.slug && n.barrio_slug === b.slug)
@@ -315,12 +351,12 @@ for (const cat of categorias) {
 
     // Category + City + Barrio
     for (const bar of cityBarrios) {
-      const barNegocios = negocios.filter(
+      const barNegocios = ordenar(negocios.filter(
         (n: any) =>
           n.categoria_slug === cat.slug &&
           n.ciudad_slug === ciu.slug &&
           n.barrio_slug === bar.slug
-      );
+      ));
 
       if (barNegocios.length === 0) continue;
 
@@ -333,11 +369,11 @@ for (const cat of categorias) {
           "@context": "https://schema.org",
           "@type": "LocalBusiness",
           name: n.nombre,
-          address: { "@type": "PostalAddress", streetAddress: n.direccion, addressLocality: ciu.nombre, addressCountry: "ES" },
-          telephone: n.telefono,
-          geo: { "@type": "GeoCoordinates", latitude: n.coordenadas.lat, longitude: n.coordenadas.lng },
+          address: { "@type": "PostalAddress", streetAddress: n.direccion || undefined, addressLocality: ciu.nombre, addressCountry: "ES" },
+          telephone: n.telefono || undefined,
+          geo: n.coordenadas ? { "@type": "GeoCoordinates", latitude: n.coordenadas.lat, longitude: n.coordenadas.lng } : undefined,
           aggregateRating: n.num_resenas > 0 ? { "@type": "AggregateRating", ratingValue: n.valoracion_media, reviewCount: n.num_resenas } : undefined,
-          openingHours: n.horario,
+          openingHours: n.horario || undefined,
         })),
         ssrHtml: `
           ${renderBreadcrumb([
@@ -348,7 +384,8 @@ for (const cat of categorias) {
           ])}
           <header><h1>${esc(cat.nombre)} en ${esc(bar.nombre)}, ${esc(ciu.nombre)}</h1>
           <p>${barNegocios.length} profesionales verificados en este barrio</p></header>
-          <main>${barNegocios.map(renderNegocioCard).join("")}</main>`,
+          <main>${barNegocios.slice(0, 30).map(renderNegocioCard).join("")}
+          ${barNegocios.length > 30 ? `<p>y ${barNegocios.length - 30} negocios mas en este barrio</p>` : ""}</main>`,
       });
       count++;
 
@@ -357,17 +394,17 @@ for (const cat of categorias) {
         generatePage({
           route: `/${cat.slug}/${ciu.slug}/${bar.slug}/${neg.slug}`,
           title: `${neg.nombre} — ${cat.nombre} en ${bar.nombre}, ${ciu.nombre} | Visto en Maps`,
-          description: `${neg.nombre}: ${neg.valoracion_media}⭐ (${neg.num_resenas} reseñas). ${neg.direccion}. Tel: ${neg.telefono}.`,
+          description: neg.meta_descripcion || [`${neg.nombre}: ${cat.nombre.toLowerCase()} en ${bar.nombre}, ${ciu.nombre}.`, neg.valoracion_media ? `${neg.valoracion_media}/5.` : null, neg.num_resenas ? `${neg.num_resenas} opiniones.` : null, neg.direccion || null, neg.telefono ? `Tel: ${neg.telefono}.` : null].filter(Boolean).join(" "),
           canonical: `${BASE_URL}/${cat.slug}/${ciu.slug}/${bar.slug}/${neg.slug}`,
           schemaJson: [{
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
             name: neg.nombre,
-            address: { "@type": "PostalAddress", streetAddress: neg.direccion, addressLocality: ciu.nombre, addressCountry: "ES" },
-            telephone: neg.telefono,
-            geo: { "@type": "GeoCoordinates", latitude: neg.coordenadas.lat, longitude: neg.coordenadas.lng },
+            address: { "@type": "PostalAddress", streetAddress: neg.direccion || undefined, addressLocality: ciu.nombre, addressCountry: "ES" },
+            telephone: neg.telefono || undefined,
+            geo: neg.coordenadas ? { "@type": "GeoCoordinates", latitude: neg.coordenadas.lat, longitude: neg.coordenadas.lng } : undefined,
             aggregateRating: neg.num_resenas > 0 ? { "@type": "AggregateRating", ratingValue: neg.valoracion_media, reviewCount: neg.num_resenas, bestRating: 5 } : undefined,
-            openingHours: neg.horario,
+            openingHours: neg.horario || undefined,
             ...(neg.web ? { url: neg.web } : {}),
           }],
           ssrHtml: `
@@ -381,12 +418,14 @@ for (const cat of categorias) {
             <main>
             <article>
               <h1>${esc(neg.nombre)}</h1>
-              <p>⭐ ${neg.valoracion_media}/5 (${neg.num_resenas} reseñas)</p>
-              <p>📍 ${esc(neg.direccion)}</p>
+              ${neg.valoracion_media ? `<p>${neg.valoracion_media}/5${neg.num_resenas ? ` (${neg.num_resenas} opiniones)` : ""}</p>` : ""}
+              ${neg.super_destacado ? `<p><strong>Recomendado en Visto en Maps</strong></p>` : neg.destacado ? `<p><strong>Ficha verificada</strong></p>` : ""}
+              ${neg.direccion ? `<p>${esc(neg.direccion)}</p>` : ""}
               ${neg.telefono ? `<p>📞 <a href="tel:${neg.telefono}">${esc(neg.telefono)}</a></p>` : ""}
               ${neg.horario ? `<p>🕐 ${esc(neg.horario)}</p>` : ""}
               ${neg.web ? `<p>🌐 <a href="${esc(neg.web)}" rel="nofollow">${esc(neg.web)}</a></p>` : ""}
               ${neg.servicios_destacados?.length ? `<p>Servicios: ${neg.servicios_destacados.map(esc).join(", ")}</p>` : ""}
+              ${neg.descripcion ? renderDescripcion(neg) : ""}
               ${neg.url_google_maps ? `<p><a href="${esc(neg.url_google_maps)}" rel="nofollow">Ver en Google Maps</a></p>` : ""}
             </article>
             </main>`,

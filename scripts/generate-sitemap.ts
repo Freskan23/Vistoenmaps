@@ -43,8 +43,15 @@ for (const cat of categorias) {
     changefreq: "weekly",
   });
 
-  // Category + City
+  // Category + City — SOLO combinaciones que tienen negocios de verdad.
+  // Si no, el sitemap se llena de URLs que devuelven paginas vacias y Google
+  // las marca como contenido pobre.
   for (const ciu of ciudades) {
+    const cityNegocios = negocios.filter(
+      (n: any) => n.categoria_slug === cat.slug && n.ciudad_slug === ciu.slug
+    );
+    if (cityNegocios.length === 0) continue;
+
     urls.push({
       loc: `/${cat.slug}/${ciu.slug}`,
       priority: "0.8",
@@ -56,12 +63,6 @@ for (const cat of categorias) {
       (b: any) => b.ciudad_slug === ciu.slug
     );
     for (const bar of cityBarrios) {
-      urls.push({
-        loc: `/${cat.slug}/${ciu.slug}/${bar.slug}`,
-        priority: "0.7",
-        changefreq: "weekly",
-      });
-
       // Individual businesses
       const barNegocios = negocios.filter(
         (n: any) =>
@@ -69,6 +70,13 @@ for (const cat of categorias) {
           n.ciudad_slug === ciu.slug &&
           n.barrio_slug === bar.slug
       );
+      if (barNegocios.length === 0) continue;
+
+      urls.push({
+        loc: `/${cat.slug}/${ciu.slug}/${bar.slug}`,
+        priority: "0.7",
+        changefreq: "weekly",
+      });
       for (const neg of barNegocios) {
         urls.push({
           loc: `/${cat.slug}/${ciu.slug}/${bar.slug}/${neg.slug}`,

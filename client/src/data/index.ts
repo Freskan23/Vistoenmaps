@@ -42,16 +42,37 @@ export function getNegocio(
   );
 }
 
+/**
+ * Orden de listado: primero los recomendados, luego las fichas verificadas y
+ * despues el resto por valoracion y numero de opiniones.
+ */
+export function ordenarNegocios(lista: Negocio[]): Negocio[] {
+  return [...lista].sort((a, b) => {
+    const sa = a.super_destacado === true ? 1 : 0;
+    const sb = b.super_destacado === true ? 1 : 0;
+    if (sa !== sb) return sb - sa;
+    const da = a.destacado === true ? 1 : 0;
+    const db = b.destacado === true ? 1 : 0;
+    if (da !== db) return db - da;
+    const va = a.valoracion_media ?? 0;
+    const vb = b.valoracion_media ?? 0;
+    if (vb !== va) return vb - va;
+    return (b.num_resenas ?? 0) - (a.num_resenas ?? 0);
+  });
+}
+
 export function getNegociosByBarrio(
   categoriaSlug: string,
   ciudadSlug: string,
   barrioSlug: string
 ): Negocio[] {
-  return negocios.filter(
-    (n) =>
-      n.categoria_slug === categoriaSlug &&
-      n.ciudad_slug === ciudadSlug &&
-      n.barrio_slug === barrioSlug
+  return ordenarNegocios(
+    negocios.filter(
+      (n) =>
+        n.categoria_slug === categoriaSlug &&
+        n.ciudad_slug === ciudadSlug &&
+        n.barrio_slug === barrioSlug
+    )
   );
 }
 
@@ -59,8 +80,10 @@ export function getNegociosByCiudad(
   categoriaSlug: string,
   ciudadSlug: string
 ): Negocio[] {
-  return negocios.filter(
-    (n) => n.categoria_slug === categoriaSlug && n.ciudad_slug === ciudadSlug
+  return ordenarNegocios(
+    negocios.filter(
+      (n) => n.categoria_slug === categoriaSlug && n.ciudad_slug === ciudadSlug
+    )
   );
 }
 
