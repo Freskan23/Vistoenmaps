@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { MapPin, ArrowRight, CheckCircle2, Clock, Shield, Star, Eye, Calendar, Newspaper } from "lucide-react";
 import { superCategorias } from "@/data/superCategorias";
 import { categorias } from "@/data";
+import resumen from "@/data/resumen.json";
 import SuperCategoriaCard from "@/components/SuperCategoriaCard";
 import EventoCard from "@/components/EventoCard";
 import BlogPostCard from "@/components/BlogPostCard";
@@ -106,7 +107,7 @@ export default function Home() {
             >
               <Eye className="w-3.5 h-3.5 text-accent" />
               <span className="text-[11px] font-bold text-accent uppercase tracking-widest">
-                +175 negocios verificados en Google Maps
+                +{new Intl.NumberFormat("es-ES", { useGrouping: "always" } as Intl.NumberFormatOptions).format(resumen.totalNegocios)} negocios verificados en Google Maps
               </span>
             </motion.div>
 
@@ -171,7 +172,7 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-1.5 text-white/40 text-xs">
                 <MapPin className="w-3.5 h-3.5 text-accent/80" />
-                <span>5 ciudades de España</span>
+                <span>{new Intl.NumberFormat("es-ES", { useGrouping: "always" } as Intl.NumberFormatOptions).format(resumen.totalCiudades)} ciudades de España</span>
               </div>
             </motion.div>
           </div>

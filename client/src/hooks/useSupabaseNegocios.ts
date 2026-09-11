@@ -1,7 +1,8 @@
 import { useEffect, useState, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
 import { negocios as staticNegocios, barrios as staticBarrios, ciudades as staticCiudades } from '@/data';
-import { cargarCategoria, negociosEnMemoria } from '@/data/negociosPorCategoria';
+import { cargarCategoria, cargarCategorias, negociosEnMemoria } from '@/data/negociosPorCategoria';
+import resumen from '@/data/resumen.json';
 import type { Negocio, Barrio, Ciudad } from '@/data/types';
 
 /**
@@ -209,6 +210,34 @@ export function useNegociosCategoria(categoriaSlug: string | undefined) {
   return { negocios: lista, loaded };
 }
 
+/**
+ * Negocios de las categorias con MAS fichas. Lo usan el buscador y el blog,
+ * que necesitan variedad pero no el directorio entero: con las 12 categorias
+ * mas cargadas se cubre la mayor parte de las busquedas por ~2 MB en vez de 20.
+ */
+export function useNegociosPrincipales(cuantasCategorias = 12) {
+  const slugs = useMemo(
+    () => resumen.topCategorias.slice(0, cuantasCategorias).map((c) => c.slug),
+    [cuantasCategorias]
+  );
+  const [lista, setLista] = useState<Negocio[]>(() => negociosEnMemoria());
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    let vivo = true;
+    cargarCategorias(slugs).then(() => {
+      if (!vivo) return;
+      setLista(negociosEnMemoria());
+      setLoaded(true);
+    });
+    return () => {
+      vivo = false;
+    };
+  }, [slugs]);
+
+  return { negocios: lista, loaded };
+}
+
 export function useAllNegocios() {
   const [data, setData] = useState<CachedData>(_cached || EMPTY);
   const [loaded, setLoaded] = useState(!!_cached);
@@ -312,8 +341,9 @@ export function useFindNegocio(
  * Buscar negocios en datos combinados (para SearchBar)
  */
 export function useSearchNegocios() {
-  const { allNegocios } = useAllNegocios();
-  return allNegocios;
+  // El buscador tira de las categorias con mas fichas (no de los 20 MB).
+  const { negocios } = useNegociosPrincipales();
+  return negocios;
 }
 
 // ---------- Helpers (trabajan sobre el array combinado) ----------

@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { negocios, categorias, ciudades } from "@/data";
+import resumen from "@/data/resumen.json";
 import EyeLogo from "@/components/EyeLogo";
 import { ArrowRight } from "lucide-react";
 
@@ -15,47 +15,20 @@ import { ArrowRight } from "lucide-react";
 
 const MAX_POR_COLUMNA = 8;
 
-/** Cuenta negocios una sola vez y saca los mas cargados. */
-function calcularDestacados() {
-  const porCategoria: Record<string, number> = {};
-  const porCombo: Record<string, number> = {};
+/**
+ * Los contadores salen de `resumen.json` (88 KB): totales y rankings ya
+ * calculados. NO se puede importar negocios.json aqui — son 20 MB y el pie
+ * esta en TODAS las paginas.
+ */
+const topCategorias = resumen.topCategorias.slice(0, MAX_POR_COLUMNA);
+const topCombos = resumen.topCombos.slice(0, MAX_POR_COLUMNA).map((c) => ({
+  href: `/${c.categoria}/${c.ciudad}`,
+  texto: c.texto,
+}));
+const TOTAL_NEGOCIOS = resumen.totalNegocios;
+const TOTAL_CATEGORIAS = resumen.totalCategorias;
+const totalCiudades = resumen.totalCiudades;
 
-  for (const n of negocios) {
-    porCategoria[n.categoria_slug] = (porCategoria[n.categoria_slug] || 0) + 1;
-    const k = `${n.categoria_slug}|${n.ciudad_slug}`;
-    porCombo[k] = (porCombo[k] || 0) + 1;
-  }
-
-  const nombreCat: Record<string, string> = {};
-  for (const c of categorias) nombreCat[c.slug] = c.nombre;
-  const nombreCiu: Record<string, string> = {};
-  for (const c of ciudades) nombreCiu[c.slug] = c.nombre;
-
-  const topCategorias = Object.entries(porCategoria)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, MAX_POR_COLUMNA)
-    .map(([slug]) => ({ slug, nombre: nombreCat[slug] || slug }));
-
-  const topCombos = Object.entries(porCombo)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, MAX_POR_COLUMNA)
-    .map(([k]) => {
-      const [cat, ciu] = k.split("|");
-      return {
-        href: `/${cat}/${ciu}`,
-        texto: `${nombreCat[cat] || cat} en ${nombreCiu[ciu] || ciu}`,
-      };
-    });
-
-  return { topCategorias, topCombos, totalCiudades: Object.keys(nombreCiu).length };
-}
-
-const { topCategorias, topCombos, totalCiudades } = calcularDestacados();
-const TOTAL_NEGOCIOS = negocios.length;
-const TOTAL_CATEGORIAS = categorias.length;
-
-// useGrouping "always": sin esto, es-ES deja "1069" sin punto de millar y
-// desentona al lado de "20.253".
 const formato = new Intl.NumberFormat("es-ES", { useGrouping: "always" } as Intl.NumberFormatOptions);
 
 export default function Footer() {
