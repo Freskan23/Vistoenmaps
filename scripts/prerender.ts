@@ -264,6 +264,31 @@ generatePage({
 });
 count++;
 
+// Paginas legales (obligatorias en España). Contenido corto en el HTML para
+// que Google las indexe aunque el visitante no ejecute JS.
+const LEGALES = [
+  { ruta: "aviso-legal", titulo: "Aviso legal",
+    desc: "Aviso legal y condiciones de uso de Visto en Maps, directorio de negocios locales de España.",
+    intro: "Condiciones de uso del directorio, origen de la informacion publicada y como corregir o retirar la ficha de un negocio." },
+  { ruta: "privacidad", titulo: "Politica de privacidad",
+    desc: "Como trata Visto en Maps los datos personales: que se recoge, para que y como ejercer tus derechos.",
+    intro: "Navegar por el directorio no exige facilitar datos personales. Aqui se explica que se trata al escribir por el formulario o crear una cuenta de negocio." },
+  { ruta: "cookies", titulo: "Politica de cookies",
+    desc: "Que cookies usa Visto en Maps y como controlarlas.",
+    intro: "Este directorio no usa cookies de publicidad ni de seguimiento entre sitios." },
+];
+for (const lg of LEGALES) {
+  generatePage({
+    route: `/${lg.ruta}`,
+    title: `${lg.titulo} | Visto en Maps`,
+    description: lg.desc,
+    canonical: `${BASE_URL}/${lg.ruta}`,
+    schemaJson: [{ "@context": "https://schema.org", "@type": "WebPage", name: lg.titulo, url: `${BASE_URL}/${lg.ruta}` }],
+    ssrHtml: `<main><h1>${esc(lg.titulo)}</h1><p>${esc(lg.intro)}</p></main>`,
+  });
+  count++;
+}
+
 // Contacto
 generatePage({
   route: "/contacto",

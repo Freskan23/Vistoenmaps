@@ -34,6 +34,10 @@ urls.push({ loc: "/", priority: "1.0", changefreq: "weekly" });
 // Static pages
 urls.push({ loc: "/directorios", priority: "0.8", changefreq: "monthly" });
 urls.push({ loc: "/contacto", priority: "0.5", changefreq: "monthly" });
+// Paginas legales: obligatorias en España y Google espera encontrarlas.
+urls.push({ loc: "/aviso-legal", priority: "0.3", changefreq: "yearly" });
+urls.push({ loc: "/privacidad", priority: "0.3", changefreq: "yearly" });
+urls.push({ loc: "/cookies", priority: "0.3", changefreq: "yearly" });
 
 // Categories
 for (const cat of categorias) {

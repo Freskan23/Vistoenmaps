@@ -10,6 +10,9 @@ import CiudadPage from "./pages/CiudadPage";
 import BarrioPage from "./pages/BarrioPage";
 import NegocioPage from "./pages/NegocioPage";
 import ContactoPage from "./pages/ContactoPage";
+import AvisoLegalPage from "@/pages/AvisoLegalPage";
+import PrivacidadPage from "@/pages/PrivacidadPage";
+import CookiesPage from "@/pages/CookiesPage";
 import DirectoriosPage from "./pages/DirectoriosPage";
 import DirectorioDetallePage from "./pages/DirectorioDetallePage";
 import LoginPage from "./pages/auth/LoginPage";
@@ -51,6 +54,9 @@ function Router() {
       <Route path="/eventos/:ciudad" component={EventosCiudadPage} />
       <Route path="/blog" component={BlogPage} />
       <Route path="/blog/:slug" component={BlogPostPage} />
+      <Route path="/aviso-legal" component={AvisoLegalPage} />
+      <Route path="/privacidad" component={PrivacidadPage} />
+      <Route path="/cookies" component={CookiesPage} />
       <Route path="/:categoria" component={CategoriaPage} />
       <Route path="/:categoria/:ciudad" component={CiudadPage} />
       <Route path="/:categoria/:ciudad/:barrio" component={BarrioPage} />
