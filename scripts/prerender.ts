@@ -90,18 +90,43 @@ function generatePage(data: PageData) {
   // el visitante veia la PANTALLA EN BLANCO hasta que React montaba. Con el
   // bundle actual eso son varios segundos en un movil.
   // Ahora se ve el contenido al instante y React lo sustituye al montar.
-  const wrappedSsr = `<div id="ssr-content">${ssrHtml}</div>`;
+  // ---- Primer pintado ----------------------------------------------------
+  // El HTML del servidor esta AHI para Google desde el primer byte, pero al
+  // visitante se le enseña una pantalla de carga con la marca: si no, durante
+  // un instante veia el texto pelado (la hoja de estilos aun no ha llegado).
+  // En cuanto React monta, la pantalla de carga se va con un fundido.
+  const wrappedSsr = `<div id="ssr-content" aria-hidden="false">${ssrHtml}</div>`;
 
-  // Estilos minimos EN LINEA para que ese HTML no se vea como un documento pelado
-  // (no hay CSS aun: la hoja de estilos todavia se esta descargando).
+  const pantallaCarga = `<div id="vem-carga" role="status" aria-label="Cargando">
+<div class="vem-carga-caja">
+<svg class="vem-carga-pin" width="54" height="68" viewBox="0 0 26 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<path d="M13 0C5.82 0 0 5.82 0 13c0 9.75 13 21 13 21s13-11.25 13-21c0-7.18-5.82-13-13-13z" fill="#1B4965"/>
+<circle cx="13" cy="13" r="5.2" fill="#FCC44E"/>
+</svg>
+<p class="vem-carga-marca">Visto en <span>Maps</span></p>
+<div class="vem-carga-barra"><span></span></div>
+</div></div>`;
+
+  // Estilos EN LINEA: son los unicos que existen hasta que llega el CSS.
   const estilosSsr = `<style>
+#vem-carga{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#fafaf7;transition:opacity .35s ease}
+#vem-carga.vem-fuera{opacity:0;pointer-events:none}
+.vem-carga-caja{display:flex;flex-direction:column;align-items:center;gap:14px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.vem-carga-pin{animation:vem-flota 1.4s ease-in-out infinite}
+@keyframes vem-flota{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.vem-carga-marca{margin:0;font-size:1.05rem;font-weight:700;letter-spacing:.02em;color:#1B4965}
+.vem-carga-marca span{color:#d98324}
+.vem-carga-barra{width:132px;height:4px;border-radius:999px;background:#e4e7eb;overflow:hidden}
+.vem-carga-barra span{display:block;width:40%;height:100%;border-radius:999px;background:#1B4965;animation:vem-avanza 1.1s ease-in-out infinite}
+@keyframes vem-avanza{0%{transform:translateX(-100%)}100%{transform:translateX(330%)}}
+@media (prefers-reduced-motion:reduce){.vem-carga-pin,.vem-carga-barra span{animation:none}}
+/* El HTML del servidor: legible si algo falla, y siempre disponible para Google. */
 #ssr-content{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;max-width:1100px;margin:0 auto;padding:16px 20px 40px;color:#1f2933}
 #ssr-content h1{font-size:1.6rem;line-height:1.25;margin:.6rem 0 .2rem;color:#12303f}
 #ssr-content h2{font-size:1.1rem;margin:1.4rem 0 .4rem;color:#12303f}
 #ssr-content h3{font-size:1rem;margin:0 0 .25rem}
 #ssr-content p{margin:.25rem 0;color:#52606d}
 #ssr-content nav{font-size:.8rem;color:#7b8794;margin-bottom:.5rem}
-#ssr-content nav a{color:#7b8794}
 #ssr-content a{color:#1B4965;text-decoration:none}
 #ssr-content ul{list-style:none;padding:0;margin:.5rem 0;display:flex;flex-wrap:wrap;gap:.4rem}
 #ssr-content ul li a{display:inline-block;background:#eef2f5;border-radius:999px;padding:.25rem .7rem;font-size:.85rem}
@@ -111,16 +136,14 @@ function generatePage(data: PageData) {
 #ssr-content .badge-verificado{background:#fdf0d5;color:#8a6100}
 </style>`;
 
-  // Cuando React ha montado de verdad, se retira el HTML del servidor.
+  // Al montar React: quitar el HTML del servidor y fundir la pantalla de carga.
+  // Red de seguridad a los 8 s: si algo fallara, se ve el contenido igualmente.
   const cleanupScript = `<script>
-(function(){var r=document.getElementById('root');if(!r)return;var quitar=function(){var s=document.getElementById('ssr-content');if(s)s.remove()};var o=new MutationObserver(function(m,obs){if(r.children.length>1){quitar();obs.disconnect()}});o.observe(r,{childList:true});setTimeout(quitar,8000)})();
+(function(){var r=document.getElementById('root');if(!r)return;var fin=function(){var s=document.getElementById('ssr-content');if(s)s.remove();var c=document.getElementById('vem-carga');if(c){c.className='vem-fuera';setTimeout(function(){if(c.parentNode)c.parentNode.removeChild(c)},400)}};var o=new MutationObserver(function(m,obs){if(r.children.length>1){fin();obs.disconnect()}});o.observe(r,{childList:true});setTimeout(fin,8000)})();
 </scr` + `ipt>`;
 
-  // Inject schema BEFORE #root, SSR HTML INSIDE #root, cleanup script after.
-  // OJO: UNA sola sustitucion. Antes se hacian dos (la segunda con regex) y esa
-  // segunda volvia a inyectar sobre lo ya inyectado -> 4 copias del SSR por
-  // pagina y ficheros de 258 KB donde deberian ser 7 KB.
   const bloqueRoot = `${estilosSsr}
+${pantallaCarga}
 ${schemaScripts}\n<div id="root">${wrappedSsr}</div>\n${cleanupScript}`;
   if (html.includes('<div id="root"></div>')) {
     html = html.replace('<div id="root"></div>', bloqueRoot);
