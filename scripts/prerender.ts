@@ -396,6 +396,30 @@ generatePage({
 });
 count++;
 
+// Herramientas: pagina real con contenido, enlazada desde el pie de todas las
+// paginas. Explica que hace cada producto y para quien es.
+generatePage({
+  route: "/herramientas",
+  title: "Herramientas para posicionar tu negocio en Google Maps | Visto en Maps",
+  description: "Qué usamos para medir posiciones en Google Maps, conseguir reseñas y gestionar fichas: Trafikazo, Local Brain y YinYang SEO. Para dueños de negocio y para agencias.",
+  canonical: `${BASE_URL}/herramientas`,
+  schemaJson: [{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+    { "@type": "ListItem", position: 2, name: "Herramientas", item: `${BASE_URL}/herramientas` },
+  ]}],
+  ssrHtml: `<main>
+    <h1>Aparecer aqui es gratis. Salir el primero en Google es otra cosa.</h1>
+    <p>Herramientas para medir posiciones en Google Maps, conseguir resenas y gestionar fichas.</p>
+    <h2>Trafikazo</h2>
+    <p>Mide en que puesto sales en Google Maps calle por calle, ayuda a conseguir resenas y avisa si alguien cambia los datos de tu ficha. Para duenos de negocio y agencias.</p>
+    <h2>Local Brain</h2>
+    <p>Gestiona varias fichas de Google desde un solo panel: publicaciones, resenas, preguntas, posiciones y citaciones. Para quien lleva varias ubicaciones o varios clientes.</p>
+    <h2>YinYang SEO</h2>
+    <p>Formacion en SEO local y servicios de agencia.</p>
+  </main>`,
+});
+count++;
+
 // Pagina 404 propia. Vercel sirve /404.html cuando no existe la ruta, asi el
 // visitante ve algo util y Google recibe un 404 de verdad (no un 200 con la
 // portada, que es lo que provocaba que indexara URLs inventadas).

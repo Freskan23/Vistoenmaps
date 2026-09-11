@@ -15,6 +15,7 @@ import CategoryIcon from "@/components/CategoryIcon";
 import Breadcrumb from "@/components/Breadcrumb";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ParaAgencias from "@/components/ParaAgencias";
 import NotFound from "./NotFound";
 import { motion } from "framer-motion";
 import SEOHead from "@/components/SEOHead";
@@ -252,6 +253,11 @@ export default function CiudadPage() {
             </p>
           </div>
         )}
+        <ParaAgencias
+          ciudadNombre={ciu.nombre}
+          categoriaNombre={cat.nombre}
+          totalNegocios={totalNegocios}
+        />
       </section>
 
       <Footer />

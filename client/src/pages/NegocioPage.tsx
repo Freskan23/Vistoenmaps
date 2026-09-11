@@ -44,10 +44,11 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { getCategoria } from "@/data";
+import { getCategoria, ordenarNegocios } from "@/data";
 import { directorios } from "@/data/directorios";
 import {
   useFindNegocio,
+  useNegociosCategoria,
   useAllBarrios,
   useAllCiudades,
 } from "@/hooks/useSupabaseNegocios";
@@ -58,14 +59,15 @@ import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { MapView, type MapaSimple } from "@/components/Map";
 import NotFound from "./NotFound";
+import EsTuNegocio from "@/components/EsTuNegocio";
 import { toast } from "sonner";
 
 /* ------------------------------------------------------------------ */
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-function formatPhoneForWhatsApp(phone: string): string {
-  const digits = phone.replace(/\s/g, "").replace(/[^\d+]/g, "");
+function formatPhoneForWhatsApp(phone: string | null | undefined): string {
+  const digits = (phone || "").replace(/\s/g, "").replace(/[^\d+]/g, "");
   if (digits.startsWith("+")) return digits;
   if (digits.startsWith("34")) return "+" + digits;
   return "+34" + digits;
@@ -125,6 +127,7 @@ export default function NegocioPage() {
   const cat = getCategoria(categoria);
   const { allCiudades } = useAllCiudades();
   const { allBarrios } = useAllBarrios();
+  const { negocios: negociosCategoria } = useNegociosCategoria(categoria);
   const { negocio: neg, loaded } = useFindNegocio(
     categoria,
     ciudad,
@@ -205,6 +208,14 @@ export default function NegocioPage() {
     );
   }
   if (!ciu || !bar || !neg) return <NotFound />;
+
+  // Vecinos del mismo barrio y categoria, en el mismo orden que el listado:
+  // es lo que permite decirle al dueño en que puesto sale de verdad.
+  const vecinos = ordenarNegocios(
+    negociosCategoria.filter(
+      (n) => n.ciudad_slug === neg.ciudad_slug && n.barrio_slug === neg.barrio_slug
+    )
+  );
 
   // OpenStreetMap no necesita clave de API: el mapa se muestra siempre.
   const heroPhoto = neg.fotos?.[0];
@@ -577,7 +588,7 @@ export default function NegocioPage() {
             {/* Hero CTAs */}
             <div className="flex flex-col sm:flex-row gap-3 mt-8">
               <a
-                href={`tel:${neg.telefono.replace(/\s/g, "")}`}
+                href={`tel:${(neg.telefono || "").replace(/\s/g, "")}`}
                 className="flex-1 flex items-center justify-center gap-2.5 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/35 hover:from-orange-600 hover:to-orange-700 transition-all duration-200 text-sm md:text-base"
               >
                 <Phone className="w-5 h-5" />
@@ -1091,6 +1102,16 @@ export default function NegocioPage() {
                   )}
               </TabsContent>
             </Tabs>
+
+            {/* Diagnostico honesto para el dueño del negocio */}
+            <div className="mt-6">
+              <EsTuNegocio
+                negocio={neg}
+                vecinos={vecinos}
+                categoriaNombre={cat.nombre}
+                barrioNombre={bar.nombre}
+              />
+            </div>
           </motion.div>
 
           {/* ----- SIDEBAR (1/3) ----- */}
@@ -1132,7 +1153,7 @@ export default function NegocioPage() {
                         Telefono
                       </p>
                       <a
-                        href={`tel:${neg.telefono.replace(/\s/g, "")}`}
+                        href={`tel:${(neg.telefono || "").replace(/\s/g, "")}`}
                         className="text-foreground hover:text-[#1B4965] transition-colors text-sm mt-0.5 inline-block font-medium"
                       >
                         {neg.telefono}
@@ -1197,7 +1218,7 @@ export default function NegocioPage() {
                             rel="noopener noreferrer"
                             className="text-[#1B4965] hover:underline text-sm mt-0.5 inline-block font-medium truncate block"
                           >
-                            {neg.web.replace(/^https?:\/\/(www\.)?/, "")}
+                            {(neg.web || "").replace(/^https?:\/\/(www\.)?/, "")}
                           </a>
                         </div>
                       </div>
