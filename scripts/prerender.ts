@@ -396,6 +396,25 @@ generatePage({
 });
 count++;
 
+// Pagina 404 propia. Vercel sirve /404.html cuando no existe la ruta, asi el
+// visitante ve algo util y Google recibe un 404 de verdad (no un 200 con la
+// portada, que es lo que provocaba que indexara URLs inventadas).
+generatePage({
+  route: "/404",
+  title: "Página no encontrada | Visto en Maps",
+  description: "La página que buscas no existe. Busca tu servicio por sector y ciudad en el directorio.",
+  canonical: `${BASE_URL}/404`,
+  schemaJson: [],
+  ssrHtml: `<main><h1>Esta página no existe</h1>
+    <p>Puede que el negocio ya no esté o que la dirección esté mal escrita.</p>
+    <h2>Empieza por aquí</h2>
+    <ul class="lista-enlaces">
+      <li><a href="/">Inicio del directorio</a></li>
+      ${categorias.slice(0, 10).map((c: any) => `<li><a href="/${c.slug}">${esc(c.nombre)}</a></li>`).join("")}
+    </ul></main>`,
+});
+count++;
+
 // Blog
 generatePage({
   route: "/blog",
@@ -584,6 +603,17 @@ for (const cat of categorias) {
             aggregateRating: neg.num_resenas > 0 ? { "@type": "AggregateRating", ratingValue: neg.valoracion_media, reviewCount: neg.num_resenas, bestRating: 5 } : undefined,
             openingHours: neg.horario || undefined,
             ...(neg.web ? { url: neg.web } : {}),
+          }, {
+            // Sin esto Google pinta una ruta inventada bajo el titulo del resultado.
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+              { "@type": "ListItem", position: 2, name: cat.nombre, item: `${BASE_URL}/${cat.slug}` },
+              { "@type": "ListItem", position: 3, name: ciu.nombre, item: `${BASE_URL}/${cat.slug}/${ciu.slug}` },
+              { "@type": "ListItem", position: 4, name: bar.nombre, item: `${BASE_URL}/${cat.slug}/${ciu.slug}/${bar.slug}` },
+              { "@type": "ListItem", position: 5, name: neg.nombre, item: `${BASE_URL}/${cat.slug}/${ciu.slug}/${bar.slug}/${neg.slug}` },
+            ],
           }],
           ssrHtml: `
             ${renderBreadcrumb([
@@ -613,5 +643,30 @@ for (const cat of categorias) {
     }
   }
 }
+
+// ---- URLs planas heredadas -------------------------------------------------
+// El comodin de vercel.json devolvia 200 a CUALQUIER direccion, y Google llego a
+// indexar /pintores-nekander-bilbao (plana) en vez de la ruta real de 4 niveles.
+// Para no perder esas URLs se crea una pagina por slug que apunta a la ficha
+// buena con canonical + redireccion. Los 20.253 slugs son unicos, asi que no hay
+// ambiguedad. (En vercel.json no caben: el limite son 1.024 redirecciones.)
+for (const neg of negocios as any[]) {
+  const destino = `/${neg.categoria_slug}/${neg.ciudad_slug}/${neg.barrio_slug}/${neg.slug}`;
+  const ruta = path.join(distDir, neg.slug);
+  fs.mkdirSync(ruta, { recursive: true });
+  fs.writeFileSync(
+    path.join(ruta, "index.html"),
+    `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8">` +
+      `<title>${esc(neg.nombre)} | Visto en Maps</title>` +
+      `<link rel="canonical" href="${BASE_URL}${destino}">` +
+      `<meta name="robots" content="noindex,follow">` +
+      `<meta http-equiv="refresh" content="0;url=${destino}">` +
+      `</head><body><p>Esta ficha esta en <a href="${destino}">${esc(neg.nombre)}</a>.</p>` +
+      `<scr` + `ipt>location.replace(${JSON.stringify(destino)});</scr` + `ipt>` +
+      `</body></html>`,
+    "utf-8"
+  );
+}
+console.log(`Paginas planas heredadas: ${negocios.length}`);
 
 console.log(`✅ Pre-rendered: ${count} pages -> ${distDir}`);
