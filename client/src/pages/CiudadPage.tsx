@@ -10,7 +10,7 @@ import { MapPin, ArrowRight, Users } from "lucide-react";
 import {
   getCategoria,
 } from "@/data";
-import { useAllNegocios, useAllBarrios, useAllCiudades, filterByCiudad, countByBarrio } from "@/hooks/useSupabaseNegocios";
+import { useNegociosCategoria, useAllBarrios, useAllCiudades } from "@/hooks/useSupabaseNegocios";
 import CategoryIcon from "@/components/CategoryIcon";
 import Breadcrumb from "@/components/Breadcrumb";
 import Header from "@/components/Header";
@@ -31,7 +31,8 @@ const CARD_ACCENTS = [
 export default function CiudadPage() {
   const { categoria, ciudad } = useParams<{ categoria: string; ciudad: string }>();
   const cat = getCategoria(categoria);
-  const { allNegocios } = useAllNegocios();
+  // Solo los negocios de ESTA categoria (~120 KB), no los 20.253.
+  const { negocios: allNegocios } = useNegociosCategoria(categoria);
   const { allBarrios } = useAllBarrios();
   const { allCiudades } = useAllCiudades();
 

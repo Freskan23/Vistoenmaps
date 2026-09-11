@@ -1,14 +1,18 @@
 import categoriasData from "./categorias.json";
 import ciudadesData from "./ciudades.json";
 import barriosData from "./barrios.json";
-import negociosData from "./negocios.json";
 import type { Categoria, Ciudad, Barrio, Negocio } from "./types";
 export { superCategorias, getSuperCategoria, getSuperCategoriaForCategoria } from "./superCategorias";
 
 export const categorias: Categoria[] = categoriasData;
 export const ciudades: Ciudad[] = ciudadesData;
 export const barrios: Barrio[] = barriosData;
-export const negocios: Negocio[] = negociosData;
+// OJO: negocios.json (20 MB) YA NO se importa aqui. Si se vuelve a importar,
+// el bundle pasa de ~500 KB a 21 MB y cada pagina descarga los 20.253 negocios
+// aunque solo muestre 3 (pantalla en blanco en movil).
+// Los datos se piden por categoria desde /datos/<categoria>.json.
+// Ver data/negociosPorCategoria.ts
+export const negocios: Negocio[] = [];
 
 // Helper functions
 export function getCategoria(slug: string): Categoria | undefined {

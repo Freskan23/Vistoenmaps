@@ -13,7 +13,7 @@ import { MapPin, ArrowUpDown, Star, Clock, Zap, Filter, X, ChevronDown, Map as M
 import {
   getCategoria,
 } from "@/data";
-import { useAllNegocios, useAllBarrios, useAllCiudades, filterByBarrio } from "@/hooks/useSupabaseNegocios";
+import { useNegociosCategoria, useAllBarrios, useAllCiudades, filterByBarrio } from "@/hooks/useSupabaseNegocios";
 import Breadcrumb from "@/components/Breadcrumb";
 import NegocioCard from "@/components/NegocioCard";
 import AdSlot from "@/components/ads/AdSlot";
@@ -51,7 +51,8 @@ export default function BarrioPage() {
   const mapRef = useRef<MapaSimple | null>(null);
 
   const cat = getCategoria(categoria);
-  const { allNegocios } = useAllNegocios();
+  // Solo los negocios de ESTA categoria (~120 KB), no los 20.253.
+  const { negocios: allNegocios } = useNegociosCategoria(categoria);
   const { allBarrios } = useAllBarrios();
   const { allCiudades } = useAllCiudades();
 

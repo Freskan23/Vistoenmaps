@@ -85,22 +85,43 @@ function generatePage(data: PageData) {
 
   html = html.replace("</head>", `    ${metaBlock}\n  </head>`);
 
-  // SSR content wrapper: visible to crawlers, hidden from users to avoid FOUC
-  // - Crawlers (no JS): see full HTML content, can index everything
-  // - Users (with JS): React mounts into #root, then removes #ssr-content
-  // - height:0 + overflow:hidden is SEO-safe (not penalized like display:none)
-  const wrappedSsr = `<div id="ssr-content" style="height:0;overflow:hidden;position:absolute;width:100%;left:0;top:0">${ssrHtml}</div>`;
+  // El HTML del servidor se muestra VISIBLE mientras arranca el JavaScript.
+  // Antes iba con height:0 (oculto) "para evitar parpadeo": el resultado era que
+  // el visitante veia la PANTALLA EN BLANCO hasta que React montaba. Con el
+  // bundle actual eso son varios segundos en un movil.
+  // Ahora se ve el contenido al instante y React lo sustituye al montar.
+  const wrappedSsr = `<div id="ssr-content">${ssrHtml}</div>`;
 
-  // Small inline script removes SSR shell once React has mounted
+  // Estilos minimos EN LINEA para que ese HTML no se vea como un documento pelado
+  // (no hay CSS aun: la hoja de estilos todavia se esta descargando).
+  const estilosSsr = `<style>
+#ssr-content{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;max-width:1100px;margin:0 auto;padding:16px 20px 40px;color:#1f2933}
+#ssr-content h1{font-size:1.6rem;line-height:1.25;margin:.6rem 0 .2rem;color:#12303f}
+#ssr-content h2{font-size:1.1rem;margin:1.4rem 0 .4rem;color:#12303f}
+#ssr-content h3{font-size:1rem;margin:0 0 .25rem}
+#ssr-content p{margin:.25rem 0;color:#52606d}
+#ssr-content nav{font-size:.8rem;color:#7b8794;margin-bottom:.5rem}
+#ssr-content nav a{color:#7b8794}
+#ssr-content a{color:#1B4965;text-decoration:none}
+#ssr-content ul{list-style:none;padding:0;margin:.5rem 0;display:flex;flex-wrap:wrap;gap:.4rem}
+#ssr-content ul li a{display:inline-block;background:#eef2f5;border-radius:999px;padding:.25rem .7rem;font-size:.85rem}
+#ssr-content article{border:1px solid #e4e7eb;border-radius:12px;padding:.9rem 1rem;margin:.6rem 0;background:#fff}
+#ssr-content .badge-recomendado,#ssr-content .badge-verificado{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-radius:999px;padding:.15rem .55rem;margin-bottom:.35rem}
+#ssr-content .badge-recomendado{background:#1B4965;color:#fff}
+#ssr-content .badge-verificado{background:#fdf0d5;color:#8a6100}
+</style>`;
+
+  // Cuando React ha montado de verdad, se retira el HTML del servidor.
   const cleanupScript = `<script>
-(function(){var r=document.getElementById('root');if(r){var o=new MutationObserver(function(m,obs){var s=document.getElementById('ssr-content');if(s&&r.children.length>1){s.remove();obs.disconnect()}});o.observe(r,{childList:true});setTimeout(function(){var s=document.getElementById('ssr-content');if(s)s.remove()},3000)}})();
-</script>`;
+(function(){var r=document.getElementById('root');if(!r)return;var quitar=function(){var s=document.getElementById('ssr-content');if(s)s.remove()};var o=new MutationObserver(function(m,obs){if(r.children.length>1){quitar();obs.disconnect()}});o.observe(r,{childList:true});setTimeout(quitar,8000)})();
+</scr` + `ipt>`;
 
   // Inject schema BEFORE #root, SSR HTML INSIDE #root, cleanup script after.
   // OJO: UNA sola sustitucion. Antes se hacian dos (la segunda con regex) y esa
   // segunda volvia a inyectar sobre lo ya inyectado -> 4 copias del SSR por
   // pagina y ficheros de 258 KB donde deberian ser 7 KB.
-  const bloqueRoot = `${schemaScripts}\n<div id="root">${wrappedSsr}</div>\n${cleanupScript}`;
+  const bloqueRoot = `${estilosSsr}
+${schemaScripts}\n<div id="root">${wrappedSsr}</div>\n${cleanupScript}`;
   if (html.includes('<div id="root"></div>')) {
     html = html.replace('<div id="root"></div>', bloqueRoot);
   } else {

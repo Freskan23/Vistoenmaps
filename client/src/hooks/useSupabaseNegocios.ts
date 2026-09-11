@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { supabase } from '@/lib/supabase';
 import { negocios as staticNegocios, barrios as staticBarrios, ciudades as staticCiudades } from '@/data';
+import { cargarCategoria, negociosEnMemoria } from '@/data/negociosPorCategoria';
 import type { Negocio, Barrio, Ciudad } from '@/data/types';
 
 /**
@@ -177,6 +178,37 @@ function loadAll(): Promise<CachedData> {
 /**
  * Hook principal: devuelve todos los negocios (estaticos + Supabase)
  */
+/**
+ * Negocios de UNA categoria. Es el hook que deben usar las paginas publicas:
+ * descarga solo /datos/<categoria>.json (~120 KB de mediana) en vez de los
+ * 20 MB de todo el directorio.
+ */
+export function useNegociosCategoria(categoriaSlug: string | undefined) {
+  const [lista, setLista] = useState<Negocio[]>(() =>
+    categoriaSlug ? negociosEnMemoria().filter((n) => n.categoria_slug === categoriaSlug) : []
+  );
+  const [loaded, setLoaded] = useState(lista.length > 0);
+
+  useEffect(() => {
+    let vivo = true;
+    if (!categoriaSlug) {
+      setLista([]);
+      setLoaded(true);
+      return;
+    }
+    cargarCategoria(categoriaSlug).then((datos) => {
+      if (!vivo) return;
+      setLista(datos);
+      setLoaded(true);
+    });
+    return () => {
+      vivo = false;
+    };
+  }, [categoriaSlug]);
+
+  return { negocios: lista, loaded };
+}
+
 export function useAllNegocios() {
   const [data, setData] = useState<CachedData>(_cached || EMPTY);
   const [loaded, setLoaded] = useState(!!_cached);

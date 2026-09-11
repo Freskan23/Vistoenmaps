@@ -9,7 +9,7 @@ import React from "react";
 import { Link, useParams } from "wouter";
 import { MapPin, ArrowRight, Building2 } from "lucide-react";
 import { getCategoria } from "@/data";
-import { useAllNegocios, useAllCiudades, filterByCiudad } from "@/hooks/useSupabaseNegocios";
+import { useNegociosCategoria, useAllCiudades } from "@/hooks/useSupabaseNegocios";
 import CategoryIcon from "@/components/CategoryIcon";
 import Breadcrumb from "@/components/Breadcrumb";
 import Header from "@/components/Header";
@@ -32,7 +32,8 @@ const cardColors = [
 export default function CategoriaPage() {
   const { categoria } = useParams<{ categoria: string }>();
   const cat = getCategoria(categoria);
-  const { allNegocios } = useAllNegocios();
+  // Solo los negocios de ESTA categoria (~120 KB), no los 20.253.
+  const { negocios: allNegocios } = useNegociosCategoria(categoria);
   const { allCiudades } = useAllCiudades();
 
   if (!cat) return <NotFound />;
