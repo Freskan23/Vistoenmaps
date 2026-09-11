@@ -215,7 +215,7 @@ export function useNegociosCategoria(categoriaSlug: string | undefined) {
  * que necesitan variedad pero no el directorio entero: con las 12 categorias
  * mas cargadas se cubre la mayor parte de las busquedas por ~2 MB en vez de 20.
  */
-export function useNegociosPrincipales(cuantasCategorias = 12) {
+export function useNegociosPrincipales(cuantasCategorias = 12, activo = true) {
   const slugs = useMemo(
     () => resumen.topCategorias.slice(0, cuantasCategorias).map((c) => c.slug),
     [cuantasCategorias]
@@ -224,6 +224,7 @@ export function useNegociosPrincipales(cuantasCategorias = 12) {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    if (!activo) return;
     let vivo = true;
     cargarCategorias(slugs).then(() => {
       if (!vivo) return;
@@ -233,7 +234,7 @@ export function useNegociosPrincipales(cuantasCategorias = 12) {
     return () => {
       vivo = false;
     };
-  }, [slugs]);
+  }, [slugs, activo]);
 
   return { negocios: lista, loaded };
 }
@@ -340,9 +341,10 @@ export function useFindNegocio(
 /**
  * Buscar negocios en datos combinados (para SearchBar)
  */
-export function useSearchNegocios() {
-  // El buscador tira de las categorias con mas fichas (no de los 20 MB).
-  const { negocios } = useNegociosPrincipales();
+export function useSearchNegocios(activo = true) {
+  // Los datos se piden SOLO cuando el usuario empieza a escribir: si no, la
+  // portada descargaba 10 ficheros (~10 MB) sin que nadie hubiera buscado nada.
+  const { negocios } = useNegociosPrincipales(12, activo);
   return negocios;
 }
 

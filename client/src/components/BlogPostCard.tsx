@@ -77,7 +77,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
             </span>
             <span className="flex items-center gap-1">
               <Star className="w-3.5 h-3.5" />
-              {post.negocios.length} negocios
+              {post.numNegocios ?? post.negocios?.length ?? 0} negocios
             </span>
             <span className="flex items-center gap-1">
               <Calendar className="w-3.5 h-3.5" />

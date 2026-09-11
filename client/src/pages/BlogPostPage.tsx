@@ -229,8 +229,8 @@ export default function BlogPostPage() {
             "@type": "ItemList",
             name: post.titulo,
             description: post.extracto,
-            numberOfItems: post.negocios.length,
-            itemListElement: post.negocios.map((neg, i) => ({
+            numberOfItems: (post.negocios || []).length,
+            itemListElement: (post.negocios || []).map((neg, i) => ({
               "@type": "ListItem",
               position: i + 1,
               name: neg.nombre,
@@ -291,7 +291,7 @@ export default function BlogPostPage() {
             </span>
             <span className="flex items-center gap-1.5">
               <Star className="w-4 h-4" />
-              {post.negocios.length} negocios en el ranking
+              {(post.negocios || []).length} negocios en el ranking
             </span>
           </motion.div>
         </div>
@@ -316,7 +316,7 @@ export default function BlogPostPage() {
 
           {/* Numbered business list */}
           <div className="space-y-6">
-            {post.negocios.map((neg, index) => (
+            {(post.negocios || []).map((neg, index) => (
               <motion.article
                 key={neg.slug}
                 initial={{ opacity: 0, y: 20 }}

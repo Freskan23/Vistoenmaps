@@ -32,7 +32,10 @@ export interface BlogPost {
   ciudad_nombre: string;
   categoria_nombre: string;
   fecha_generado: string;
-  negocios: Negocio[];
+  // En la portada solo se pintan titulares: llega `numNegocios` y la lista
+  // completa NO viene (son 3 MB). Por eso ambos campos son opcionales.
+  negocios?: Negocio[];
+  numNegocios?: number;
 }
 
 export interface Categoria {

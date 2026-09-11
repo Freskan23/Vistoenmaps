@@ -44,7 +44,7 @@ export function generateBlogPosts(allNegocios: Negocio[]): BlogPost[] {
     }
   }
 
-  return posts.sort((a, b) => b.negocios.length - a.negocios.length);
+  return posts.sort((a, b) => (b.negocios || []).length - (a.negocios || []).length);
 }
 
 export function getBlogPost(

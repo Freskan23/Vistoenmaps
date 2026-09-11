@@ -13,12 +13,12 @@ import EyeLogo from "@/components/EyeLogo";
 import { motion } from "framer-motion";
 import SEOHead from "@/components/SEOHead";
 import { useEventos } from "@/hooks/useEventos";
-import { useBlogPosts } from "@/hooks/useBlogPosts";
+import { useBlogDestacado } from "@/hooks/useBlogPosts";
 import AdSlot from "@/components/ads/AdSlot";
 
 export default function Home() {
   const { eventos, loading: eventosLoading } = useEventos({ limit: 4 });
-  const { posts: blogPosts, loaded: blogLoaded } = useBlogPosts();
+  const { posts: blogPosts, loaded: blogLoaded } = useBlogDestacado();
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fafaf7]">

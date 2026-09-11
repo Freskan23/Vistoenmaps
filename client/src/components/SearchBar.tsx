@@ -20,7 +20,8 @@ export default function SearchBar({ variant = "header" }: SearchBarProps) {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const allNegocios = useSearchNegocios();
+  // Solo se descargan los datos cuando hay algo escrito.
+  const allNegocios = useSearchNegocios(query.length >= 2);
 
   useEffect(() => {
     setResults(searchDirectory(query, 10, allNegocios));
