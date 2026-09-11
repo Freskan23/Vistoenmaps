@@ -321,18 +321,21 @@ export function useFindNegocio(
   barrioSlug: string,
   negocioSlug: string
 ) {
-  const { allNegocios, loaded } = useAllNegocios();
+  // OJO: tiene que cargar la CATEGORIA de la ficha. Si se usa useAllNegocios()
+  // la lista viene vacia (los datos ya no van en el bundle) y la pagina pintaba
+  // un 404 aunque el negocio existiera.
+  const { negocios, loaded } = useNegociosCategoria(categoriaSlug);
 
   const negocio = useMemo(
     () =>
-      allNegocios.find(
+      negocios.find(
         (n) =>
           n.categoria_slug === categoriaSlug &&
           n.ciudad_slug === ciudadSlug &&
           n.barrio_slug === barrioSlug &&
           n.slug === negocioSlug
       ) || null,
-    [allNegocios, categoriaSlug, ciudadSlug, barrioSlug, negocioSlug]
+    [negocios, categoriaSlug, ciudadSlug, barrioSlug, negocioSlug]
   );
 
   return { negocio, loaded };
