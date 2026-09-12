@@ -7,7 +7,7 @@
 */
 
 import { Link, useParams } from "wouter";
-import { ArrowRight, Clock } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { getSuperCategoria, categorias, negocios } from "@/data";
 import CategoryIcon from "@/components/CategoryIcon";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -208,12 +208,6 @@ export default function SuperCategoriaPage() {
                             <h3 className="font-bold text-base text-foreground group-hover:text-primary transition-colors">
                               {cat.nombre}
                             </h3>
-                            {negociosCount === 0 && (
-                              <span className="inline-flex items-center gap-1 bg-gray-100 text-gray-400 text-[10px] font-semibold uppercase tracking-wider rounded-full px-2 py-0.5">
-                                <Clock className="w-3 h-3" />
-                                Próximamente
-                              </span>
-                            )}
                           </div>
                           <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mt-1">
                             {cat.descripcion}
