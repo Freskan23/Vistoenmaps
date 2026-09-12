@@ -32,6 +32,7 @@ import EventosPage from "./pages/EventosPage";
 import EventosCiudadPage from "./pages/EventosCiudadPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
+import { UserLocationProvider } from "./context/UserLocationContext";
 
 function Router() {
   return (
@@ -74,11 +75,13 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
         <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Router />
-            <FloatingEye />
-          </TooltipProvider>
+          <UserLocationProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Router />
+              <FloatingEye />
+            </TooltipProvider>
+          </UserLocationProvider>
         </AuthProvider>
       </ThemeProvider>
     </ErrorBoundary>

@@ -106,7 +106,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
             </Link>
 
             {/* Search */}
-            <div className="hidden md:block w-64">
+            <div className="hidden md:block w-[min(42vw,520px)] mx-4">
               <SearchBar variant="header" />
             </div>
 
@@ -173,6 +173,15 @@ export default function Header({ variant = "solid" }: HeaderProps) {
             >
               <Menu className="w-5 h-5" />
             </button>
+          </div>
+
+          {/* En móvil el buscador debe estar visible en TODAS las páginas: no
+              escondido detrás del menú. La ubicación se pide desde el botón. */}
+          <div className={cn(
+            "md:hidden pb-3 transition-colors",
+            isTransparent ? "text-white" : "text-foreground"
+          )}>
+            <SearchBar variant={isTransparent ? "hero" : "header"} />
           </div>
         </div>
       </header>

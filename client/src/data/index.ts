@@ -1,18 +1,15 @@
 import categoriasData from "./categorias.json";
 import ciudadesData from "./ciudades.json";
 import barriosData from "./barrios.json";
+import negociosData from "./negocios.json";
 import type { Categoria, Ciudad, Barrio, Negocio } from "./types";
+import { distanceKm, type Coordinates } from "@/lib/location";
 export { superCategorias, getSuperCategoria, getSuperCategoriaForCategoria } from "./superCategorias";
 
 export const categorias: Categoria[] = categoriasData;
 export const ciudades: Ciudad[] = ciudadesData;
 export const barrios: Barrio[] = barriosData;
-// OJO: negocios.json (20 MB) YA NO se importa aqui. Si se vuelve a importar,
-// el bundle pasa de ~500 KB a 21 MB y cada pagina descarga los 20.253 negocios
-// aunque solo muestre 3 (pantalla en blanco en movil).
-// Los datos se piden por categoria desde /datos/<categoria>.json.
-// Ver data/negociosPorCategoria.ts
-export const negocios: Negocio[] = [];
+export const negocios: Negocio[] = negociosData;
 
 // Helper functions
 export function getCategoria(slug: string): Categoria | undefined {
@@ -47,8 +44,9 @@ export function getNegocio(
 }
 
 /**
- * Orden de listado: primero los recomendados, luego las fichas verificadas y
- * despues el resto por valoracion y numero de opiniones.
+ * Orden de listado: primero las fichas verificadas (destacadas), y dentro de
+ * cada grupo por valoracion y numero de opiniones. Asi el negocio verificado
+ * siempre aparece arriba sin ocultar al resto.
  */
 export function ordenarNegocios(lista: Negocio[]): Negocio[] {
   return [...lista].sort((a, b) => {
@@ -129,9 +127,16 @@ export interface SearchResult {
   label: string;
   sublabel: string;
   href: string;
+  coordinates?: Coordinates;
+  distanceKm?: number;
 }
 
-export function searchDirectory(query: string, limit = 10, allNegocios?: Negocio[]): SearchResult[] {
+export function searchDirectory(
+  query: string,
+  limit = 10,
+  allNegocios?: Negocio[],
+  userLocation?: Coordinates | null,
+): SearchResult[] {
   const q = query.toLowerCase().trim();
   if (q.length < 2) return [];
 
@@ -158,6 +163,7 @@ export function searchDirectory(query: string, limit = 10, allNegocios?: Negocio
         label: ciu.nombre,
         sublabel: ciu.comunidad_autonoma,
         href: `/${categorias[0]?.slug}/${ciu.slug}`,
+        coordinates: ciu.coordenadas,
       });
     }
   }
@@ -171,6 +177,7 @@ export function searchDirectory(query: string, limit = 10, allNegocios?: Negocio
         label: bar.nombre,
         sublabel: ciu?.nombre || bar.ciudad_slug,
         href: `/${categorias[0]?.slug}/${bar.ciudad_slug}/${bar.slug}`,
+        coordinates: bar.coordenadas,
       });
     }
   }
@@ -179,7 +186,7 @@ export function searchDirectory(query: string, limit = 10, allNegocios?: Negocio
   for (const neg of negociosList) {
     if (
       neg.nombre.toLowerCase().includes(q) ||
-      (neg.servicios_destacados || []).some((s) => s.toLowerCase().includes(q))
+      neg.servicios_destacados.some((s) => s.toLowerCase().includes(q))
     ) {
       const cat = getCategoria(neg.categoria_slug);
       const ciu = getCiudad(neg.ciudad_slug);
@@ -189,9 +196,27 @@ export function searchDirectory(query: string, limit = 10, allNegocios?: Negocio
         label: neg.nombre,
         sublabel: `${cat?.nombre || ""} · ${bar?.nombre || ""}, ${ciu?.nombre || ""}`,
         href: `/${neg.categoria_slug}/${neg.ciudad_slug}/${neg.barrio_slug}/${neg.slug}`,
+        coordinates: neg.coordenadas,
       });
     }
   }
 
-  return results.slice(0, limit);
+  if (!userLocation) return results.slice(0, limit);
+
+  // Mantener primero las categorías exactas; dentro del resto, lo más cercano
+  // sale antes. Así buscar "fontanero" conserva la categoría y debajo enseña
+  // negocios cercanos, no resultados de la otra punta de España.
+  const categories = results.filter((result) => result.type === "categoria");
+  const locatable = results
+    .filter((result) => result.type !== "categoria" && result.coordinates)
+    .map((result) => ({
+      ...result,
+      distanceKm: distanceKm(userLocation, result.coordinates!),
+    }))
+    .sort((a, b) => a.distanceKm - b.distanceKm);
+  const withoutCoordinates = results.filter(
+    (result) => result.type !== "categoria" && !result.coordinates,
+  );
+
+  return [...categories, ...locatable, ...withoutCoordinates].slice(0, limit);
 }
