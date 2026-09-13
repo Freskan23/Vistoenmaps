@@ -1,0 +1,27 @@
+{
+  "name": "Visto en Maps — Directorio de negocios locales de España",
+  "short_name": "Visto en Maps",
+  "description": "20.253 negocios de 1.069 ciudades: teléfonos, horarios, direcciones y valoraciones reales.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafaf7",
+  "theme_color": "#1B4965",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

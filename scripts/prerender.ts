@@ -107,11 +107,30 @@ function generatePage(data: PageData) {
   });
   const wrappedSsr = `<div id="ssr-content" aria-hidden="false">${ssrHtml}${pieSeo}</div>`;
 
+  // Pin REAL de la marca (mismo path que EyeLogo.tsx, con su colita) y el ojo
+  // mirando alrededor + parpadeando en SVG puro: se ve desde el primer byte,
+  // sin esperar a que cargue nada.
   const pantallaCarga = `<div id="vem-carga" role="status" aria-label="Cargando">
 <div class="vem-carga-caja">
-<svg class="vem-carga-pin" width="54" height="68" viewBox="0 0 26 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-<path d="M13 0C5.82 0 0 5.82 0 13c0 9.75 13 21 13 21s13-11.25 13-21c0-7.18-5.82-13-13-13z" fill="#1B4965"/>
-<circle cx="13" cy="13" r="5.2" fill="#FCC44E"/>
+<svg class="vem-carga-pin" width="78" height="104" viewBox="0 0 260 348" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<defs>
+<linearGradient id="vemC" x1="0.1" y1="0" x2="0.9" y2="1"><stop offset="0%" stop-color="#fcc44e"/><stop offset="50%" stop-color="#e88d0c"/><stop offset="100%" stop-color="#b85c00"/></linearGradient>
+<radialGradient id="vemG" cx="42%" cy="38%"><stop offset="0%" stop-color="#ffffff"/><stop offset="75%" stop-color="#dcdce2"/><stop offset="100%" stop-color="#c4c4cc"/></radialGradient>
+<radialGradient id="vemI" cx="48%" cy="42%"><stop offset="0%" stop-color="#00efff"/><stop offset="45%" stop-color="#00bcd4"/><stop offset="100%" stop-color="#004050"/></radialGradient>
+<clipPath id="vemR"><circle cx="122" cy="116" r="78"/></clipPath>
+</defs>
+<path d="M 138 14 C 78 14, 28 60, 28 122 C 28 162, 52 192, 80 224 C 108 256, 126 278, 134 298 C 138 308, 140 316, 140 320 C 136 324, 128 330, 116 334 C 98 340, 76 332, 66 318 C 58 306, 60 290, 66 278 L 68 274 C 64 270, 54 274, 48 288 C 38 310, 48 336, 78 342 C 102 346, 130 336, 142 322 C 146 316, 148 308, 152 296 C 158 274, 172 252, 194 226 C 222 192, 248 158, 248 122 C 248 60, 198 14, 138 14 Z" fill="url(#vemC)"/>
+<ellipse cx="98" cy="82" rx="32" ry="48" fill="rgba(255,255,255,0.07)" transform="rotate(-18,98,82)"/>
+<g clip-path="url(#vemR)">
+<circle cx="122" cy="116" r="78" fill="url(#vemG)"/>
+<g><animateTransform attributeName="transform" type="translate" values="0,0; 17,-7; 17,-7; -15,5; -15,5; 7,11; 7,11; 0,0; 0,0" keyTimes="0; 0.09; 0.27; 0.35; 0.54; 0.62; 0.81; 0.9; 1" dur="6s" repeatCount="indefinite" calcMode="spline" keySplines="0.3 0 0.2 1; 0 0 1 1; 0.3 0 0.2 1; 0 0 1 1; 0.3 0 0.2 1; 0 0 1 1; 0.3 0 0.2 1; 0 0 1 1"/>
+<circle cx="122" cy="116" r="48" fill="url(#vemI)"/>
+<circle cx="122" cy="116" r="21" fill="#0a0a12"><animate attributeName="r" values="21;21;16;16;24;24;19;21;21" keyTimes="0;0.1;0.28;0.45;0.55;0.7;0.85;0.95;1" dur="6s" repeatCount="indefinite"/></circle>
+<rect x="128" y="103" width="12" height="11" rx="3" fill="rgba(255,255,255,0.92)"/></g>
+<path fill="#c06a00" d="M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z"><animate attributeName="d" values="M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z;M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z;M 36,30 L 208,30 L 208,112 Q 122,150 36,112 Z;M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z;M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z;M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z;M 36,30 L 208,30 L 208,112 Q 122,150 36,112 Z;M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z;M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z" keyTimes="0;0.42;0.45;0.48;0.76;0.78;0.8;0.83;1" dur="6s" repeatCount="indefinite"/></path>
+<path fill="#b85c00" d="M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z"><animate attributeName="d" values="M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z;M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z;M 36,202 L 208,202 L 208,120 Q 122,82 36,120 Z;M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z;M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z;M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z;M 36,202 L 208,202 L 208,120 Q 122,82 36,120 Z;M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z;M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z" keyTimes="0;0.42;0.45;0.48;0.76;0.78;0.8;0.83;1" dur="6s" repeatCount="indefinite"/></path>
+</g>
+<circle cx="122" cy="116" r="78" fill="none" stroke="rgba(185,195,205,0.75)" stroke-width="5"/>
 </svg>
 <p class="vem-carga-marca">Visto en <span>Maps</span></p>
 <div class="vem-carga-barra"><span></span></div>
