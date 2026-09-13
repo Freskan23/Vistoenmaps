@@ -11,6 +11,7 @@ import BarrioPage from "./pages/BarrioPage";
 import NegocioPage from "./pages/NegocioPage";
 import ContactoPage from "./pages/ContactoPage";
 import HerramientasPage from "@/pages/HerramientasPage";
+import CriteriosPage from "@/pages/CriteriosPage";
 import AvisoLegalPage from "@/pages/AvisoLegalPage";
 import PrivacidadPage from "@/pages/PrivacidadPage";
 import CookiesPage from "@/pages/CookiesPage";
@@ -57,6 +58,7 @@ function Router() {
       <Route path="/blog" component={BlogPage} />
       <Route path="/blog/:slug" component={BlogPostPage} />
       <Route path="/herramientas" component={HerramientasPage} />
+      <Route path="/criterios" component={CriteriosPage} />
       <Route path="/aviso-legal" component={AvisoLegalPage} />
       <Route path="/privacidad" component={PrivacidadPage} />
       <Route path="/cookies" component={CookiesPage} />

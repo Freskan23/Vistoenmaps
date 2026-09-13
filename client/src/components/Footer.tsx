@@ -46,7 +46,7 @@ export default function Footer() {
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
               El directorio de negocios locales de España. Teléfonos, horarios,
-              direcciones y valoraciones reales, sin registros ni intermediarios.
+              direcciones y valoraciones publicadas en Google Maps, sin registros ni intermediarios.
             </p>
 
             <dl className="mt-5 grid grid-cols-3 gap-2 text-center">
@@ -133,6 +133,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {[
                 { href: "/herramientas", label: "Herramientas" },
+                { href: "/criterios", label: "Cómo elegimos" },
                 { href: "/blog", label: "Blog" },
                 { href: "/eventos", label: "Eventos" },
                 { href: "/directorios", label: "Directorios" },

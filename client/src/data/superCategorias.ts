@@ -17,7 +17,7 @@ export const superCategorias: SuperCategoria[] = [
   {
     slug: "salud",
     nombre: "Salud",
-    descripcion: "Dentistas, fisios, veterinarios y más. Con valoraciones reales de pacientes.",
+    descripcion: "Dentistas, fisios, veterinarios y más, con las valoraciones publicadas en Google Maps.",
     icono: "HeartPulse",
     color: {
       bg: "from-emerald-500/20 to-teal-500/10",

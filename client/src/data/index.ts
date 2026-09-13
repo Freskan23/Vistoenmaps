@@ -1,7 +1,6 @@
 import categoriasData from "./categorias.json";
 import ciudadesData from "./ciudades.json";
 import barriosData from "./barrios.json";
-import negociosData from "./negocios.json";
 import type { Categoria, Ciudad, Barrio, Negocio } from "./types";
 import { distanceKm, type Coordinates } from "@/lib/location";
 export { superCategorias, getSuperCategoria, getSuperCategoriaForCategoria } from "./superCategorias";
@@ -9,7 +8,17 @@ export { superCategorias, getSuperCategoria, getSuperCategoriaForCategoria } fro
 export const categorias: Categoria[] = categoriasData;
 export const ciudades: Ciudad[] = ciudadesData;
 export const barrios: Barrio[] = barriosData;
-export const negocios: Negocio[] = negociosData;
+/**
+ * ⚠️ VACIO A PROPOSITO. NO importar aqui negocios.json: son 20 MB y acaban
+ * dentro del codigo de TODAS las paginas (ha pasado dos veces; la web tardaba
+ * una eternidad y se quedaba en blanco al entrar).
+ *
+ * Para leer negocios en el navegador:
+ *   - useNegociosCategoria(slug) -> solo esa categoria (~120 KB)
+ *   - useNegociosPrincipales()   -> las 12 categorias con mas fichas
+ *   - resumen.json               -> totales y rankings ya calculados (88 KB)
+ */
+export const negocios: Negocio[] = [];
 
 // Helper functions
 export function getCategoria(slug: string): Categoria | undefined {
@@ -44,21 +53,37 @@ export function getNegocio(
 }
 
 /**
- * Orden de listado: primero las fichas verificadas (destacadas), y dentro de
- * cada grupo por valoracion y numero de opiniones. Asi el negocio verificado
- * siempre aparece arriba sin ocultar al resto.
+ * Orden de listado.
+ *
+ * PRIMERO LA PERTINENCIA: una ficha cuyo tipo de Google NO corresponde a la
+ * categoria (una inmobiliaria colada en "parques") nunca puede salir arriba.
+ *
+ * DESPUES LA CALIDAD con el campo `peso`, que combina la nota CON el numero de
+ * opiniones (promedio bayesiano). Ordenar por nota pura ponia un 5,0 con 4
+ * resenas por encima de El Retiro con 208.099, que es justo lo que no sirve a
+ * quien busca un sitio al que ir.
  */
 export function ordenarNegocios(lista: Negocio[]): Negocio[] {
   return [...lista].sort((a, b) => {
+    // 1. fichas descartadas por no pertenecer a la categoria, al final
+    const ra = a.categoria_rechazada === true ? 1 : 0;
+    const rb = b.categoria_rechazada === true ? 1 : 0;
+    if (ra !== rb) return ra - rb;
+    // 2. cliente de pago
     const sa = a.super_destacado === true ? 1 : 0;
     const sb = b.super_destacado === true ? 1 : 0;
     if (sa !== sb) return sb - sa;
     const da = a.destacado === true ? 1 : 0;
     const db = b.destacado === true ? 1 : 0;
     if (da !== db) return db - da;
-    const va = a.valoracion_media ?? 0;
-    const vb = b.valoracion_media ?? 0;
-    if (vb !== va) return vb - va;
+    // 3. categoria confirmada por Google antes que categoria sin confirmar
+    const ca = a.categoria_ok === true ? 1 : 0;
+    const cb = b.categoria_ok === true ? 1 : 0;
+    if (ca !== cb) return cb - ca;
+    // 4. calidad real (nota + volumen de opiniones)
+    const pa = a.peso ?? 0;
+    const pb = b.peso ?? 0;
+    if (pb !== pa) return pb - pa;
     return (b.num_resenas ?? 0) - (a.num_resenas ?? 0);
   });
 }
@@ -141,7 +166,8 @@ export function searchDirectory(
   if (q.length < 2) return [];
 
   const results: SearchResult[] = [];
-  const negociosList = allNegocios || negocios;
+  // Si no llega lista, no se buscan negocios: `negocios` esta vacio a proposito.
+  const negociosList = allNegocios || [];
 
   // Search categorias
   for (const cat of categorias) {

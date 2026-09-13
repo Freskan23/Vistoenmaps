@@ -129,7 +129,7 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.85 }}
               className="text-base md:text-lg text-white/50 leading-relaxed mb-8 max-w-xl"
             >
-              Deja de buscar en Google y rezar. Aquí solo aparecen negocios reales, con reseñas reales y ubicación verificada en Maps. Sin sorpresas.
+              Negocios con ficha en Google Maps: teléfono, horario, dirección y las valoraciones publicadas allí. Sin registros ni intermediarios.
             </motion.p>
 
             <motion.div
@@ -323,7 +323,7 @@ export default function Home() {
                 Los mejores de tu ciudad
               </h2>
               <p className="text-muted-foreground mt-1">
-                Rankings basados en reseñas reales de Google. Sin pagar, sin trucos.
+                Ordenados por las valoraciones publicadas en Google Maps, ponderando el número de opiniones.
               </p>
             </div>
             <Link

@@ -141,6 +141,15 @@ export interface Negocio {
   destacado?: boolean;
   super_destacado?: boolean;
   meta_descripcion?: string;
+  /** El tipo que Google da a la ficha confirma la categoria. */
+  categoria_ok?: boolean;
+  /** Google no da tipo: vale en listados, NO para liderar rankings. */
+  categoria_duda?: boolean;
+  /** El tipo o el nombre dicen que es otro negocio: fuera de rankings. */
+  categoria_rechazada?: boolean;
+  categoria_motivo?: string;
+  /** Calidad 0-100: nota combinada con el volumen de opiniones. */
+  peso?: number;
   fuente_trafikazo?: string;
 }
 

@@ -9,58 +9,53 @@ interface PromoPlaceholderProps {
   className?: string;
 }
 
-/* ── Copy variantes con rotación basada en slot ── */
+/*
+ * Textos de los espacios destacados.
+ *
+ * REGLA: nada de cifras que no podamos demostrar. Aqui habia promesas de
+ * llamadas y visitas inventadas, y encima la web decia que no acepta
+ * publicidad. Tampoco se promete posicion: los destacados NO cambian el orden
+ * de los rankings (ver /criterios).
+ */
 const PROMOS_HORIZONTAL = [
   {
     icon: Sparkles,
     iconColor: "text-amber-500",
     iconBg: "from-amber-500/15 to-orange-500/10",
-    titulo: "Tu negocio aquí",
-    texto: "Más de 2.000 personas ven esta página cada semana. Haz que te encuentren.",
-    cta: "Destaca tu negocio",
+    titulo: "\u00bfEs tu negocio?",
+    texto: "Completa tu ficha con tel\u00e9fono, horario y servicios para que te encuentren.",
+    cta: "Completar mi ficha",
   },
   {
     icon: TrendingUp,
     iconColor: "text-emerald-500",
     iconBg: "from-emerald-500/15 to-teal-500/10",
-    titulo: "¿Quieres aparecer el primero?",
-    texto: "Los negocios destacados reciben 3x más contactos que el resto.",
-    cta: "Saber más",
+    titulo: "Aparecer aqu\u00ed es gratis",
+    texto: "Si tu negocio no est\u00e1 en el directorio, lo a\u00f1adimos sin coste.",
+    cta: "A\u00f1adir mi negocio",
   },
   {
     icon: Megaphone,
     iconColor: "text-blue-500",
     iconBg: "from-blue-500/15 to-cyan-500/10",
-    titulo: "Espacio disponible",
-    texto: "Destaca tu negocio y llega a clientes que buscan exactamente lo que ofreces.",
-    cta: "Empezar ahora",
+    titulo: "Ficha verificada",
+    texto: "Marcamos como verificadas las fichas cuyos datos confirma el propio negocio.",
+    cta: "Verificar mi ficha",
   },
   {
     icon: Star,
     iconColor: "text-purple-500",
     iconBg: "from-purple-500/15 to-pink-500/10",
-    titulo: "Posición premium",
-    texto: "Los negocios destacados reciben un 70% más de llamadas. Compruébalo.",
-    cta: "Ver planes",
+    titulo: "\u00bfSales por detr\u00e1s de tu competencia?",
+    texto: "Mira en qu\u00e9 puesto apareces en tu barrio y qu\u00e9 te separa del primero.",
+    cta: "Ver mi posici\u00f3n",
   },
 ];
 
 const PROMOS_CARD = [
-  {
-    titulo: "Tu negocio podría estar aquí",
-    texto: "Destaca entre la competencia y recibe más clientes.",
-    cta: "Más info",
-  },
-  {
-    titulo: "Espacio destacado",
-    texto: "Los negocios destacados reciben 3x más visitas.",
-    cta: "Destacar",
-  },
-  {
-    titulo: "¿Es tu negocio?",
-    texto: "Aparece aquí y llega a quien te busca.",
-    cta: "Ver planes",
-  },
+  { titulo: "\u00bfEs tu negocio?", texto: "Completa tu ficha para que te encuentren.", cta: "Completar" },
+  { titulo: "Aparecer es gratis", texto: "A\u00f1adimos tu negocio al directorio sin coste.", cta: "A\u00f1adir" },
+  { titulo: "Ficha verificada", texto: "Confirma tus datos y la marcamos como verificada.", cta: "Verificar" },
 ];
 
 function hashSlot(slot: string): number {

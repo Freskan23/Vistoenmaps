@@ -33,7 +33,7 @@ export function generateBlogPosts(allNegocios: Negocio[]): BlogPost[] {
       posts.push({
         slug: `top-${count}-${slugify(cat.nombre)}-en-${ciudad.slug}`,
         titulo: `Top ${count} ${cat.nombre} en ${ciudad.nombre}`,
-        extracto: `Ranking de los ${count} mejores ${cat.nombre.toLowerCase()} en ${ciudad.nombre} según valoraciones y reseñas reales de Google Maps.`,
+        extracto: `Ranking de los ${count} mejores ${cat.nombre.toLowerCase()} en ${ciudad.nombre} según las valoraciones publicadas en Google Maps.`,
         categoria_slug: cat.slug,
         ciudad_slug: ciudad.slug,
         ciudad_nombre: ciudad.nombre,

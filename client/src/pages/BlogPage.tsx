@@ -146,7 +146,7 @@ export default function BlogPage() {
             transition={{ duration: 0.4, delay: 0.2 }}
             className="text-white/50 mt-2 max-w-lg mx-auto"
           >
-            Rankings basados en reseñas reales de Google Maps. No pagamos por posiciones, no aceptamos publicidad.
+            Ordenados por las valoraciones publicadas en Google Maps, combinando la nota con el número de opiniones. Los espacios destacados no cambian el orden.
           </motion.p>
         </div>
 

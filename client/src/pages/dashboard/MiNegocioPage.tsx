@@ -1022,7 +1022,7 @@ export default function MiNegocioPage() {
                 <Users className="w-5 h-5 text-primary" />
                 Resenas de clientes
               </CardTitle>
-              <CardDescription>Anade reseñas reales de tus clientes</CardDescription>
+              <CardDescription>Añade las opiniones que te dejan tus clientes</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {form.resenas_clientes.map((resena, index) => (

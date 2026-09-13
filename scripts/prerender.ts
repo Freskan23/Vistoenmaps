@@ -107,30 +107,11 @@ function generatePage(data: PageData) {
   });
   const wrappedSsr = `<div id="ssr-content" aria-hidden="false">${ssrHtml}${pieSeo}</div>`;
 
-  // Pin REAL de la marca (mismo path que EyeLogo.tsx, con su colita) y el ojo
-  // mirando alrededor + parpadeando en SVG puro: se ve desde el primer byte,
-  // sin esperar a que cargue nada.
   const pantallaCarga = `<div id="vem-carga" role="status" aria-label="Cargando">
 <div class="vem-carga-caja">
-<svg class="vem-carga-pin" width="78" height="104" viewBox="0 0 260 348" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-<defs>
-<linearGradient id="vemC" x1="0.1" y1="0" x2="0.9" y2="1"><stop offset="0%" stop-color="#fcc44e"/><stop offset="50%" stop-color="#e88d0c"/><stop offset="100%" stop-color="#b85c00"/></linearGradient>
-<radialGradient id="vemG" cx="42%" cy="38%"><stop offset="0%" stop-color="#ffffff"/><stop offset="75%" stop-color="#dcdce2"/><stop offset="100%" stop-color="#c4c4cc"/></radialGradient>
-<radialGradient id="vemI" cx="48%" cy="42%"><stop offset="0%" stop-color="#00efff"/><stop offset="45%" stop-color="#00bcd4"/><stop offset="100%" stop-color="#004050"/></radialGradient>
-<clipPath id="vemR"><circle cx="122" cy="116" r="78"/></clipPath>
-</defs>
-<path d="M 138 14 C 78 14, 28 60, 28 122 C 28 162, 52 192, 80 224 C 108 256, 126 278, 134 298 C 138 308, 140 316, 140 320 C 136 324, 128 330, 116 334 C 98 340, 76 332, 66 318 C 58 306, 60 290, 66 278 L 68 274 C 64 270, 54 274, 48 288 C 38 310, 48 336, 78 342 C 102 346, 130 336, 142 322 C 146 316, 148 308, 152 296 C 158 274, 172 252, 194 226 C 222 192, 248 158, 248 122 C 248 60, 198 14, 138 14 Z" fill="url(#vemC)"/>
-<ellipse cx="98" cy="82" rx="32" ry="48" fill="rgba(255,255,255,0.07)" transform="rotate(-18,98,82)"/>
-<g clip-path="url(#vemR)">
-<circle cx="122" cy="116" r="78" fill="url(#vemG)"/>
-<g><animateTransform attributeName="transform" type="translate" values="0,0; 17,-7; 17,-7; -15,5; -15,5; 7,11; 7,11; 0,0; 0,0" keyTimes="0; 0.09; 0.27; 0.35; 0.54; 0.62; 0.81; 0.9; 1" dur="6s" repeatCount="indefinite" calcMode="spline" keySplines="0.3 0 0.2 1; 0 0 1 1; 0.3 0 0.2 1; 0 0 1 1; 0.3 0 0.2 1; 0 0 1 1; 0.3 0 0.2 1; 0 0 1 1"/>
-<circle cx="122" cy="116" r="48" fill="url(#vemI)"/>
-<circle cx="122" cy="116" r="21" fill="#0a0a12"><animate attributeName="r" values="21;21;16;16;24;24;19;21;21" keyTimes="0;0.1;0.28;0.45;0.55;0.7;0.85;0.95;1" dur="6s" repeatCount="indefinite"/></circle>
-<rect x="128" y="103" width="12" height="11" rx="3" fill="rgba(255,255,255,0.92)"/></g>
-<path fill="#c06a00" d="M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z"><animate attributeName="d" values="M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z;M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z;M 36,30 L 208,30 L 208,112 Q 122,150 36,112 Z;M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z;M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z;M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z;M 36,30 L 208,30 L 208,112 Q 122,150 36,112 Z;M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z;M 36,30 L 208,30 L 208,30 Q 122,30 36,30 Z" keyTimes="0;0.42;0.45;0.48;0.76;0.78;0.8;0.83;1" dur="6s" repeatCount="indefinite"/></path>
-<path fill="#b85c00" d="M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z"><animate attributeName="d" values="M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z;M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z;M 36,202 L 208,202 L 208,120 Q 122,82 36,120 Z;M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z;M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z;M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z;M 36,202 L 208,202 L 208,120 Q 122,82 36,120 Z;M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z;M 36,202 L 208,202 L 208,202 Q 122,202 36,202 Z" keyTimes="0;0.42;0.45;0.48;0.76;0.78;0.8;0.83;1" dur="6s" repeatCount="indefinite"/></path>
-</g>
-<circle cx="122" cy="116" r="78" fill="none" stroke="rgba(185,195,205,0.75)" stroke-width="5"/>
+<svg class="vem-carga-pin" width="54" height="68" viewBox="0 0 26 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<path d="M13 0C5.82 0 0 5.82 0 13c0 9.75 13 21 13 21s13-11.25 13-21c0-7.18-5.82-13-13-13z" fill="#1B4965"/>
+<circle cx="13" cy="13" r="5.2" fill="#FCC44E"/>
 </svg>
 <p class="vem-carga-marca">Visto en <span>Maps</span></p>
 <div class="vem-carga-barra"><span></span></div>
@@ -194,21 +175,38 @@ ${schemaScripts}\n<div id="root">${wrappedSsr}</div>\n${cleanupScript}`;
 
 // ─── SSR HTML Generators ──────────────────────────────────────────────────
 
-// Mismo orden que la web: recomendados primero, luego verificados, luego
-// por valoracion y numero de opiniones.
+// MISMO orden que la web (client/src/data/index.ts). Si cambia uno, cambiar el
+// otro: cuando se descuadran, el SSR ensena una cosa y la app otra.
+//
+// 1) Pertinencia: una ficha que no pertenece a la categoria NO lidera.
+// 2) Cliente de pago.
+// 3) Categoria confirmada por el tipo de Google.
+// 4) `peso`: nota combinada con el volumen de opiniones (no la nota pura, que
+//    ponia un 5,0 con 4 resenas por encima de El Retiro con 208.099).
 function ordenar(lista: any[]): any[] {
   return [...lista].sort((a, b) => {
+    const ra = a.categoria_rechazada === true ? 1 : 0;
+    const rb = b.categoria_rechazada === true ? 1 : 0;
+    if (ra !== rb) return ra - rb;
     const sa = a.super_destacado === true ? 1 : 0;
     const sb = b.super_destacado === true ? 1 : 0;
     if (sa !== sb) return sb - sa;
     const da = a.destacado === true ? 1 : 0;
     const db = b.destacado === true ? 1 : 0;
     if (da !== db) return db - da;
-    const va = a.valoracion_media ?? 0;
-    const vb = b.valoracion_media ?? 0;
-    if (vb !== va) return vb - va;
+    const ca = a.categoria_ok === true ? 1 : 0;
+    const cb = b.categoria_ok === true ? 1 : 0;
+    if (ca !== cb) return cb - ca;
+    const pa = a.peso ?? 0;
+    const pb = b.peso ?? 0;
+    if (pb !== pa) return pb - pa;
     return (b.num_resenas ?? 0) - (a.num_resenas ?? 0);
   });
+}
+
+/** Fichas aptas para un ranking: fuera las que no pertenecen a la categoria. */
+function aptasParaRanking(lista: any[]): any[] {
+  return lista.filter((n) => n.categoria_rechazada !== true);
 }
 
 function renderDescripcion(n: any): string {
@@ -435,6 +433,31 @@ generatePage({
     <p>Gestiona varias fichas de Google desde un solo panel: publicaciones, resenas, preguntas, posiciones y citaciones. Para quien lleva varias ubicaciones o varios clientes.</p>
     <h2>YinYang SEO</h2>
     <p>Formacion en SEO local y servicios de agencia.</p>
+  </main>`,
+});
+count++;
+
+// Criterios: como se selecciona y ordena. Da credibilidad y responde a la duda
+// legitima de "y por que me fio de vuestro ranking".
+generatePage({
+  route: "/criterios",
+  title: "Cómo seleccionamos y ordenamos los negocios | Visto en Maps",
+  description: "De dónde salen los datos del directorio, cómo se ordenan los listados y qué hacen los espacios destacados. Sin letra pequeña.",
+  canonical: `${BASE_URL}/criterios`,
+  schemaJson: [{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+    { "@type": "ListItem", position: 2, name: "Criterios", item: `${BASE_URL}/criterios` },
+  ]}],
+  ssrHtml: `<main>
+    <h1>Como seleccionamos y ordenamos los negocios</h1>
+    <h2>De donde salen los datos</h2>
+    <p>De las fichas publicas de Google Maps. Decimos "valoraciones publicadas en Google Maps" y no "resenas reales" porque no podemos comprobar una por una si cada opinion es autentica.</p>
+    <h2>Como comprobamos que un negocio pertenece a su categoria</h2>
+    <p>El nombre no basta: comparamos con el tipo que Google asigna a cada ficha. Solo los confirmados entran en las guias.</p>
+    <h2>Como se ordenan los listados</h2>
+    <p>Combinando la nota con el numero de opiniones, no por la nota a secas. Un 5 con tres opiniones no dice lo mismo que un 4,7 con veinte mil.</p>
+    <h2>Que hacen los espacios destacados</h2>
+    <p>Dan visibilidad con una etiqueta visible, pero NO cambian el orden de las guias ni la nota de nadie.</p>
   </main>`,
 });
 count++;
