@@ -26,7 +26,32 @@ import {
 interface Props {
   ciudadSlug: string;
   ciudadNombre: string;
+  /** Sector de la pagina donde se va a pintar. Decide si tiene sentido. */
+  categoriaSlug?: string;
 }
+
+/**
+ * Sectores donde los eventos NO pintan nada.
+ *
+ * Quien busca un cerrajero a las 3 de la madrugada, o un fontanero con un
+ * escape, o un abogado, NO quiere conciertos. Ahi el bloque es publicidad
+ * metida con calzador y ensucia la pagina.
+ *
+ * En cambio, quien mira restaurantes, bares, hoteles o turismo en una ciudad
+ * SI esta haciendo planes: ahi los eventos encajan y ayudan.
+ */
+const SECTORES_SIN_EVENTOS = new Set([
+  "cerrajeros", "fontaneros", "electricistas", "desatascos", "reformas",
+  "mudanzas-trasteros", "limpieza", "reparaciones-electrodomesticos",
+  "climatizacion", "seguridad-alarmas", "cristaleria", "albaniles",
+  "abogados", "gestorias", "asesorias", "dentistas", "fisioterapeutas",
+  "veterinarios", "farmacias", "psicologos", "medicos", "clinicas",
+  "funerarias", "talleres", "grúas", "gruas", "informatica",
+  "energia-solar", "toldos-persianas", "tapicerias", "pavimentos-suelos",
+  "carpinteria-muebles", "pintores", "jardineria", "inmobiliarias",
+  "arquitectura", "autoescuelas", "academias-formacion", "gimnasios",
+  "marketing-diseno", "servicios-empresas",
+]);
 
 const MESES = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
@@ -36,9 +61,15 @@ function fecha(iso: string) {
   return { dia: String(parseInt(p[2], 10)), mes: MESES[parseInt(p[1], 10) - 1] || "" };
 }
 
-export default function EventosCiudad({ ciudadSlug, ciudadNombre }: Props) {
-  const { eventos, loading } = useEventos({ ciudad: ciudadNombre, limit: 3 });
+export default function EventosCiudad({ ciudadSlug, ciudadNombre, categoriaSlug }: Props) {
+  const fuera = categoriaSlug ? SECTORES_SIN_EVENTOS.has(categoriaSlug) : false;
+  const { eventos, loading } = useEventos({
+    ciudad: fuera ? undefined : ciudadNombre,
+    limit: 3,
+  });
 
+  // En sectores de urgencia o tramites, ni se pinta ni se pide nada
+  if (fuera) return null;
   // Si no hay eventos, NO se pinta nada: mejor eso que una seccion vacia
   if (loading || !eventos.length) return null;
 

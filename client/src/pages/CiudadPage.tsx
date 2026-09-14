@@ -261,9 +261,14 @@ export default function CiudadPage() {
         />
       </section>
 
-      {/* Eventos de la ciudad: enlaces de afiliado en una pagina que YA tiene
-          visitas. Solo se pinta si hay eventos de verdad. */}
-      <EventosCiudad ciudadSlug={ciu.slug} ciudadNombre={ciu.nombre} />
+      {/* Eventos de la ciudad. Solo se pinta donde tiene sentido: en
+          restaurantes, bares u hoteles el visitante esta haciendo planes; en
+          cerrajeros o fontaneros esta resolviendo una urgencia y ahi sobra. */}
+      <EventosCiudad
+        ciudadSlug={ciu.slug}
+        ciudadNombre={ciu.nombre}
+        categoriaSlug={cat.slug}
+      />
 
       <Footer />
     </div>
