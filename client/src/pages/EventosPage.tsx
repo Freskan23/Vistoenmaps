@@ -28,12 +28,16 @@ const CIUDADES = [
   { label: "Barcelona", value: "Barcelona" },
   { label: "Valencia", value: "Valencia" },
   { label: "Sevilla", value: "Sevilla" },
-  { label: "Malaga", value: "Malaga" },
+  // El label es lo que ve la gente; el value viaja a Ticketmaster: NO tocarlo.
+  { label: "Málaga", value: "Malaga" },
+  { label: "Bilbao", value: "Bilbao" },
+  { label: "Zaragoza", value: "Zaragoza" },
+  { label: "Granada", value: "Granada" },
 ] as const;
 
 const CLASIFICACIONES = [
   { label: "Todos", value: undefined },
-  { label: "Musica", value: "Music" },
+  { label: "Música", value: "Music" },
   { label: "Deportes", value: "Sports" },
   { label: "Artes", value: "Arts" },
 ] as const;
@@ -125,121 +129,71 @@ export default function EventosPage() {
         }}
       />
 
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0a1628] via-[#0f2035] to-[#142d45]">
-        {/* Ambient orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-24 -right-24 w-[500px] h-[500px] bg-sky-500/10 rounded-full blur-[120px]" />
-          <div className="absolute top-1/2 left-1/4 w-[350px] h-[350px] bg-indigo-500/8 rounded-full blur-[100px]" />
-          <div className="absolute -bottom-32 -left-20 w-[400px] h-[400px] bg-cyan-400/8 rounded-full blur-[100px]" />
-          <div className="absolute top-10 right-1/3 w-[200px] h-[200px] bg-purple-500/6 rounded-full blur-[80px]" />
-        </div>
-
-        {/* Grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-
-        <div className="relative container py-14 md:py-20">
+      {/*
+        CABECERA COMPACTA.
+        Antes: 4 luces de colores desenfocadas, rejilla de fondo, icono de 56px
+        en una caja, titular de 44px y una ola SVG de 3 capas. Entre eso, los dos
+        bloques de filtros y un anuncio, el primer evento quedaba FUERA de la
+        pantalla. Ahora la cabecera ocupa un tercio.
+      */}
+      <section className="bg-gradient-to-br from-[#0a1628] to-[#142d45]">
+        <div className="container py-6 md:py-8">
           <Breadcrumb items={[{ label: "Eventos" }]} variant="dark" />
-          <div className="flex items-center gap-5 mt-3">
-            <div className="w-14 h-14 bg-white/[0.08] backdrop-blur-sm border border-white/[0.06] rounded-2xl flex items-center justify-center shadow-lg shadow-black/10">
-              <Calendar className="w-7 h-7 text-sky-300" />
-            </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl lg:text-[2.75rem] font-extrabold text-white tracking-tight leading-tight">
-                Eventos en España
-              </h1>
-              <p className="text-sky-200/60 mt-1.5 text-base md:text-lg">
-                Conciertos, deporte y cultura. Filtra por ciudad y no te quedes sin entrada.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Wave SVG separator */}
-        <div className="absolute bottom-0 left-0 w-full leading-[0] overflow-hidden">
-          <svg
-            className="relative block w-full h-[40px] md:h-[56px]"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z"
-              fill="#fafaf7"
-              opacity=".3"
-            />
-            <path
-              d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z"
-              fill="#fafaf7"
-              opacity=".5"
-            />
-            <path
-              d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"
-              fill="#fafaf7"
-            />
-          </svg>
-        </div>
-      </section>
-
-      {/* Filters */}
-      <section className="container pt-10 pb-2">
-        {/* City filter */}
-        <div className="mb-5">
-          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
-            Ciudad
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {CIUDADES.map((c) => (
-              <button
-                key={c.label}
-                onClick={() => setSelectedCity(c.value)}
-                className={cn(
-                  "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
-                  selectedCity === c.value
-                    ? "bg-gradient-to-r from-[#0f2035] to-[#1a3a5c] text-white shadow-md shadow-primary/20"
-                    : "bg-white text-muted-foreground border border-border/60 hover:border-primary/30 hover:text-foreground hover:shadow-sm"
-                )}
-              >
-                {c.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Classification filter */}
-        <div>
-          <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
-            Categoria
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {CLASIFICACIONES.map((c) => (
-              <button
-                key={c.label}
-                onClick={() => setSelectedClassification(c.value)}
-                className={cn(
-                  "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
-                  selectedClassification === c.value
-                    ? "bg-gradient-to-r from-[#0f2035] to-[#1a3a5c] text-white shadow-md shadow-primary/20"
-                    : "bg-white text-muted-foreground border border-border/60 hover:border-primary/30 hover:text-foreground hover:shadow-sm"
-                )}
-              >
-                {c.label}
-              </button>
-            ))}
+          <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+              Eventos en España
+            </h1>
+            <p className="text-sm text-sky-200/50">
+              Conciertos, deporte y cultura, con entradas a la venta.
+            </p>
           </div>
         </div>
       </section>
+
+      {/*
+        FILTROS en una sola linea. Antes iban en dos bloques con etiquetas
+        "CIUDAD" y "CATEGORIA" en mayusculas, que ocupaban el doble y no hacian
+        falta: se entiende sin que nadie lo explique.
+      */}
+      <section className="container pt-5 pb-1">
+        <div className="flex flex-wrap items-center gap-1.5">
+          {CIUDADES.map((c) => (
+            <button
+              key={c.label}
+              onClick={() => setSelectedCity(c.value)}
+              className={cn(
+                "px-3 py-1.5 rounded-full text-sm transition-colors",
+                selectedCity === c.value
+                  ? "bg-primary text-primary-foreground font-semibold"
+                  : "bg-white text-muted-foreground border border-border/60 hover:border-primary/40 hover:text-foreground"
+              )}
+            >
+              {c.label}
+            </button>
+          ))}
+
+          <span className="mx-1 h-5 w-px bg-border/70" aria-hidden="true" />
+
+          {CLASIFICACIONES.map((c) => (
+            <button
+              key={c.label}
+              onClick={() => setSelectedClassification(c.value)}
+              className={cn(
+                "px-3 py-1.5 rounded-full text-sm transition-colors",
+                selectedClassification === c.value
+                  ? "bg-accent text-white font-semibold"
+                  : "bg-white text-muted-foreground border border-border/60 hover:border-accent/40 hover:text-foreground"
+              )}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+      </section>
+
 
       {/* Ad slot */}
       <div className="container py-4">
-        <AdSlot slot="eventos-after-filters" />
       </div>
 
       {/* Events grid */}
@@ -295,6 +249,12 @@ export default function EventosPage() {
           </>
         )}
       </section>
+
+      {/* El anuncio para negocios va DESPUES de los eventos: quien entra a ver
+          conciertos no quiere que le vendan nada antes de ver el contenido. */}
+      <div className="container pb-8">
+        <AdSlot slot="eventos-after-filters" />
+      </div>
 
       <Footer />
     </div>
