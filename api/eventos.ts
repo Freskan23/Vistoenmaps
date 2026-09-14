@@ -41,7 +41,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   /* Sin API key → fallback */
   if (!TM_KEY) {
     const events = getFallbackEvents(city as string, sizeNum);
-    res.status(200).json({ events, total: events.length, fallback: true });
+    res.status(200).json({
+      events,
+      total: events.length,
+      fallback: true,
+      motivo: "sin_clave", // no hay TICKETMASTER_API_KEY en el entorno
+    });
     return;
   }
 
@@ -62,9 +67,22 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     /* Ticketmaster devuelve error (ej: Invalid ApiKey) → fallback */
     if (data?.fault || !response.ok) {
-      console.warn("Ticketmaster API error, using fallback:", data?.fault?.faultstring || response.status);
+      // Antes esto solo iba a la consola y desde fuera era imposible saber por
+      // que salian eventos de mentira. Ahora el motivo viaja en la respuesta
+      // (nunca la clave).
+      const motivo =
+        data?.fault?.faultstring ||
+        data?.fault?.detail?.errorcode ||
+        `http_${response.status}`;
+      console.warn("Ticketmaster API error, using fallback:", motivo);
       const events = getFallbackEvents(city as string, sizeNum);
-      res.status(200).json({ events, total: events.length, fallback: true });
+      res.status(200).json({
+        events,
+        total: events.length,
+        fallback: true,
+        motivo: String(motivo).slice(0, 120),
+        clave_len: TM_KEY.length, // para detectar claves cortadas o con espacios
+      });
       return;
     }
 

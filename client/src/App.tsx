@@ -36,9 +36,14 @@ import EventosCiudadPage from "./pages/EventosCiudadPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
 import { UserLocationProvider } from "./context/UserLocationContext";
+import ScrollToTop from "./components/ScrollToTop";
 
 function Router() {
   return (
+    <>
+      {/* Sin esto, al pulsar un enlace del pie llegabas a la pagina nueva
+          con el scroll abajo: aterrizabas en mitad del pie. */}
+      <ScrollToTop />
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/login" component={LoginPage} />
@@ -74,6 +79,7 @@ function Router() {
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
+    </>
   );
 }
 
