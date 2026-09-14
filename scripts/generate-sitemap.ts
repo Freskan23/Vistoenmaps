@@ -36,6 +36,24 @@ urls.push({ loc: "/directorios", priority: "0.8", changefreq: "monthly" });
 urls.push({ loc: "/contacto", priority: "0.5", changefreq: "monthly" });
 urls.push({ loc: "/herramientas", priority: "0.7", changefreq: "monthly" });
 urls.push({ loc: "/criterios", priority: "0.6", changefreq: "monthly" });
+
+// Guias del blog. Faltaban por completo: ni la portada ni las 241 guias estaban
+// en el sitemap, y encima /blog/<slug> devolvia 404.
+urls.push({ loc: "/blog", priority: "0.8", changefreq: "weekly" });
+try {
+  const guias = JSON.parse(
+    fs.readFileSync(
+      path.join(__dirname, "..", "client", "public", "datos", "blog.json"),
+      "utf-8"
+    )
+  );
+  for (const g of guias) {
+    urls.push({ loc: `/blog/${g.slug}`, priority: "0.7", changefreq: "monthly" });
+  }
+  console.log("guias en sitemap:", guias.length);
+} catch (e) {
+  console.warn("sin blog.json: el sitemap sale sin guias");
+}
 // Paginas legales: obligatorias en España y Google espera encontrarlas.
 urls.push({ loc: "/aviso-legal", priority: "0.3", changefreq: "yearly" });
 urls.push({ loc: "/privacidad", priority: "0.3", changefreq: "yearly" });

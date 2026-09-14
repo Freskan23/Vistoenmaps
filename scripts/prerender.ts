@@ -481,19 +481,118 @@ generatePage({
 });
 count++;
 
-// Blog
+// ── Guias del blog ────────────────────────────────────────────────────────
+// IMPORTANTE: antes esto no existia y /blog/<slug> devolvia 404. Las 241 guias
+// solo vivian en el JavaScript: Google no veia ninguna y compartir un enlace no
+// abria nada. Ahora cada guia es una pagina de verdad, legible sin JS.
+const guias: any[] = JSON.parse(
+  fs.readFileSync(
+    path.join(__dirname, "..", "client", "public", "datos", "blog.json"),
+    "utf-8"
+  )
+);
+
+// /blog: listado real con enlaces (antes: 0 enlaces, pagina vacia para Google)
+const guiasPorCiudad = new Map<string, any[]>();
+for (const g of guias) {
+  const lista = guiasPorCiudad.get(g.ciudad_nombre) || [];
+  lista.push(g);
+  guiasPorCiudad.set(g.ciudad_nombre, lista);
+}
+const ciudadesOrdenadas = [...guiasPorCiudad.entries()].sort(
+  (a, b) => b[1].length - a[1].length
+);
+
 generatePage({
   route: "/blog",
-  title: "Los mejores de tu ciudad — Rankings y guías | Visto en Maps",
-  description: "Rankings de los mejores negocios y profesionales por ciudad. Guías actualizadas con valoraciones reales de Google Maps.",
+  title: "Guías: los mejores de cada ciudad | Visto en Maps",
+  description:
+    "Guías de los mejores negocios y sitios de cada ciudad de España, ordenados por las valoraciones publicadas en Google Maps.",
   canonical: `${BASE_URL}/blog`,
-  schemaJson: [{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
-    { "@type": "ListItem", position: 2, name: "Blog", item: `${BASE_URL}/blog` },
-  ]}],
-  ssrHtml: `<header><h1>Los mejores de tu ciudad</h1><p>Rankings actualizados con valoraciones reales. Sin publicidad, sin tratos. Solo datos.</p></header>`,
+  schemaJson: [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+        { "@type": "ListItem", position: 2, name: "Guías", item: `${BASE_URL}/blog` },
+      ],
+    },
+  ],
+  ssrHtml: `<main>
+    <h1>Los mejores de cada ciudad</h1>
+    <p>${guias.length} guías ordenadas por las valoraciones publicadas en Google Maps, teniendo en cuenta cuánta gente ha opinado. <a href="/criterios">Cómo las ordenamos</a>.</p>
+    ${ciudadesOrdenadas
+      .map(
+        ([ciudad, lista]) => `<section><h2>${esc(ciudad)}</h2><ul>${lista
+          .map(
+            (g: any) =>
+              `<li><a href="/blog/${g.slug}">${esc(g.titulo)}</a> — ${g.numNegocios} sitios comparados</li>`
+          )
+          .join("")}</ul></section>`
+      )
+      .join("")}
+  </main>`,
 });
 count++;
+
+// Una pagina por guia, con la tabla completa visible sin JavaScript.
+for (const g of guias) {
+  const filas = (g.negocios || [])
+    .map((n: any, i: number) => {
+      const nota = n.valoracion_media
+        ? `${String(n.valoracion_media).replace(".", ",")}${
+            n.num_resenas ? ` (${n.num_resenas} opiniones)` : ""
+          }`
+        : "Sin valoraciones";
+      const contacto = [n.telefono, n.direccion].filter(Boolean).map(esc).join(" · ");
+      const href = `/${n.categoria_slug}/${n.ciudad_slug}/${n.barrio_slug}/${n.slug}`;
+      return `<tr><td>${i + 1}</td><td><a href="${href}">${esc(n.nombre)}</a></td><td>${nota}</td><td>${contacto}</td></tr>`;
+    })
+    .join("");
+
+  generatePage({
+    route: `/blog/${g.slug}`,
+    title: `${g.titulo} | Visto en Maps`,
+    description: g.extracto,
+    canonical: `${BASE_URL}/blog/${g.slug}`,
+    schemaJson: [
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: "Guías", item: `${BASE_URL}/blog` },
+          { "@type": "ListItem", position: 3, name: g.titulo, item: `${BASE_URL}/blog/${g.slug}` },
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: g.titulo,
+        numberOfItems: g.numNegocios,
+        itemListElement: (g.negocios || []).map((n: any, i: number) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: n.nombre,
+          url: `${BASE_URL}/${n.categoria_slug}/${n.ciudad_slug}/${n.barrio_slug}/${n.slug}`,
+        })),
+      },
+    ],
+    ssrHtml: `<main>
+      <nav><a href="/">Inicio</a> › <a href="/blog">Guías</a> › ${esc(g.titulo)}</nav>
+      <h1>${esc(g.titulo)}</h1>
+      <p>${esc(g.intro || g.extracto)}</p>
+      <table><thead><tr><th>#</th><th>Nombre</th><th>Valoración</th><th>Contacto</th></tr></thead>
+      <tbody>${filas}</tbody></table>
+      <p><a href="/${g.categoria_slug}/${g.ciudad_slug}">Ver todos los ${esc(
+        g.categoria_nombre.toLowerCase()
+      )} de ${esc(g.ciudad_nombre)}</a> · <a href="/criterios">Cómo elegimos y ordenamos</a></p>
+    </main>`,
+  });
+  count++;
+}
+
 
 // Directorios
 generatePage({
