@@ -16,6 +16,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ParaAgencias from "@/components/ParaAgencias";
+import EventosCiudad from "@/components/EventosCiudad";
 import NotFound from "./NotFound";
 import { motion } from "framer-motion";
 import SEOHead from "@/components/SEOHead";
@@ -259,6 +260,10 @@ export default function CiudadPage() {
           totalNegocios={totalNegocios}
         />
       </section>
+
+      {/* Eventos de la ciudad: enlaces de afiliado en una pagina que YA tiene
+          visitas. Solo se pinta si hay eventos de verdad. */}
+      <EventosCiudad ciudadSlug={ciu.slug} ciudadNombre={ciu.nombre} />
 
       <Footer />
     </div>

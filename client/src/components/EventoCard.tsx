@@ -1,7 +1,12 @@
-import { MapPin } from "lucide-react";
+import { MapPin, Ticket } from "lucide-react";
 import { motion } from "framer-motion";
 import type { Evento } from "@/data/types";
 import { cn } from "@/lib/utils";
+import {
+  ATRIBUTOS_AFILIADO,
+  enlaceCompra,
+  registrarClicAfiliado,
+} from "@/lib/afiliados";
 
 interface EventoCardProps {
   evento: Evento;
@@ -53,10 +58,24 @@ export default function EventoCard({ evento }: EventoCardProps) {
       viewport={{ once: true, margin: "-30px" }}
       transition={{ duration: 0.35 }}
     >
+      {/*
+        ENLACE DE AFILIADO. El enlace de Ticketmaster ya trae el identificador
+        de Edu, asi que una compra desde aqui genera comision. Por eso:
+         - rel="sponsored": lo exige Google para enlaces de pago. Sin esto puede
+           entenderlo como compra de enlaces y penalizar el dominio.
+         - se registra el clic, para saber que eventos dan dinero.
+      */}
       <a
-        href={evento.url_compra}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={enlaceCompra(evento.url_compra)}
+        {...ATRIBUTOS_AFILIADO}
+        onClick={() =>
+          registrarClicAfiliado({
+            evento: evento.nombre,
+            ciudad: evento.ciudad,
+            clasificacion: evento.clasificacion,
+            url: evento.url_compra,
+          })
+        }
         className="block h-full group"
       >
         <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col">
@@ -121,6 +140,13 @@ export default function EventoCard({ evento }: EventoCardProps) {
 
             {/* Spacer */}
             <div className="flex-1" />
+
+            {/* Llamada a la accion: antes la tarjeta entera era el enlace pero
+                no se veia que llevaba a comprar la entrada. */}
+            <span className="mt-2 inline-flex items-center justify-center gap-1.5 w-full rounded-xl bg-accent px-3 py-2 text-sm font-bold text-white group-hover:brightness-105 transition-all">
+              <Ticket className="w-4 h-4" />
+              Ver entradas
+            </span>
 
             {/* Price range */}
             {evento.precio_min != null && (

@@ -273,11 +273,26 @@ export default function EventosPage() {
             </p>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {eventos.map((evento) => (
-              <EventoCard key={evento.id} evento={evento} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {eventos.map((evento) => (
+                <EventoCard key={evento.id} evento={evento} />
+              ))}
+            </div>
+
+            {/*
+              AVISO DE AFILIACION. Es obligatorio decirlo: si compras desde aqui
+              nos llevamos una comision. La ley de competencia desleal lo exige
+              y las redes de afiliados tambien. Ademas juega a favor: decirlo
+              claro da mas confianza que esconderlo.
+            */}
+            <p className="mt-8 text-xs text-muted-foreground leading-relaxed max-w-3xl">
+              Las entradas se compran en Ticketmaster. Si compras desde aquí,
+              nosotros nos llevamos una pequeña comisión y a ti no te cuesta ni
+              un céntimo más. No elegimos los eventos por eso: salen ordenados
+              por fecha, primero los más cercanos.
+            </p>
+          </>
         )}
       </section>
 

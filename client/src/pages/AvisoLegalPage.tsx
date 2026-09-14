@@ -19,7 +19,7 @@ export default function AvisoLegalPage() {
           titulo: "Sobre la información publicada",
           parrafos: [
             "Los datos proceden de fuentes públicas y se muestran tal cual, con fines informativos. Pueden cambiar en cualquier momento sin que este directorio lo refleje de inmediato: conviene confirmar horarios y precios con el propio negocio antes de desplazarse.",
-            "Visto en Maps no interviene en la relación entre el usuario y el negocio, ni presta los servicios que aquí se listan, ni cobra comisión por ellos.",
+            "Visto en Maps no interviene en la relación entre el usuario y el negocio, ni presta los servicios que aquí se listan, ni cobra comisión por contactar con ellos.",
           ],
         },
         {
@@ -27,6 +27,16 @@ export default function AvisoLegalPage() {
           parrafos: [
             "Aparecer en el directorio es gratis. Si quieres corregir un dato, añadir información o dejar de aparecer, escríbenos desde la página de contacto indicando el nombre y la dirección del negocio y lo resolvemos.",
             "Las fichas marcadas como «Recomendado» o «Ficha verificada» corresponden a negocios que han contratado presencia destacada. El resto de fichas se ordenan por valoración y número de opiniones.",
+          ],
+        },
+        {
+          // Obligatorio decirlo: desde la seccion de eventos se enlaza a
+          // Ticketmaster con un enlace de afiliado que genera comision.
+          titulo: "Enlaces de afiliado",
+          parrafos: [
+            "En la sección de eventos enlazamos a Ticketmaster para comprar las entradas. Esos enlaces son de afiliado: si compras a través de ellos, recibimos una pequeña comisión de Ticketmaster. A ti no te cuesta ni un céntimo más.",
+            "Los eventos que se muestran salen ordenados por fecha, primero los más cercanos. No se colocan ni se ordenan según lo que nos paguen.",
+            "Los enlaces de afiliado van marcados como patrocinados en el código de la página, como exigen los buscadores.",
           ],
         },
         {
