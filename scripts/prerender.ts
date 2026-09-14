@@ -585,6 +585,9 @@ for (const g of guias) {
       <p>${esc(g.intro || g.extracto)}</p>
       <table><thead><tr><th>#</th><th>Nombre</th><th>Valoración</th><th>Contacto</th></tr></thead>
       <tbody>${filas}</tbody></table>
+      ${(g.analisis || []).length ? `<section><h2>Lo que dicen los datos</h2>${(g.analisis || [])
+        .map((p: string) => `<p>${esc(p)}</p>`)
+        .join("")}</section>` : ""}
       <p><a href="/${g.categoria_slug}/${g.ciudad_slug}">Ver todos los ${esc(
         g.categoria_nombre.toLowerCase()
       )} de ${esc(g.ciudad_nombre)}</a> · <a href="/criterios">Cómo elegimos y ordenamos</a></p>

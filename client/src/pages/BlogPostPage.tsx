@@ -308,10 +308,14 @@ export default function BlogPostPage() {
             transition={{ duration: 0.4 }}
             className="text-base text-muted-foreground leading-relaxed mb-10"
           >
-            Hemos analizado las valoraciones y resenas de Google Maps para crear
-            este ranking de los mejores {post.categoria_nombre.toLowerCase()} en{" "}
-            {post.ciudad_nombre}. Estos son los profesionales mejor valorados
-            por sus clientes.
+            {/*
+              Antes aqui habia un texto FIJO ("Hemos analizado las valoraciones...
+              los profesionales mejor valorados por sus clientes") repetido en las
+              241 guias. Eso es justo lo que Google penaliza como contenido de poco
+              valor, y ademas llamaba "profesionales" a los parques.
+              Ahora cada guia trae su propia entradilla, escrita con SUS numeros.
+            */}
+            {post.extracto}
           </motion.p>
 
           {/* Numbered business list */}
@@ -405,6 +409,29 @@ export default function BlogPostPage() {
               </motion.article>
             ))}
           </div>
+
+          {/*
+            Lectura de los datos, distinta en cada guia: reparto por barrios,
+            distancia entre el primero y el segundo, empates, que datos faltan.
+            Va DESPUES de la lista: primero el dato, luego el contexto.
+          */}
+          {Array.isArray((post as any).analisis) && (post as any).analisis.length > 0 && (
+            <div className="mt-14 rounded-2xl border border-border/60 bg-white p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-1 h-6 bg-accent rounded-full" />
+                <h2 className="text-xl font-extrabold text-foreground">
+                  Lo que dicen los datos
+                </h2>
+              </div>
+              <div className="space-y-3">
+                {((post as any).analisis as string[]).map((parrafo, i) => (
+                  <p key={i} className="text-sm text-muted-foreground leading-relaxed">
+                    {parrafo}
+                  </p>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* ===== RELATED POSTS ===== */}
           {relatedPosts.length > 0 && (

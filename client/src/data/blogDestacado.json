@@ -1,158 +1,227 @@
 [
  {
   "slug": "top-10-parques-en-barcelona",
-  "titulo": "Los 10 mejores parques de Barcelona",
-  "extracto": "Los 10 parques mejor valorados de Barcelona segun las opiniones publicadas en Google Maps, ordenados combinando la nota con el numero de opiniones.",
-  "intro": "Seleccion de parques de Barcelona ordenada por las valoraciones publicadas en Google Maps. Se tiene en cuenta el numero de opiniones, no solo la nota: un 5 con tres opiniones no dice lo mismo que un 4,7 con miles.",
+  "titulo": "Parques en Barcelona: Parque de la Ciutadella arrasa y otros 9 que merecen la pena",
+  "extracto": "Parque de la Ciutadella abre la lista en Barcelona con un 4,6 y 76.241 valoraciones. Nadie se le acerca en volumen: 73.457 opiniones por delante de Jardines de Laribal. 5 de los 10 pasan de 4,5 y la media es 4,45.",
+  "intro": "Parque de la Ciutadella abre la lista en Barcelona con un 4,6 y 76.241 valoraciones. Nadie se le acerca en volumen: 73.457 opiniones por delante de Jardines de Laribal. 5 de los 10 pasan de 4,5 y la media es 4,45.",
   "tipo_sector": "sitios",
   "categoria_slug": "parques",
   "ciudad_slug": "barcelona",
   "ciudad_nombre": "Barcelona",
   "categoria_nombre": "Parques",
   "fecha_generado": "2026-09-13",
-  "numNegocios": 10
+  "numNegocios": 10,
+  "analisis": [
+   "Se reparten por 6 barrios, con 3 en Sants Montjuic. Conviene mirar la zona antes de decidir: en Barcelona media hora de trayecto cambia el plan.",
+   "El más conocido no encabeza la lista: Park Güell acumula 228.389 opiniones, más que nadie aquí, pero su media de 4,4 lo deja por detrás.",
+   "Entre los 10 suman 357.242 opiniones. Con ese volumen es difícil que el orden esté manipulado.",
+   "No todos tienen la ficha completa: 3 con teléfono y 10 con horario. Lo que no aparece es que no está publicado."
+  ]
  },
  {
   "slug": "top-10-parques-en-madrid",
-  "titulo": "Los 10 mejores parques de Madrid",
-  "extracto": "Los 10 parques mejor valorados de Madrid segun las opiniones publicadas en Google Maps, ordenados combinando la nota con el numero de opiniones.",
-  "intro": "Seleccion de parques de Madrid ordenada por las valoraciones publicadas en Google Maps. Se tiene en cuenta el numero de opiniones, no solo la nota: un 5 con tres opiniones no dice lo mismo que un 4,7 con miles.",
+  "titulo": "En Madrid manda Parque de El Retiro: los 10 parques mejor valorados",
+  "extracto": "Parque de El Retiro abre la lista en Madrid con un 4,8 y 208.099 valoraciones. La distancia con Parque de Juan Carlos I es enorme: 181.348 opiniones más. Nivel parejo: ninguno baja de 4,5. La diferencia la van a marcar el barrio y el precio, no la calidad.",
+  "intro": "Parque de El Retiro abre la lista en Madrid con un 4,8 y 208.099 valoraciones. La distancia con Parque de Juan Carlos I es enorme: 181.348 opiniones más. Nivel parejo: ninguno baja de 4,5. La diferencia la van a marcar el barrio y el precio, no la calidad.",
   "tipo_sector": "sitios",
   "categoria_slug": "parques",
   "ciudad_slug": "madrid",
   "ciudad_nombre": "Madrid",
   "categoria_nombre": "Parques",
   "fecha_generado": "2026-09-13",
-  "numNegocios": 10
+  "numNegocios": 10,
+  "analisis": [
+   "Hay 5 barrios representados y Centro es el que más aporta, con 5. Mira dónde cae cada uno antes de salir de casa.",
+   "294.486 valoraciones sumadas entre los 10. Cuantas más hay, menos pesa la opinión suelta de un día malo.",
+   "No todos tienen la ficha completa: 6 con teléfono y 9 con horario. Lo que no aparece es que no está publicado."
+  ]
  },
  {
   "slug": "top-10-cines-en-valencia",
-  "titulo": "Los 10 mejores cines de Valencia",
-  "extracto": "Los 10 cines mejor valorados de Valencia segun las opiniones publicadas en Google Maps. Telefono, horario y direccion de cada uno.",
-  "intro": "Profesionales de cines en Valencia ordenados por las valoraciones publicadas en Google Maps. Se pondera el numero de opiniones: la nota de un negocio con cientos de valoraciones es mas fiable que la de uno con tres.",
+  "titulo": "Cines en Valencia: Ciudad de las Artes y las Ciencias arrasa y otros 9 que merecen la pena",
+  "extracto": "El primero es Ciudad de las Artes y las Ciencias, con 4,7 de media y 150.184 opiniones detrás. La distancia con Cinestudio d'Or es enorme: 148.419 opiniones más. 3 de los 10 pasan de 4,5 y la media es 4,42.",
+  "intro": "El primero es Ciudad de las Artes y las Ciencias, con 4,7 de media y 150.184 opiniones detrás. La distancia con Cinestudio d'Or es enorme: 148.419 opiniones más. 3 de los 10 pasan de 4,5 y la media es 4,42.",
   "tipo_sector": "servicios",
   "categoria_slug": "cines",
   "ciudad_slug": "valencia",
   "ciudad_nombre": "Valencia",
   "categoria_nombre": "Cines",
   "fecha_generado": "2026-09-13",
-  "numNegocios": 10
+  "numNegocios": 10,
+  "analisis": [
+   "No todos tienen la ficha completa: 7 con teléfono y 1 con horario. Lo que no aparece es que no está publicado.",
+   "Entre los 10 suman 192.906 opiniones. Con ese volumen es difícil que el orden esté manipulado.",
+   "Se reparten por 6 barrios, con 4 en Centro. Conviene mirar la zona antes de decidir: en Valencia media hora de trayecto cambia el plan."
+  ]
  },
  {
   "slug": "top-10-restaurantes-en-madrid",
-  "titulo": "Los 10 mejores restaurantes de Madrid",
-  "extracto": "Los 10 restaurantes mejor valorados de Madrid segun las opiniones publicadas en Google Maps.",
-  "intro": "Seleccion de restaurantes de Madrid ordenada por las valoraciones publicadas en Google Maps, teniendo en cuenta cuantas personas han opinado.",
+  "titulo": "Restaurantes en Madrid: Centro concentra los mejor valorados",
+  "extracto": "El primero es Ástor gastro-place, con 4,9 de media y 2.582 opiniones detrás. Gana por nota a La Taberna de Peñalver, que tiene más opiniones pero baja de media. Nivel parejo: ninguno baja de 4,5. La diferencia la van a marcar el barrio y el precio, no la calidad.",
+  "intro": "El primero es Ástor gastro-place, con 4,9 de media y 2.582 opiniones detrás. Gana por nota a La Taberna de Peñalver, que tiene más opiniones pero baja de media. Nivel parejo: ninguno baja de 4,5. La diferencia la van a marcar el barrio y el precio, no la calidad.",
   "tipo_sector": "comer",
   "categoria_slug": "restaurantes",
   "ciudad_slug": "madrid",
   "ciudad_nombre": "Madrid",
   "categoria_nombre": "Restaurantes",
   "fecha_generado": "2026-09-13",
-  "numNegocios": 10
+  "numNegocios": 10,
+  "analisis": [
+   "Todos están en Centro. Si te mueves por otra zona de Madrid, el listado completo del directorio te va a servir más que esta guía.",
+   "El más conocido no encabeza la lista: Rosi La Loca acumula 22.971 opiniones, más que nadie aquí, pero su media de 4,7 lo deja por detrás.",
+   "La lista se apoya en 97.886 opiniones. No es una impresión: es lo que dice mucha gente."
+  ]
  },
  {
   "slug": "top-10-cines-en-murcia",
-  "titulo": "Los 10 mejores cines de Murcia",
-  "extracto": "Los 10 cines mejor valorados de Murcia segun las opiniones publicadas en Google Maps. Telefono, horario y direccion de cada uno.",
-  "intro": "Profesionales de cines en Murcia ordenados por las valoraciones publicadas en Google Maps. Se pondera el numero de opiniones: la nota de un negocio con cientos de valoraciones es mas fiable que la de uno con tres.",
+  "titulo": "Cines en Murcia: Centro concentra los mejor valorados",
+  "extracto": "El primero es Filmoteca Regional Francisco Rabal, con 4,7 de media y 345 opiniones detrás. Por delante de Centro Comercial Nueva Condomina, más conocido pero peor valorado. 2 de los 10 pasan de 4,5 y la media es 4,25.",
+  "intro": "El primero es Filmoteca Regional Francisco Rabal, con 4,7 de media y 345 opiniones detrás. Por delante de Centro Comercial Nueva Condomina, más conocido pero peor valorado. 2 de los 10 pasan de 4,5 y la media es 4,25.",
   "tipo_sector": "servicios",
   "categoria_slug": "cines",
   "ciudad_slug": "murcia",
   "ciudad_nombre": "Murcia",
   "categoria_nombre": "Cines",
   "fecha_generado": "2026-09-13",
-  "numNegocios": 10
+  "numNegocios": 10,
+  "analisis": [
+   "La lista entera se queda en Centro, así que como plan es cómodo: se hacen andando unos de otros.",
+   "El más conocido no encabeza la lista: Centro Comercial Nueva Condomina acumula 43.557 opiniones, más que nadie aquí, pero su media de 4,5 lo deja por detrás.",
+   "La lista se apoya en 87.879 opiniones. No es una impresión: es lo que dice mucha gente.",
+   "8 de los 10 publican teléfono y 3 muestran horario. Cuando falta un dato es porque Google no lo publica: no nos lo inventamos."
+  ]
  },
  {
   "slug": "top-10-bares-en-malaga",
-  "titulo": "Los 10 mejores bares de Málaga",
-  "extracto": "Los 10 bares mejor valorados de Málaga segun las opiniones publicadas en Google Maps.",
-  "intro": "Seleccion de bares de Málaga ordenada por las valoraciones publicadas en Google Maps, teniendo en cuenta cuantas personas han opinado.",
+  "titulo": "Bares en Málaga: Distrito Centro concentra los mejor valorados",
+  "extracto": "Taberna De Jarana abre la lista en Málaga con un 4,8 y 1.589 valoraciones. Restaurante Oliva le sigue de cerca: 206 opiniones de diferencia. Nivel parejo: ninguno baja de 4,5. La diferencia la van a marcar el barrio y el precio, no la calidad.",
+  "intro": "Taberna De Jarana abre la lista en Málaga con un 4,8 y 1.589 valoraciones. Restaurante Oliva le sigue de cerca: 206 opiniones de diferencia. Nivel parejo: ninguno baja de 4,5. La diferencia la van a marcar el barrio y el precio, no la calidad.",
   "tipo_sector": "comer",
   "categoria_slug": "bares",
   "ciudad_slug": "malaga",
   "ciudad_nombre": "Málaga",
   "categoria_nombre": "Bares",
   "fecha_generado": "2026-09-13",
-  "numNegocios": 10
+  "numNegocios": 10,
+  "analisis": [
+   "Antes de ir, comprueba el horario: solo 10 de los 10 lo tienen puesto. Teléfono hay en 8.",
+   "81.159 valoraciones sumadas entre los 10. Cuantas más hay, menos pesa la opinión suelta de un día malo.",
+   "Hay empate arriba: 2 están a 4,8. El desempate lo pone cuánta gente ha opinado, no la nota.",
+   "Mucha gente conoce Picasso Bar Tapas (39.855 opiniones), pero quien lo ha valorado le pone 4,7 de media, y eso lo baja en la lista.",
+   "No hay reparto que valga: los 10 están en Distrito Centro. Fuera de ahí, mejor mira el listado completo de Málaga."
+  ]
  },
  {
   "slug": "top-10-bares-en-madrid",
-  "titulo": "Los 10 mejores bares de Madrid",
-  "extracto": "Los 10 bares mejor valorados de Madrid segun las opiniones publicadas en Google Maps.",
-  "intro": "Seleccion de bares de Madrid ordenada por las valoraciones publicadas en Google Maps, teniendo en cuenta cuantas personas han opinado.",
+  "titulo": "Centro, la zona de bares en Madrid: los 10 mejor valorados",
+  "extracto": "Encabeza Bandida Tapas & Cocktail Bar: 4,8 sobre 5 con 1.100 opiniones publicadas en Google Maps. Por delante de Inclan Brutal Bar, más conocido pero peor valorado. Todos por encima de 4,5. Con la lista en la mano, elige por cercanía.",
+  "intro": "Encabeza Bandida Tapas & Cocktail Bar: 4,8 sobre 5 con 1.100 opiniones publicadas en Google Maps. Por delante de Inclan Brutal Bar, más conocido pero peor valorado. Todos por encima de 4,5. Con la lista en la mano, elige por cercanía.",
   "tipo_sector": "comer",
   "categoria_slug": "bares",
   "ciudad_slug": "madrid",
   "ciudad_nombre": "Madrid",
   "categoria_nombre": "Bares",
   "fecha_generado": "2026-09-13",
-  "numNegocios": 10
+  "numNegocios": 10,
+  "analisis": [
+   "Centro se lleva los 10. Es la zona donde se concentra lo mejor valorado de Madrid en este sector.",
+   "Tapa Tapa Montera gana en volumen —33.838 opiniones— pero no en nota: 4,6 de media. Por eso no encabeza.",
+   "La lista se apoya en 80.503 opiniones. No es una impresión: es lo que dice mucha gente.",
+   "Antes de ir, comprueba el horario: solo 10 de los 10 lo tienen puesto. Teléfono hay en 8."
+  ]
  },
  {
   "slug": "top-10-cines-en-sevilla",
-  "titulo": "Los 10 mejores cines de Sevilla",
-  "extracto": "Los 10 cines mejor valorados de Sevilla segun las opiniones publicadas en Google Maps. Telefono, horario y direccion de cada uno.",
-  "intro": "Profesionales de cines en Sevilla ordenados por las valoraciones publicadas en Google Maps. Se pondera el numero de opiniones: la nota de un negocio con cientos de valoraciones es mas fiable que la de uno con tres.",
+  "titulo": "Los 10 cines mejor valorados de Sevilla",
+  "extracto": "UCC Cine Cervantes abre la lista en Sevilla con un 4,7 y 248 valoraciones. Gana por nota a Avenida 5 Cines - Cines VOS - UCC, que tiene más opiniones pero baja de media. 3 de los 10 pasan de 4,5 y la media es 4,43.",
+  "intro": "UCC Cine Cervantes abre la lista en Sevilla con un 4,7 y 248 valoraciones. Gana por nota a Avenida 5 Cines - Cines VOS - UCC, que tiene más opiniones pero baja de media. 3 de los 10 pasan de 4,5 y la media es 4,43.",
   "tipo_sector": "servicios",
   "categoria_slug": "cines",
   "ciudad_slug": "sevilla",
   "ciudad_nombre": "Sevilla",
   "categoria_nombre": "Cines",
   "fecha_generado": "2026-09-13",
-  "numNegocios": 10
+  "numNegocios": 10,
+  "analisis": [
+   "Centro aporta 6 de los 10, pero el resto se reparte por otros 1 barrios de Sevilla.",
+   "Mucha gente conoce Centro Comercial Lagoh Sevilla (41.010 opiniones), pero quien lo ha valorado le pone 4,4 de media, y eso lo baja en la lista.",
+   "80.129 valoraciones sumadas entre los 10. Cuantas más hay, menos pesa la opinión suelta de un día malo.",
+   "8 de los 10 publican teléfono y 2 muestran horario. Cuando falta un dato es porque Google no lo publica: no nos lo inventamos."
+  ]
  },
  {
   "slug": "top-10-bares-en-barcelona",
-  "titulo": "Los 10 mejores bares de Barcelona",
-  "extracto": "Los 10 bares mejor valorados de Barcelona segun las opiniones publicadas en Google Maps.",
-  "intro": "Seleccion de bares de Barcelona ordenada por las valoraciones publicadas en Google Maps, teniendo en cuenta cuantas personas han opinado.",
+  "titulo": "Los 10 bares de Barcelona: ninguno baja de 4,5",
+  "extracto": "Encabeza Petit Tapas: 4,8 sobre 5 con 4.276 opiniones publicadas en Google Maps. Por delante de Restaurante Vivo Tapas, más conocido pero peor valorado. Nivel parejo: ninguno baja de 4,5. La diferencia la van a marcar el barrio y el precio, no la calidad.",
+  "intro": "Encabeza Petit Tapas: 4,8 sobre 5 con 4.276 opiniones publicadas en Google Maps. Por delante de Restaurante Vivo Tapas, más conocido pero peor valorado. Nivel parejo: ninguno baja de 4,5. La diferencia la van a marcar el barrio y el precio, no la calidad.",
   "tipo_sector": "comer",
   "categoria_slug": "bares",
   "ciudad_slug": "barcelona",
   "ciudad_nombre": "Barcelona",
   "categoria_nombre": "Bares",
   "fecha_generado": "2026-09-13",
-  "numNegocios": 10
+  "numNegocios": 10,
+  "analisis": [
+   "No todos tienen la ficha completa: 9 con teléfono y 10 con horario. Lo que no aparece es que no está publicado.",
+   "Entre los 10 suman 76.727 opiniones. Con ese volumen es difícil que el orden esté manipulado.",
+   "Restaurante Vivo Tapas gana en volumen —18.743 opiniones— pero no en nota: 4,7 de media. Por eso no encabeza.",
+   "No se concentran en un sitio: salen 3 barrios distintos de Barcelona, y Ciutat Vella repite 5 veces."
+  ]
  },
  {
   "slug": "top-10-teatros-en-madrid",
-  "titulo": "Los 10 mejores teatros de Madrid",
-  "extracto": "Los 10 teatros mejor valorados de Madrid segun las opiniones publicadas en Google Maps. Telefono, horario y direccion de cada uno.",
-  "intro": "Profesionales de teatros en Madrid ordenados por las valoraciones publicadas en Google Maps. Se pondera el numero de opiniones: la nota de un negocio con cientos de valoraciones es mas fiable que la de uno con tres.",
+  "titulo": "4 teatros de Madrid comparten la mejor nota: así quedan los 10",
+  "extracto": "El primero es Teatro Real, con 4,6 de media y 14.551 opiniones detrás. Le saca 9.844 opiniones a Teatro Español plaza santa ana, el segundo. La media de la lista es 4,52, con 8 por encima de 4,5.",
+  "intro": "El primero es Teatro Real, con 4,6 de media y 14.551 opiniones detrás. Le saca 9.844 opiniones a Teatro Español plaza santa ana, el segundo. La media de la lista es 4,52, con 8 por encima de 4,5.",
   "tipo_sector": "servicios",
   "categoria_slug": "teatros",
   "ciudad_slug": "madrid",
   "ciudad_nombre": "Madrid",
   "categoria_nombre": "Teatros",
   "fecha_generado": "2026-09-13",
-  "numNegocios": 10
+  "numNegocios": 10,
+  "analisis": [
+   "Se reparten por 2 barrios, con 7 en Centro. Conviene mirar la zona antes de decidir: en Madrid media hora de trayecto cambia el plan.",
+   "Hay empate arriba: 4 están a 4,6. El desempate lo pone cuánta gente ha opinado, no la nota.",
+   "Hay 73.432 opiniones detrás de esta lista. Es mucha gente: el orden se sostiene solo.",
+   "Antes de ir, comprueba el horario: solo 1 de los 10 lo tienen puesto. Teléfono hay en 8."
+  ]
  },
  {
   "slug": "top-10-parques-en-malaga",
-  "titulo": "Los 10 mejores parques de Málaga",
-  "extracto": "Los 10 parques mejor valorados de Málaga segun las opiniones publicadas en Google Maps, ordenados combinando la nota con el numero de opiniones.",
-  "intro": "Seleccion de parques de Málaga ordenada por las valoraciones publicadas en Google Maps. Se tiene en cuenta el numero de opiniones, no solo la nota: un 5 con tres opiniones no dice lo mismo que un 4,7 con miles.",
+  "titulo": "10 parques de Málaga ordenados por sus valoraciones",
+  "extracto": "El primero es Parque Natural Montes de Málaga, con 4,7 de media y 2.671 opiniones detrás. Por delante de Parque de la Paloma, más conocido pero peor valorado. La media de la lista es 4,56, con 9 por encima de 4,5.",
+  "intro": "El primero es Parque Natural Montes de Málaga, con 4,7 de media y 2.671 opiniones detrás. Por delante de Parque de la Paloma, más conocido pero peor valorado. La media de la lista es 4,56, con 9 por encima de 4,5.",
   "tipo_sector": "sitios",
   "categoria_slug": "parques",
   "ciudad_slug": "malaga",
   "ciudad_nombre": "Málaga",
   "categoria_nombre": "Parques",
   "fecha_generado": "2026-09-13",
-  "numNegocios": 10
+  "numNegocios": 10,
+  "analisis": [
+   "Antes de ir, comprueba el horario: solo 10 de los 10 lo tienen puesto. Teléfono hay en 4.",
+   "71.737 valoraciones sumadas entre los 10. Cuantas más hay, menos pesa la opinión suelta de un día malo.",
+   "Parque de la Paloma gana en volumen —25.977 opiniones— pero no en nota: 4,6 de media. Por eso no encabeza.",
+   "No se concentran en un sitio: salen 3 barrios distintos de Málaga, y Centro repite 6 veces."
+  ]
  },
  {
   "slug": "top-10-parques-en-sevilla",
-  "titulo": "Los 10 mejores parques de Sevilla",
-  "extracto": "Los 10 parques mejor valorados de Sevilla segun las opiniones publicadas en Google Maps, ordenados combinando la nota con el numero de opiniones.",
-  "intro": "Seleccion de parques de Sevilla ordenada por las valoraciones publicadas en Google Maps. Se tiene en cuenta el numero de opiniones, no solo la nota: un 5 con tres opiniones no dice lo mismo que un 4,7 con miles.",
+  "titulo": "Parque de María Luisa y los otros 9 parques mejor valorados de Sevilla",
+  "extracto": "Parque de María Luisa abre la lista en Sevilla con un 4,8 y 41.118 valoraciones. La distancia con Parque de las Palomas es enorme: 40.849 opiniones más. Hay 9 por encima de 4,5; el resto se queda algo por debajo (media 4,57).",
+  "intro": "Parque de María Luisa abre la lista en Sevilla con un 4,8 y 41.118 valoraciones. La distancia con Parque de las Palomas es enorme: 40.849 opiniones más. Hay 9 por encima de 4,5; el resto se queda algo por debajo (media 4,57).",
   "tipo_sector": "sitios",
   "categoria_slug": "parques",
   "ciudad_slug": "sevilla",
   "ciudad_nombre": "Sevilla",
   "categoria_nombre": "Parques",
   "fecha_generado": "2026-09-13",
-  "numNegocios": 10
+  "numNegocios": 10,
+  "analisis": [
+   "Hay 3 barrios representados y Centro es el que más aporta, con 8. Mira dónde cae cada uno antes de salir de casa.",
+   "Entre los 10 suman 70.982 opiniones. Con ese volumen es difícil que el orden esté manipulado.",
+   "4 se pueden llamar directamente desde su ficha. El horario está en 8 de los 10."
+  ]
  }
 ]

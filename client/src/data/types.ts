@@ -36,6 +36,11 @@ export interface BlogPost {
   // completa NO viene (son 3 MB). Por eso ambos campos son opcionales.
   negocios?: Negocio[];
   numNegocios?: number;
+  /** Entradilla propia de esta guia, escrita con SUS numeros. */
+  intro?: string;
+  /** Lectura de los datos: barrios, distancia con el segundo, empates... */
+  analisis?: string[];
+  tipo_sector?: string;
 }
 
 export interface Categoria {
