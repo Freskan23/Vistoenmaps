@@ -1,0 +1,247 @@
+{
+ "sectores": [
+  {
+   "slug": "reformas",
+   "nombre": "Reformas",
+   "icono": "Hammer",
+   "total": 2233
+  },
+  {
+   "slug": "fontaneros",
+   "nombre": "Fontaneros",
+   "icono": "Wrench",
+   "total": 1525
+  },
+  {
+   "slug": "inmobiliarias",
+   "nombre": "Inmobiliarias",
+   "icono": "Home",
+   "total": 1380
+  },
+  {
+   "slug": "cerrajeros",
+   "nombre": "Cerrajeros",
+   "icono": "KeyRound",
+   "total": 1374
+  },
+  {
+   "slug": "peluquerias-estetica",
+   "nombre": "Peluquerías y estética",
+   "icono": "Scissors",
+   "total": 938
+  },
+  {
+   "slug": "restaurantes",
+   "nombre": "Restaurantes",
+   "icono": "UtensilsCrossed",
+   "total": 832
+  },
+  {
+   "slug": "limpieza",
+   "nombre": "Limpieza",
+   "icono": "Sparkles",
+   "total": 747
+  },
+  {
+   "slug": "marketing-diseno",
+   "nombre": "Marketing y diseño",
+   "icono": "Megaphone",
+   "total": 663
+  },
+  {
+   "slug": "pintores",
+   "nombre": "Pintores",
+   "icono": "Paintbrush",
+   "total": 549
+  },
+  {
+   "slug": "carpinteria-muebles",
+   "nombre": "Carpintería y muebles",
+   "icono": "Hammer",
+   "total": 524
+  },
+  {
+   "slug": "servicios-empresa",
+   "nombre": "Servicios para empresas",
+   "icono": "Briefcase",
+   "total": 463
+  },
+  {
+   "slug": "ventanas-cerramientos",
+   "nombre": "Ventanas y cerramientos",
+   "icono": "Blinds",
+   "total": 455
+  }
+ ],
+ "ciudades": [
+  {
+   "slug": "madrid",
+   "nombre": "Madrid",
+   "total": 3356
+  },
+  {
+   "slug": "barcelona",
+   "nombre": "Barcelona",
+   "total": 1635
+  },
+  {
+   "slug": "valencia",
+   "nombre": "Valencia",
+   "total": 932
+  },
+  {
+   "slug": "malaga",
+   "nombre": "Málaga",
+   "total": 795
+  },
+  {
+   "slug": "zaragoza",
+   "nombre": "Zaragoza",
+   "total": 762
+  },
+  {
+   "slug": "sevilla",
+   "nombre": "Sevilla",
+   "total": 657
+  },
+  {
+   "slug": "alicante",
+   "nombre": "Alicante",
+   "total": 589
+  },
+  {
+   "slug": "granada",
+   "nombre": "Granada",
+   "total": 580
+  },
+  {
+   "slug": "bilbao",
+   "nombre": "Bilbao",
+   "total": 568
+  },
+  {
+   "slug": "murcia",
+   "nombre": "Murcia",
+   "total": 501
+  }
+ ],
+ "destacados": [
+  {
+   "nombre": "La Lola de Las Arenas",
+   "slug": "la-lola-de-las-arenas-barcelona",
+   "categoria_slug": "restaurantes",
+   "categoria_nombre": "Restaurantes",
+   "ciudad_slug": "barcelona",
+   "ciudad_nombre": "Barcelona",
+   "barrio_slug": "eixample",
+   "valoracion_media": 4.5,
+   "num_resenas": 24913
+  },
+  {
+   "nombre": "Santa Soho | Specialty Coffee Málaga",
+   "slug": "santa-soho-specialty-coffee-malaga-malaga",
+   "categoria_slug": "cafeterias",
+   "categoria_nombre": "Cafeterías",
+   "ciudad_slug": "malaga",
+   "ciudad_nombre": "Málaga",
+   "barrio_slug": "distrito-centro",
+   "valoracion_media": 4.7,
+   "num_resenas": 12170
+  },
+  {
+   "nombre": "SteakBurger Gran Via I Hamburguesas Madrid",
+   "slug": "steakburger-gran-via-i-hamburguesas-madrid-madrid",
+   "categoria_slug": "comida-rapida",
+   "categoria_nombre": "Comida rápida",
+   "ciudad_slug": "madrid",
+   "ciudad_nombre": "Madrid",
+   "barrio_slug": "centro",
+   "valoracion_media": 4.7,
+   "num_resenas": 19558
+  },
+  {
+   "nombre": "Puerta de Almodóvar",
+   "slug": "puerta-de-almodovar-cordoba",
+   "categoria_slug": "cerrajeros",
+   "categoria_nombre": "Cerrajeros",
+   "ciudad_slug": "cordoba",
+   "ciudad_nombre": "Córdoba",
+   "barrio_slug": "centro",
+   "valoracion_media": 4.6,
+   "num_resenas": 4546
+  },
+  {
+   "nombre": "Beer Spa Alicante",
+   "slug": "beer-spa-alicante-alicante",
+   "categoria_slug": "peluquerias-estetica",
+   "categoria_nombre": "Peluquerías y estética",
+   "ciudad_slug": "alicante",
+   "ciudad_nombre": "Alicante",
+   "barrio_slug": "centro",
+   "valoracion_media": 4.8,
+   "num_resenas": 956
+  },
+  {
+   "nombre": "Ciudad de las Artes y las Ciencias",
+   "slug": "ciudad-de-las-artes-y-las-ciencias-valencia",
+   "categoria_slug": "cines",
+   "categoria_nombre": "Cines",
+   "ciudad_slug": "valencia",
+   "ciudad_nombre": "Valencia",
+   "barrio_slug": "centro",
+   "valoracion_media": 4.7,
+   "num_resenas": 150184
+  }
+ ],
+ "guias": [
+  {
+   "slug": "cerrajeros-en-barcelona",
+   "categoria_nombre": "Cerrajeros",
+   "ciudad_nombre": "Barcelona",
+   "total": 139,
+   "urgencias": 40
+  },
+  {
+   "slug": "cerrajeros-en-madrid",
+   "categoria_nombre": "Cerrajeros",
+   "ciudad_nombre": "Madrid",
+   "total": 107,
+   "urgencias": 36
+  },
+  {
+   "slug": "cerrajeros-en-valencia",
+   "categoria_nombre": "Cerrajeros",
+   "ciudad_nombre": "Valencia",
+   "total": 41,
+   "urgencias": 28
+  },
+  {
+   "slug": "fontaneros-en-madrid",
+   "categoria_nombre": "Fontaneros",
+   "ciudad_nombre": "Madrid",
+   "total": 89,
+   "urgencias": 25
+  },
+  {
+   "slug": "fontaneros-en-barcelona",
+   "categoria_nombre": "Fontaneros",
+   "ciudad_nombre": "Barcelona",
+   "total": 137,
+   "urgencias": 21
+  },
+  {
+   "slug": "electricistas-en-madrid",
+   "categoria_nombre": "Electricistas",
+   "ciudad_nombre": "Madrid",
+   "total": 33,
+   "urgencias": 18
+  }
+ ],
+ "cifras": {
+  "negocios": 20107,
+  "opiniones": 7910177,
+  "con_telefono": 3779,
+  "sectores": 72,
+  "ciudades": 1069
+ }
+}

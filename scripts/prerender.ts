@@ -363,6 +363,13 @@ function renderCategoryLinks(catSlug: string): string {
 }
 
 // ─── Generate All Pages ───────────────────────────────────────────────────
+const costes: any[] = JSON.parse(
+  fs.readFileSync(
+    path.join(__dirname, "..", "client", "public", "datos", "costes.json"),
+    "utf-8"
+  )
+);
+
 let count = 0;
 
 // Home
@@ -384,9 +391,20 @@ generatePage({
     },
   }],
   ssrHtml: `
-    <header><h1>Visto en Maps — El profesional que necesitas, a un clic</h1>
-    <p>+${negocios.length} negocios verificados en Google Maps · ${ciudades.length} ciudades · ${categorias.length} categorías</p></header>
+    <header><h1>Encuentra al profesional que necesitas hoy</h1>
+    <p>${negocios.length} negocios de toda España con su ficha real de Google Maps: valoración, teléfono y horario. Sin registros ni intermediarios. ${ciudades.length} ciudades · ${categorias.length} sectores.</p></header>
     <main>
+    <section><h2>Antes de llamar, infórmate</h2>
+    <p>Cuántos profesionales hay en tu ciudad, cuántos atienden urgencias y qué preguntar por teléfono.</p>
+    <ul>${costes
+      .slice(0, 8)
+      .map(
+        (g: any) =>
+          `<li><a href="/precios/${g.slug}">${esc(g.categoria_nombre)} en ${esc(g.ciudad_nombre)}</a> — ${g.total} profesionales${g.urgencias > 0 ? `, ${g.urgencias} atienden 24 horas` : ""}</li>`
+      )
+      .join("")}</ul>
+    <p><a href="/precios">Ver las ${costes.length} guías</a></p>
+    </section>
     <section><h2>¿Qué necesitas hoy?</h2>
     <ul>${categorias.map((c: any) => `<li><a href="/${c.slug}">${esc(c.nombre)}</a> — ${esc(c.descripcion)}</li>`).join("")}</ul>
     </section>
@@ -486,12 +504,7 @@ count++;
 // No son guias de PRECIOS: no tenemos tarifas y no se inventan. Responden a lo
 // que la gente busca antes de llamar: cuantos hay, cuantos abren 24h, que
 // preguntar y como detectar un sobreprecio.
-const costes: any[] = JSON.parse(
-  fs.readFileSync(
-    path.join(__dirname, "..", "client", "public", "datos", "costes.json"),
-    "utf-8"
-  )
-);
+
 
 const costesPorSector = new Map<string, any[]>();
 for (const g of costes) {

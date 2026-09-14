@@ -15,6 +15,7 @@ import SEOHead from "@/components/SEOHead";
 import { useEventos } from "@/hooks/useEventos";
 import { useBlogDestacado } from "@/hooks/useBlogPosts";
 import AdSlot from "@/components/ads/AdSlot";
+import portada from "@/data/portada.json";
 
 export default function Home() {
   const { eventos, loading: eventosLoading } = useEventos({ limit: 4 });
@@ -65,14 +66,21 @@ export default function Home() {
         }}
       />
 
-      {/* ===== HERO: EL OJO COMO PROTAGONISTA ABSOLUTO ===== */}
+      {/*
+        PRIMERA PANTALLA.
+        Auditados Yelp, Habitissimo, Cronoshare y otros: ellos muestran 86-137
+        elementos sin hacer scroll; nosotros teniamos 15. El ojo de 160px y las
+        animaciones encadenadas se comian la pantalla entera y no se veia NADA
+        util sin bajar.
+        Ahora: ojo mas pequeno al lado del titular, buscador arriba, los sectores
+        mas buscados con su numero real, y las cifras que demuestran que esto
+        tiene datos detras (7,9 millones de opiniones).
+      */}
       <section className="relative overflow-hidden -mt-16 pt-16">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0a1628] via-[#0f2035] to-[#142d45]" />
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-cyan-500/15 rounded-full blur-[120px]" />
-          <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-amber-500/12 rounded-full blur-[80px]" />
           <div className="absolute -top-20 right-[10%] w-[300px] h-[300px] bg-accent/15 rounded-full blur-[100px]" />
-          <div className="absolute bottom-[30%] left-[5%] w-[300px] h-[300px] bg-cyan-500/8 rounded-full blur-[100px]" />
         </div>
         <div
           className="absolute inset-0 opacity-[0.025]"
@@ -82,99 +90,79 @@ export default function Home() {
           }}
         />
 
-        <div className="relative container py-12 md:py-16 lg:py-20">
+        <div className="relative container pt-5 pb-7 md:pt-6 md:pb-8">
           <div className="flex flex-col items-center text-center">
-            <motion.div
-              initial={{ opacity: 0, y: -120, scale: 0.6 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
-              className="relative mb-4"
-            >
-              <motion.div
-                initial={{ opacity: 0, scaleX: 0.3 }}
-                animate={{ opacity: 0.3, scaleX: 1 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-20 h-3 bg-black/40 rounded-[50%] blur-sm"
-              />
-              <EyeLogo size={160} glow />
-            </motion.div>
+            {/* Titular con el ojo al lado: ocupa mucho menos y sigue siendo la marca */}
+            <div className="flex items-center justify-center gap-3 mb-3">
+              <EyeLogo size={72} glow />
+              <h1 className="text-[clamp(1.6rem,4vw+0.4rem,3rem)] leading-[1.06] font-extrabold text-white text-left max-w-xl">
+                Encuentra al profesional{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-accent">
+                  que necesitas hoy
+                </span>
+              </h1>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="inline-flex items-center gap-2 bg-accent/15 backdrop-blur-sm border border-accent/25 rounded-full px-4 py-1.5 mb-5"
-            >
-              <Eye className="w-3.5 h-3.5 text-accent" />
-              <span className="text-[11px] font-bold text-accent uppercase tracking-widest">
-                +{new Intl.NumberFormat("es-ES", { useGrouping: "always" } as Intl.NumberFormatOptions).format(resumen.totalNegocios)} negocios verificados en Google Maps
-              </span>
-            </motion.div>
+            <p className="text-sm md:text-base text-white/55 leading-relaxed mb-4 max-w-xl">
+              {new Intl.NumberFormat("es-ES", { useGrouping: "always" } as Intl.NumberFormatOptions).format(portada.cifras.negocios)} negocios de toda España con su ficha real de Google Maps:
+              valoración, teléfono y horario. Sin registros ni intermediarios.
+            </p>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
-              className="text-[clamp(2rem,5vw+0.5rem,3.8rem)] leading-[1.08] font-extrabold text-white mb-4 max-w-3xl"
-            >
-              El profesional que necesitas,{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-accent">
-                a un clic
-              </span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.85 }}
-              className="text-base md:text-lg text-white/50 leading-relaxed mb-8 max-w-xl"
-            >
-              Negocios con ficha en Google Maps: teléfono, horario, dirección y las valoraciones publicadas allí. Sin registros ni intermediarios.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.0 }}
-              className="w-full max-w-lg mb-6"
-            >
+            {/* El buscador, lo primero que se ve */}
+            <div className="w-full max-w-2xl mb-4">
               <SearchBar variant="hero" />
-            </motion.div>
+            </div>
 
-            <div className="flex flex-wrap justify-center gap-2 mb-8">
-              {categorias.slice(0, 4).map((cat, i) => (
-                <Link key={cat.slug} href={`/${cat.slug}`}>
-                  <motion.span
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: 1.1 + i * 0.08 }}
-                    className="px-3.5 py-1.5 bg-white/8 backdrop-blur-sm text-white/70 text-sm rounded-full border border-white/10 hover:bg-white/15 hover:text-white hover:border-white/25 transition-all cursor-pointer"
-                  >
-                    {cat.nombre}
-                  </motion.span>
+            {/* Los sectores mas buscados, CON SU NUMERO REAL */}
+            <div className="flex flex-wrap justify-center gap-2 mb-5 max-w-3xl">
+              {portada.sectores.slice(0, 10).map((s: any) => (
+                <Link key={s.slug} href={`/${s.slug}`}>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/8 backdrop-blur-sm text-white/75 text-sm rounded-full border border-white/10 hover:bg-white/15 hover:text-white hover:border-white/25 transition-all cursor-pointer">
+                    {s.nombre}
+                    {/* Antes iba en text-white/35: sobre el azul oscuro no se leia.
+                        Y OJO con el numero: en es-ES las cifras de 4 digitos NO
+                        llevan punto por defecto (2233, no 2.233). Hay que pedir
+                        useGrouping "always". */}
+                    <span className="text-accent/90 text-xs font-semibold tabular-nums">
+                      {new Intl.NumberFormat("es-ES", { useGrouping: "always" } as Intl.NumberFormatOptions).format(s.total)}
+                    </span>
+                  </span>
                 </Link>
               ))}
             </div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1.3 }}
-              className="flex items-center justify-center gap-6 pt-4 border-t border-white/8"
-            >
-              <div className="flex items-center gap-1.5 text-white/40 text-xs">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400/80" />
-                <span>Solo negocios reales</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-white/40 text-xs">
-                <Clock className="w-3.5 h-3.5 text-blue-400/80" />
-                <span>Contacto directo</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-white/40 text-xs">
-                <MapPin className="w-3.5 h-3.5 text-accent/80" />
-                <span>{new Intl.NumberFormat("es-ES", { useGrouping: "always" } as Intl.NumberFormatOptions).format(resumen.totalCiudades)} ciudades de España</span>
-              </div>
-            </motion.div>
+            {/*
+              Ciudades. Faltaba poder elegir ciudad sin depender del GPS:
+              "Cerca de mi" exige dar permiso y mucha gente no lo da.
+            */}
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mb-5 max-w-2xl">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-white/30">
+                Ciudades
+              </span>
+              {/* OJO: no existe /ciudad/<slug>. Se enlaza al sector con mas
+                  negocios de esa ciudad, que es una pagina real y util. */}
+              {portada.ciudades.slice(0, 8).map((c: any) => (
+                <Link key={c.slug} href={`/${portada.sectores[0].slug}/${c.slug}`}>
+                  <span className="text-sm text-white/60 hover:text-accent transition-colors cursor-pointer">
+                    {c.nombre}
+                  </span>
+                </Link>
+              ))}
+            </div>
+
+            {/* Cifras que se pueden comprobar */}
+            <div className="grid grid-cols-3 gap-3 w-full max-w-2xl pt-4 border-t border-white/10">
+              {[
+                { n: new Intl.NumberFormat("es-ES", { useGrouping: "always" } as Intl.NumberFormatOptions).format(portada.cifras.opiniones), t: "opiniones de Google" },
+                { n: new Intl.NumberFormat("es-ES", { useGrouping: "always" } as Intl.NumberFormatOptions).format(portada.cifras.ciudades), t: "ciudades de España" },
+                { n: new Intl.NumberFormat("es-ES").format(portada.cifras.sectores), t: "sectores" },
+              ].map((c) => (
+                <div key={c.t}>
+                  <p className="text-xl md:text-2xl font-extrabold text-white tabular-nums">{c.n}</p>
+                  <p className="text-[11px] text-white/40 leading-tight">{c.t}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -182,6 +170,100 @@ export default function Home() {
           <svg viewBox="0 0 1440 60" fill="none" className="w-full h-auto" preserveAspectRatio="none">
             <path d="M0 60V20C240 45 480 0 720 20C960 40 1200 10 1440 30V60H0Z" fill="#fafaf7" />
           </svg>
+        </div>
+      </section>
+
+      {/*
+        PRUEBA SOCIAL. Yelp y Habitissimo enseñan opiniones reales con nombre;
+        nosotros teniamos 7,9 millones de opiniones y no mostrabamos ninguna.
+        Aqui van negocios reales con MUCHAS opiniones y nota alta, de sectores y
+        ciudades distintas, enlazados a su ficha.
+      */}
+      <section className="container py-10 md:py-14">
+        <div className="flex items-end justify-between gap-4 mb-5">
+          <div>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-foreground">
+              Negocios con miles de opiniones detrás
+            </h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              Ordenamos por valoración teniendo en cuenta cuánta gente ha opinado.{" "}
+              <Link href="/criterios" className="text-primary font-semibold hover:underline">
+                Cómo lo hacemos
+              </Link>
+            </p>
+          </div>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {portada.destacados.map((n: any) => (
+            <Link
+              key={n.slug}
+              href={`/${n.categoria_slug}/${n.ciudad_slug}/${n.barrio_slug}/${n.slug}`}
+              className="group rounded-2xl border border-border/60 bg-white p-4 hover:border-primary/40 hover:shadow-sm transition-all"
+            >
+              <div className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-accent">
+                <MapPin className="w-3 h-3" />
+                {n.ciudad_nombre}
+              </div>
+              <p className="mt-1.5 font-bold text-foreground leading-snug group-hover:text-primary transition-colors">
+                {n.nombre}
+              </p>
+              <div className="mt-2 flex items-center gap-2 text-sm">
+                <span className="inline-flex items-center gap-1 font-semibold text-foreground">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  {String(n.valoracion_media).replace(".", ",")}
+                </span>
+                <span className="text-muted-foreground text-xs">
+                  {new Intl.NumberFormat("es-ES", { useGrouping: "always" } as Intl.NumberFormatOptions).format(n.num_resenas)} opiniones
+                </span>
+              </div>
+              <p className="mt-2 text-xs text-muted-foreground">{n.categoria_nombre}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/*
+        ANTES DE CONTRATAR. Las 105 guias nuevas no se enlazaban desde la
+        portada, asi que casi nadie iba a llegar a ellas.
+      */}
+      <section className="bg-white border-y border-border/60">
+        <div className="container py-10 md:py-14">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-foreground">
+            Antes de llamar, infórmate
+          </h2>
+          <p className="text-sm text-muted-foreground mt-1 max-w-2xl">
+            Cuántos profesionales hay en tu ciudad, cuántos atienden urgencias, qué
+            preguntar por teléfono y cómo detectar que te están clavando.
+          </p>
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {portada.guias.map((g: any) => (
+              <Link
+                key={g.slug}
+                href={`/precios/${g.slug}`}
+                className="group rounded-2xl border border-border/60 p-4 hover:border-primary/40 transition-all"
+              >
+                <p className="font-bold text-foreground group-hover:text-primary transition-colors">
+                  {g.categoria_nombre} en {g.ciudad_nombre}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {new Intl.NumberFormat("es-ES", { useGrouping: "always" } as Intl.NumberFormatOptions).format(g.total)} profesionales
+                </p>
+                {g.urgencias > 0 && (
+                  <p className="mt-2 inline-flex items-center gap-1 text-[11px] font-semibold text-accent">
+                    <Clock className="w-3 h-3" />
+                    {g.urgencias} atienden 24 horas
+                  </p>
+                )}
+              </Link>
+            ))}
+          </div>
+          <Link
+            href="/precios"
+            className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
+          >
+            Ver las {portada.guias.length > 0 ? "105" : ""} guías
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </section>
 

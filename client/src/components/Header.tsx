@@ -105,10 +105,16 @@ export default function Header({ variant = "solid" }: HeaderProps) {
               </div>
             </Link>
 
-            {/* Search */}
-            <div className="hidden md:block w-[min(42vw,520px)] mx-4">
-              <SearchBar variant="header" />
-            </div>
+            {/*
+              Search. En la PORTADA no se pinta: ahi ya hay un buscador grande
+              justo debajo y salian dos iguales, gastando alto de pantalla para
+              nada (lo primero que se ve deberia ser contenido util).
+            */}
+            {!isTransparent && (
+              <div className="hidden md:block w-[min(42vw,520px)] mx-4">
+                <SearchBar variant="header" />
+              </div>
+            )}
 
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-6">
