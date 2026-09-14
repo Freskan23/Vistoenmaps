@@ -59,7 +59,7 @@ export default function FloatingEye() {
 
   return (
     <div
-      className="fixed bottom-4 right-4 z-[90] group pointer-events-none transition-transform duration-700 ease-out"
+      className="hidden lg:block fixed bottom-4 right-4 z-[10] group pointer-events-none transition-transform duration-700 ease-out opacity-70 hover:opacity-100"
       style={{
         transform: visible ? "translateX(0)" : "translateX(calc(100% + 2rem))",
       }}

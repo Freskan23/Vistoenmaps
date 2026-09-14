@@ -119,10 +119,10 @@ export default function Header({ variant = "solid" }: HeaderProps) {
             {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-6">
               {[
-                { href: "/directorio/servicios", label: "Directorio" },
+                { href: "/directorio/servicios", label: "Sectores" },
                 { href: "/eventos", label: "Eventos" },
                 { href: "/blog", label: "Blog" },
-                { href: "/directorios", label: "Directorios" },
+                { href: "/precios", label: "Antes de contratar" },
               ].map((item) => (
                 <Link
                   key={item.href}
