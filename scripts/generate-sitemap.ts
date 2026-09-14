@@ -40,6 +40,23 @@ urls.push({ loc: "/criterios", priority: "0.6", changefreq: "monthly" });
 // Guias del blog. Faltaban por completo: ni la portada ni las 241 guias estaban
 // en el sitemap, y encima /blog/<slug> devolvia 404.
 urls.push({ loc: "/blog", priority: "0.8", changefreq: "weekly" });
+
+// Guias "antes de contratar"
+urls.push({ loc: "/precios", priority: "0.8", changefreq: "monthly" });
+try {
+  const costes = JSON.parse(
+    fs.readFileSync(
+      path.join(__dirname, "..", "client", "public", "datos", "costes.json"),
+      "utf-8"
+    )
+  );
+  for (const g of costes) {
+    urls.push({ loc: `/precios/${g.slug}`, priority: "0.7", changefreq: "monthly" });
+  }
+  console.log("guias antes-de-contratar en sitemap:", costes.length);
+} catch (e) {
+  console.warn("sin costes.json: el sitemap sale sin esas guias");
+}
 try {
   const guias = JSON.parse(
     fs.readFileSync(

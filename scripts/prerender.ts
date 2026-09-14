@@ -290,6 +290,7 @@ const ENLACES_FIJOS = `<nav aria-label="Pie"><ul class="lista-enlaces">
 <li><a href="/">Inicio</a></li>
 <li><a href="/directorios">Directorios</a></li>
 <li><a href="/blog">Blog</a></li>
+      <li><a href="/precios">Antes de contratar</a></li>
 <li><a href="/eventos">Eventos</a></li>
 <li><a href="/contacto">Contacto</a></li>
 <li><a href="/aviso-legal">Aviso legal</a></li>
@@ -480,6 +481,125 @@ generatePage({
     </ul></main>`,
 });
 count++;
+
+// ── Guias "antes de contratar" (/precios) ─────────────────────────────────
+// No son guias de PRECIOS: no tenemos tarifas y no se inventan. Responden a lo
+// que la gente busca antes de llamar: cuantos hay, cuantos abren 24h, que
+// preguntar y como detectar un sobreprecio.
+const costes: any[] = JSON.parse(
+  fs.readFileSync(
+    path.join(__dirname, "..", "client", "public", "datos", "costes.json"),
+    "utf-8"
+  )
+);
+
+const costesPorSector = new Map<string, any[]>();
+for (const g of costes) {
+  const l = costesPorSector.get(g.categoria_nombre) || [];
+  l.push(g);
+  costesPorSector.set(g.categoria_nombre, l);
+}
+
+generatePage({
+  route: "/precios",
+  title: "Antes de contratar: qué preguntar y cuántos hay en tu ciudad | Visto en Maps",
+  description:
+    "Guías por sector y ciudad: cuántos profesionales hay, cuántos atienden urgencias, qué preguntar antes de contratar y cómo detectar un sobreprecio.",
+  canonical: `${BASE_URL}/precios`,
+  schemaJson: [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+        { "@type": "ListItem", position: 2, name: "Antes de contratar", item: `${BASE_URL}/precios` },
+      ],
+    },
+  ],
+  ssrHtml: `<main>
+    <h1>Qué preguntar antes de llamar a un profesional</h1>
+    <p>${costes.length} guías por sector y ciudad: cuánta competencia hay, cuántos atienden urgencias, qué preguntar por teléfono y cómo detectar que te están clavando. <a href="/criterios">Cómo trabajamos con los datos</a>.</p>
+    ${[...costesPorSector.entries()]
+      .sort((a, b) => b[1].length - a[1].length)
+      .map(
+        ([sector, lista]) => `<section><h2>${esc(sector)}</h2><ul>${lista
+          .map(
+            (g: any) =>
+              `<li><a href="/precios/${g.slug}">${esc(g.categoria_nombre)} en ${esc(g.ciudad_nombre)}</a> — ${g.total} profesionales${g.urgencias > 0 ? `, ${g.urgencias} atienden 24 horas` : ""}</li>`
+          )
+          .join("")}</ul></section>`
+      )
+      .join("")}
+  </main>`,
+});
+count++;
+
+for (const g of costes) {
+  const cat = g.categoria_nombre.toLowerCase();
+  const titulo = `${g.categoria_nombre} en ${g.ciudad_nombre}: lo que debes saber antes de llamar`;
+  const top = (g.top || [])
+    .map(
+      (n: any, i: number) =>
+        `<li><a href="/${n.categoria_slug}/${n.ciudad_slug}/${n.barrio_slug}/${n.slug}">${esc(n.nombre)}</a>${n.valoracion_media ? ` — ${String(n.valoracion_media).replace(".", ",")} sobre 5` : ""}${n.num_resenas ? ` (${n.num_resenas} opiniones)` : ""}</li>`
+    )
+    .join("");
+
+  generatePage({
+    route: `/precios/${g.slug}`,
+    title: `${titulo} | Visto en Maps`,
+    description: `${g.total} ${cat} en ${g.ciudad_nombre} con ficha en Google Maps. Cuántos atienden urgencias, qué preguntar antes de contratar y cómo detectar un sobreprecio.`,
+    canonical: `${BASE_URL}/precios/${g.slug}`,
+    schemaJson: [
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+          { "@type": "ListItem", position: 2, name: "Antes de contratar", item: `${BASE_URL}/precios` },
+          { "@type": "ListItem", position: 3, name: titulo, item: `${BASE_URL}/precios/${g.slug}` },
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: `¿Cuántos ${cat} hay en ${g.ciudad_nombre}?`,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: `En ${g.ciudad_nombre} hay ${g.total} ${cat} con ficha en Google Maps, con una valoración media de ${String(g.media).replace(".", ",")} sobre 5 y ${g.opiniones} opiniones entre todos.`,
+            },
+          },
+          {
+            "@type": "Question",
+            name: `¿Qué debo preguntar antes de contratar ${cat} en ${g.ciudad_nombre}?`,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: (g.preguntar || []).join(" "),
+            },
+          },
+        ],
+      },
+    ],
+    ssrHtml: `<main>
+      <nav><a href="/">Inicio</a> › <a href="/precios">Antes de contratar</a> › ${esc(titulo)}</nav>
+      <h1>${esc(titulo)}</h1>
+      <p>No publicamos tarifas porque no las tenemos: en este sector casi nadie las hace públicas y las pocas que hay no son comparables. Lo que sí podemos decirte es cuánta competencia hay, qué nivel tiene y qué preguntar para que no te claven.</p>
+      <p>En ${esc(g.ciudad_nombre)} hay <strong>${g.total} ${esc(cat)}</strong> con ficha en Google Maps, repartidos por ${g.barrios} ${g.barrios === 1 ? "barrio" : "barrios"}${g.barrio_top ? ` (el que más concentra es ${esc(g.barrio_top)}, con ${g.barrio_top_n})` : ""}. Entre todos suman ${g.opiniones} opiniones y ${g.sobre45} pasan de 4,5 sobre 5. ${g.con_telefono} se pueden llamar directamente desde su ficha${g.urgencias > 0 ? `, y ${g.urgencias} anuncian servicio 24 horas` : ""}.</p>
+      <section><h2>Qué preguntar antes de contratar</h2><ul>${(g.preguntar || [])
+        .map((p: string) => `<li>${esc(p)}</li>`)
+        .join("")}</ul></section>
+      <section><h2>Señales de que algo no va bien</h2><ul>${(g.alarma || [])
+        .map((p: string) => `<li>${esc(p)}</li>`)
+        .join("")}</ul></section>
+      <section><h2>Los 5 mejor valorados de ${esc(g.ciudad_nombre)}</h2><ol>${top}</ol>
+      <p><a href="/${g.categoria_slug}/${g.ciudad_slug}">Ver los ${g.total} ${esc(cat)} de ${esc(g.ciudad_nombre)}</a></p></section>
+      <section><h2>¿Por qué no ponemos precios?</h2><p>Porque no los tenemos y no nos los vamos a inventar. Nuestros datos salen de las fichas públicas de Google Maps, que no incluyen tarifas. Miramos las webs de los propios negocios y solo una de cada ocho publica algún precio, en formatos que no se pueden comparar entre sí. Preferimos decirte qué preguntar antes que darte una cifra que no se sostiene. <a href="/criterios">Cómo trabajamos con los datos</a>.</p></section>
+    </main>`,
+  });
+  count++;
+}
 
 // ── Guias del blog ────────────────────────────────────────────────────────
 // IMPORTANTE: antes esto no existia y /blog/<slug> devolvia 404. Las 241 guias

@@ -10,6 +10,8 @@ import CiudadPage from "./pages/CiudadPage";
 import BarrioPage from "./pages/BarrioPage";
 import NegocioPage from "./pages/NegocioPage";
 import ContactoPage from "./pages/ContactoPage";
+import CostesPage from "@/pages/CostesPage";
+import CostesIndicePage from "@/pages/CostesIndicePage";
 import HerramientasPage from "@/pages/HerramientasPage";
 import CriteriosPage from "@/pages/CriteriosPage";
 import AvisoLegalPage from "@/pages/AvisoLegalPage";
@@ -58,6 +60,9 @@ function Router() {
       <Route path="/blog" component={BlogPage} />
       <Route path="/blog/:slug" component={BlogPostPage} />
       <Route path="/herramientas" component={HerramientasPage} />
+      {/* Guias "antes de contratar": /precios es la URL que la gente busca */}
+      <Route path="/precios" component={CostesIndicePage} />
+      <Route path="/precios/:slug" component={CostesPage} />
       <Route path="/criterios" component={CriteriosPage} />
       <Route path="/aviso-legal" component={AvisoLegalPage} />
       <Route path="/privacidad" component={PrivacidadPage} />
