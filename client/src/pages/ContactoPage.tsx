@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Send, MessageCircle, Heart } from "lucide-react";
+import { Mail, Send, MessageCircle, Heart, Loader2, CheckCircle2 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
@@ -13,34 +13,60 @@ export default function ContactoPage() {
     email: "",
     asunto: "",
     mensaje: "",
+    empresa: "", // trampa anti-robots: una persona nunca lo ve ni lo rellena
   });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [enviando, setEnviando] = useState(false);
+  const [enviado, setEnviado] = useState(false);
 
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
-    if (!formData.nombre.trim()) errors.nombre = "El nombre es obligatorio";
-    if (!formData.email.trim()) errors.email = "El email es obligatorio";
-    if (!formData.asunto) errors.asunto = "Selecciona un asunto";
-    if (!formData.mensaje.trim()) errors.mensaje = "El mensaje es obligatorio";
+    if (!formData.nombre.trim()) errors.nombre = "Dinos cómo te llamas";
+    if (!formData.email.trim()) {
+      errors.email = "Necesitamos tu correo para contestarte";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(formData.email.trim())) {
+      errors.email = "Ese correo no parece válido";
+    }
+    if (!formData.asunto) errors.asunto = "Elige un asunto";
+    if (!formData.mensaje.trim()) {
+      errors.mensaje = "Cuéntanos qué necesitas";
+    } else if (formData.mensaje.trim().length < 10) {
+      errors.mensaje = "Escribe un poco más para poder ayudarte";
+    }
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = () => {
-    if (!validateForm()) return;
+  /**
+   * ANTES esto no enviaba NADA: montaba un `mailto:` y abria el programa de
+   * correo del visitante. En el movil abre una app sin configurar, en el
+   * ordenador abre Outlook aunque se use Gmail, y si no hay cliente de correo
+   * no pasa nada. Mensajes perdidos y sensacion de web rota.
+   * AHORA se envia de verdad contra /api/contacto (Resend).
+   */
+  const handleSubmit = async () => {
+    if (enviando || !validateForm()) return;
+    setEnviando(true);
+    try {
+      const r = await fetch("/api/contacto", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const datos = await r.json().catch(() => ({}));
 
-    const subject = `[Visto en Maps] ${formData.asunto}`;
-    const body = [
-      `Nombre: ${formData.nombre}`,
-      `Email: ${formData.email}`,
-      `Asunto: ${formData.asunto}`,
-      ``,
-      `Mensaje:`,
-      formData.mensaje,
-    ].join("\n");
-
-    window.location.href = `mailto:contacto@vistoenmaps.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    toast.success("Abriendo tu cliente de correo...");
+      if (!r.ok) {
+        toast.error(datos.error || "No hemos podido enviarlo. Inténtalo en unos minutos.");
+        return;
+      }
+      setEnviado(true);
+      setFormData({ nombre: "", email: "", asunto: "", mensaje: "", empresa: "" });
+      toast.success("Mensaje enviado. Te hemos mandado una copia.");
+    } catch {
+      toast.error("Parece que no hay conexión. Inténtalo de nuevo.");
+    } finally {
+      setEnviando(false);
+    }
   };
 
   const schemaData = {
@@ -115,6 +141,32 @@ export default function ContactoPage() {
             transition={{ duration: 0.3 }}
           >
             <div className="bg-white border border-gray-200/80 rounded-2xl shadow-sm p-6 md:p-8">
+              {/*
+                CONFIRMACION. Antes, tras pulsar Enviar solo salia un aviso
+                pasajero ("Abriendo tu cliente de correo") y el formulario se
+                quedaba igual: nadie sabia si habia llegado. Ahora el formulario
+                se sustituye por una confirmacion clara.
+              */}
+              {enviado ? (
+                <div className="py-8 text-center">
+                  <div className="mx-auto w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center">
+                    <CheckCircle2 className="w-7 h-7 text-emerald-600" />
+                  </div>
+                  <h3 className="mt-4 text-xl font-extrabold text-foreground">
+                    Mensaje enviado
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed max-w-sm mx-auto">
+                    Te hemos mandado una copia a tu correo. Te contestamos lo
+                    antes posible, normalmente en menos de 48 horas.
+                  </p>
+                  <button
+                    onClick={() => setEnviado(false)}
+                    className="mt-5 text-sm font-semibold text-primary hover:underline"
+                  >
+                    Escribir otro mensaje
+                  </button>
+                </div>
+              ) : (
               <div className="space-y-5">
                 <div>
                   <label className="text-sm font-medium text-gray-700">
@@ -177,14 +229,43 @@ export default function ContactoPage() {
                   {formErrors.mensaje && <p className="text-xs text-red-500 mt-1">{formErrors.mensaje}</p>}
                 </div>
 
+                {/* Trampa anti-robots: invisible para una persona. Si llega
+                    relleno, el servidor descarta el mensaje en silencio. */}
+                <input
+                  type="text"
+                  name="empresa"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={formData.empresa}
+                  onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
+                  style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0 }}
+                />
+
                 <button
                   onClick={handleSubmit}
-                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#0f2035] to-[#1a3a5c] text-white font-semibold py-3.5 rounded-full hover:from-[#142d45] hover:to-[#1f4468] shadow-md hover:shadow-lg transition-all duration-200"
+                  disabled={enviando}
+                  className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#0f2035] to-[#1a3a5c] text-white font-semibold py-3.5 rounded-full hover:from-[#142d45] hover:to-[#1f4468] shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  <Send className="w-5 h-5" />
-                  Enviar mensaje
+                  {enviando ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Enviando…
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      Enviar mensaje
+                    </>
+                  )}
                 </button>
+
+                <p className="text-[11px] text-muted-foreground text-center leading-relaxed">
+                  Te contestamos al correo que nos dejes, normalmente en menos de
+                  48 horas. No lo usamos para nada más.
+                </p>
               </div>
+              )}
             </div>
           </motion.div>
 
