@@ -1,1 +1,32 @@
-[{"nombre": "Cube Barcelona — Asociación Cannábica", "slug": "cube-barcelona-asociacion-cannabica-barcelona", "categoria_slug": "clubes-cannabis", "ciudad_slug": "barcelona", "barrio_slug": "el-clot", "direccion": "Carrer dels Enamorats, 08026 Barcelona", "telefono": "+34 930 49 00 09", "web": "https://cubebcn.com/", "horario": "Consultar horario de la asociación", "coordenadas": {"lat": 41.4073452, "lng": 2.1839981}, "valoracion_media": 5.0, "num_resenas": 0, "servicios_destacados": ["Asociación privada", "Solo socios · +18", "El Clot"], "url_google_maps": "https://www.google.com/maps/search/?api=1&query=Cube+Barcelona+Enamorats", "destacado": true, "fuente_trafikazo": true, "aviso_legal": "Asociación privada. Acceso exclusivo para socios mayores de 18 años. Se requiere alta previa y documentación.", "descripcion": "Cube Barcelona es una asociación cannábica privada en el barrio del Clot. Como toda asociación de este tipo en España, funciona como club privado: el acceso es exclusivo para socios, se requiere ser mayor de 18 años, presentar documentación y darse de alta previamente a través de su web. No es un comercio ni un local de venta al público: es una asociación sin ánimo de lucro que organiza actividades para sus miembros, con un calendario semanal de eventos para socios. Si te interesa conocerla, el primer paso es solicitar el alta en su página web; ellos gestionan el registro y te informan de sus normas y de cómo funciona la membresía.", "meta_descripcion": "Cube Barcelona, asociación cannábica privada en El Clot. Solo socios, mayores de 18 años. Alta previa en su web.", "peso": 95.0, "categoria_ok": true}]
+[
+ {
+  "nombre": "Cube Barcelona — Asociación Cannábica",
+  "slug": "cube-barcelona-asociacion-cannabica-barcelona",
+  "categoria_slug": "clubes-cannabis",
+  "ciudad_slug": "barcelona",
+  "barrio_slug": "sant-marti",
+  "direccion": "Carrer dels Enamorats, 08026 Barcelona",
+  "telefono": "+34 930 49 00 09",
+  "web": "https://cubebcn.com/",
+  "horario": "Consultar horario de la asociación",
+  "coordenadas": {
+   "lat": 41.4073452,
+   "lng": 2.1839981
+  },
+  "valoracion_media": 5.0,
+  "num_resenas": 0,
+  "servicios_destacados": [
+   "Asociación privada",
+   "Solo socios · +18",
+   "El Clot"
+  ],
+  "url_google_maps": "https://www.google.com/maps/search/?api=1&query=Cube+Barcelona+Enamorats",
+  "destacado": true,
+  "fuente_trafikazo": true,
+  "aviso_legal": "Asociación privada. Acceso exclusivo para socios mayores de 18 años. Se requiere alta previa y documentación.",
+  "descripcion": "Cube Barcelona es una asociación cannábica privada en el barrio del Clot. Como toda asociación de este tipo en España, funciona como club privado: el acceso es exclusivo para socios, se requiere ser mayor de 18 años, presentar documentación y darse de alta previamente a través de su web. No es un comercio ni un local de venta al público: es una asociación sin ánimo de lucro que organiza actividades para sus miembros, con un calendario semanal de eventos para socios. Si te interesa conocerla, el primer paso es solicitar el alta en su página web; ellos gestionan el registro y te informan de sus normas y de cómo funciona la membresía.",
+  "meta_descripcion": "Cube Barcelona, asociación cannábica privada en El Clot. Solo socios, mayores de 18 años. Alta previa en su web.",
+  "peso": 95.0,
+  "categoria_ok": true
+ }
+]
