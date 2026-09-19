@@ -488,5 +488,12 @@
   "descripcion": "Asociaciones y clubes cannábicos privados en España. Acceso exclusivo para socios mayores de 18 años.",
   "icono": "Leaf",
   "imagen": ""
+ },
+ {
+  "slug": "fotografia",
+  "nombre": "Fotografía",
+  "descripcion": "Fotógrafos y estudios de fotografía: fotografía para negocios, producto, eventos y retrato.",
+  "icono": "Camera",
+  "imagen": ""
  }
 ]
