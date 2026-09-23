@@ -133,7 +133,7 @@ export default function BlogPage() {
               Consultores de SEO local en España: quién es quién
             </p>
             <p className="text-sm text-muted-foreground">
-              Siete perfiles, con fuentes verificadas para cada dato. Sin estrellas inventadas.
+              Siete perfiles, con fuentes verificadas para cada dato.
             </p>
           </div>
           <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />

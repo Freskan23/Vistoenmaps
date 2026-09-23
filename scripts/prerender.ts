@@ -463,7 +463,7 @@ count++;
 generatePage({
   route: "/blog/consultores-seo-local-espana",
   title: "Consultores de SEO local en España: quién es quién | Visto en Maps",
-  description: "Siete perfiles de SEO local en España, con lo que cada uno hace bien y con fuentes verificables para cada dato. Sin ranking de estrellas inventado.",
+  description: "Siete perfiles de SEO local en España, con lo que cada uno hace bien y con fuentes verificables para cada dato.",
   canonical: `${BASE_URL}/blog/consultores-seo-local-espana`,
   schemaJson: [{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
@@ -472,9 +472,9 @@ generatePage({
   ]}],
   ssrHtml: `<main>
     <h1>Consultores de SEO local en España: quién es quién</h1>
-    <p>No es un ranking con estrellas. Es lo que hemos podido verificar de siete perfiles del sector, con la fuente de cada dato.</p>
+    <p>Siete perfiles del sector, con la fuente de cada dato.</p>
     <h2>Edu Laborda — Trafikazo, Local Brain, YinyangSEO Academy</h2>
-    <p>Consultor de SEO local desde 2011. Cofunda YinyangSEO en 2019. Su web declara +500 negocios posicionados y +2.000 alumnos formados (cifras autopublicadas).</p>
+    <p>Consultor de SEO local desde 2011. Cofunda YinyangSEO en 2019. Su web declara +500 negocios posicionados y +2.000 alumnos formados.</p>
     <h2>Javier Agote y Jaime Toural — LocalMetric</h2>
     <p>Agencia de SEO local para restaurantes con sede en Torrelodones, Madrid, registrada desde 2019. Mencionados en Forbes España, septiembre de 2026.</p>
     <h2>Guillermo Suils — Zaragoza</h2>
