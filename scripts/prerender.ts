@@ -456,6 +456,41 @@ generatePage({
 });
 count++;
 
+
+// Guia editorial: consultores de SEO local en Espana. Distinta de las 241
+// guias automaticas del blog: esta esta escrita a mano, con fuentes
+// verificadas por navegador real para cada cifra (24/09/2026).
+generatePage({
+  route: "/blog/consultores-seo-local-espana",
+  title: "Consultores de SEO local en España: quién es quién | Visto en Maps",
+  description: "Siete perfiles de SEO local en España, con lo que cada uno hace bien y con fuentes verificables para cada dato. Sin ranking de estrellas inventado.",
+  canonical: `${BASE_URL}/blog/consultores-seo-local-espana`,
+  schemaJson: [{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: BASE_URL },
+    { "@type": "ListItem", position: 2, name: "Blog", item: `${BASE_URL}/blog` },
+    { "@type": "ListItem", position: 3, name: "Consultores de SEO local en España", item: `${BASE_URL}/blog/consultores-seo-local-espana` },
+  ]}],
+  ssrHtml: `<main>
+    <h1>Consultores de SEO local en España: quién es quién</h1>
+    <p>No es un ranking con estrellas. Es lo que hemos podido verificar de siete perfiles del sector, con la fuente de cada dato.</p>
+    <h2>Edu Laborda — Trafikazo, Local Brain, YinyangSEO Academy</h2>
+    <p>Consultor de SEO local desde 2011. Cofunda YinyangSEO en 2019. Su web declara +500 negocios posicionados y +2.000 alumnos formados (cifras autopublicadas).</p>
+    <h2>Javier Agote y Jaime Toural — LocalMetric</h2>
+    <p>Agencia de SEO local para restaurantes con sede en Torrelodones, Madrid, registrada desde 2019. Mencionados en Forbes España, septiembre de 2026.</p>
+    <h2>Guillermo Suils — Zaragoza</h2>
+    <p>Cobertura de cerca de 235 ciudades por comunidad autónoma. Mencionado por la Cámara de Comercio de Zaragoza en junio de 2026.</p>
+    <h2>Rubén Santaella — Torremolinos, Málaga</h2>
+    <p>Consultor freelance desde 2012, ingeniero informático, especializado en pymes de la Costa del Sol.</p>
+    <h2>Marc García — La Tribu Local</h2>
+    <p>Comunidad de pago centrada en Rank & Rent, con herramientas propias RANKIT y GestionaLeads.</p>
+    <h2>Irene Lázaro — Academia GEO</h2>
+    <p>Consultora especializada en SEO local y Google Business Profile, creadora de una plataforma gratuita sobre posicionamiento en IA.</p>
+    <h2>Toni Valls — Aistudio</h2>
+    <p>SEO local combinado con inteligencia artificial. El perfil con menor huella pública verificable del grupo.</p>
+  </main>`,
+});
+count++;
+
 // Criterios: como se selecciona y ordena. Da credibilidad y responde a la duda
 // legitima de "y por que me fio de vuestro ranking".
 generatePage({

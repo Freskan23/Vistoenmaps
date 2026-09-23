@@ -35,6 +35,7 @@ import EventosPage from "./pages/EventosPage";
 import EventosCiudadPage from "./pages/EventosCiudadPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
+import ConsultoresSeoLocalPage from "./pages/ConsultoresSeoLocalPage";
 import { UserLocationProvider } from "./context/UserLocationContext";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -63,6 +64,10 @@ function Router() {
       <Route path="/eventos" component={EventosPage} />
       <Route path="/eventos/:ciudad" component={EventosCiudadPage} />
       <Route path="/blog" component={BlogPage} />
+      {/* OJO orden en wouter: la primera que encaja gana. Esta ruta fija tiene
+          que ir ANTES de /blog/:slug o el comodin la captura primero y
+          renderiza BlogPostPage buscando un slug que no existe en los datos. */}
+      <Route path="/blog/consultores-seo-local-espana" component={ConsultoresSeoLocalPage} />
       <Route path="/blog/:slug" component={BlogPostPage} />
       <Route path="/herramientas" component={HerramientasPage} />
       {/* Guias "antes de contratar": /precios es la URL que la gente busca */}

@@ -36,6 +36,7 @@ urls.push({ loc: "/directorios", priority: "0.8", changefreq: "monthly" });
 urls.push({ loc: "/contacto", priority: "0.5", changefreq: "monthly" });
 urls.push({ loc: "/herramientas", priority: "0.7", changefreq: "monthly" });
 urls.push({ loc: "/criterios", priority: "0.6", changefreq: "monthly" });
+urls.push({ loc: "/blog/consultores-seo-local-espana", priority: "0.6", changefreq: "monthly" });
 
 // Guias del blog. Faltaban por completo: ni la portada ni las 241 guias estaban
 // en el sitemap, y encima /blog/<slug> devolvia 404.

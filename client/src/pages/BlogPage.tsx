@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
 import { useBlogPosts } from "@/hooks/useBlogPosts";
+import { Users } from "lucide-react";
 
 /**
  * Portada del blog: las guias «los mejores X de Y».
@@ -116,6 +117,28 @@ export default function BlogPage() {
           </Link>
         </div>
       </section>
+
+      {/* Guia editorial, distinta de las 241 automaticas de mas abajo:
+          escrita a mano, con fuentes verificadas por navegador real. */}
+      <div className="container pt-6">
+        <Link
+          href="/blog/consultores-seo-local-espana"
+          className="flex items-center gap-4 rounded-2xl border border-border/60 bg-white p-4 hover:border-primary/40 hover:shadow-sm transition-all"
+        >
+          <div className="shrink-0 w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+            <Users className="w-5 h-5 text-primary" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="font-bold text-foreground">
+              Consultores de SEO local en España: quién es quién
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Siete perfiles, con fuentes verificadas para cada dato. Sin estrellas inventadas.
+            </p>
+          </div>
+          <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />
+        </Link>
+      </div>
 
       <main className="container py-8 flex-1">
         {/* ===== Buscar: un campo de texto y dos desplegables ===== */}
