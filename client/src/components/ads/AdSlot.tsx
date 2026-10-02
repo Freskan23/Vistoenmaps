@@ -3,6 +3,7 @@ import type { AdFormat } from "@/lib/adConfig";
 import GoogleAd from "./GoogleAd";
 import DestacadoCard from "./DestacadoCard";
 import PromoPlaceholder from "./PromoPlaceholder";
+import HousePromo from "./HousePromo";
 
 interface AdSlotProps {
   slot: string;
@@ -15,8 +16,10 @@ interface AdSlotProps {
  *
  * Prioridad:
  * 1. Google Ads (si habilitado)
- * 2. Negocios Destacados (si hay para este slot)
- * 3. PromoPlaceholder (CTA para captar anunciantes)
+ * 2. Negocios Destacados de pago (si hay para este slot)
+ * 3. Anuncio propio de Local Brain (casa) — sustituye al placeholder genérico
+ *    para que los huecos vendan lo nuestro mientras no hay cliente de pago.
+ * 4. PromoPlaceholder (queda como respaldo si se retira la marca).
  */
 export default function AdSlot({ slot, format, className = "" }: AdSlotProps) {
   const slotConfig = AD_CONFIG.slots[slot];
@@ -33,7 +36,7 @@ export default function AdSlot({ slot, format, className = "" }: AdSlotProps) {
     );
   }
 
-  /* 2. Negocios Destacados */
+  /* 2. Negocios Destacados de pago */
   const destacados = getDestacadosForSlot(slot);
   if (destacados.length > 0) {
     return (
@@ -45,12 +48,8 @@ export default function AdSlot({ slot, format, className = "" }: AdSlotProps) {
     );
   }
 
-  /* 3. PromoPlaceholder */
-  return (
-    <PromoPlaceholder
-      format={resolvedFormat}
-      slot={slot}
-      className={className}
-    />
-  );
+  /* 3. Anuncio propio: Local Brain en todos los huecos */
+  return <HousePromo slot={slot} format={resolvedFormat} className={className} />;
+
+  /* 4. PromoPlaceholder se conserva como componente para futuros usos. */
 }

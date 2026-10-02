@@ -35,6 +35,7 @@ export default function AvisoLegalPage() {
           titulo: "Enlaces de afiliado",
           parrafos: [
             "En la sección de eventos enlazamos a Ticketmaster para comprar las entradas. Esos enlaces son de afiliado: si compras a través de ellos, recibimos una pequeña comisión de Ticketmaster. A ti no te cuesta ni un céntimo más.",
+            "Algunos espacios de esta web muestran publicidad propia de nuestras herramientas (Trafikazo, Local Brain). Aparecen con la etiqueta Publicidad y no alteran el orden ni el contenido de los listados.",
             "Los eventos que se muestran salen ordenados por fecha, primero los más cercanos. No se colocan ni se ordenan según lo que nos paguen.",
             "Los enlaces de afiliado van marcados como patrocinados en el código de la página, como exigen los buscadores.",
           ],
