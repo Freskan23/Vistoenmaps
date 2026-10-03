@@ -189,6 +189,9 @@ export default function CiudadPage() {
 
       {/* Barrios Grid */}
       <section className="container py-10 md:py-14">
+        {categoria === "limpieza" && (
+          <LimpitroPromo ciudadSlug={ciudad} slot={`ciu-${categoria}-${ciudad}`} className="mb-6" />
+        )}
         <h2 className="text-xl font-bold text-foreground mb-6">
           Barrios de {ciu.nombre}
         </h2>
@@ -254,9 +257,6 @@ export default function CiudadPage() {
               Aun no hay barrios registrados para {cat.nombre} en {ciu.nombre}.
             </p>
           </div>
-        )}
-        {categoria === "limpieza" && (
-          <LimpitroPromo ciudadSlug={ciudad} slot={`ciu-${categoria}-${ciudad}`} className="mb-8" />
         )}
         <ParaAgencias
           ciudadNombre={ciu.nombre}

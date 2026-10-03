@@ -466,6 +466,9 @@ export default function BarrioPage() {
             </div>
 
             {/* Cards grid with ad slots */}
+            {categoria === "limpieza" && (
+              <LimpitroPromo ciudadSlug={ciudad} slot={`bar-${categoria}-${ciudad}-${barrio}`} className="lg:col-span-2 mb-1" />
+            )}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
               {paginated.map((negocio, index) => (
                 <React.Fragment key={negocio.slug}>
@@ -480,11 +483,7 @@ export default function BarrioPage() {
                     <NegocioCard negocio={negocio} />
                   </motion.div>
                   {index === 3 && (
-                    categoria === "limpieza" ? (
-                      <LimpitroPromo ciudadSlug={ciudad} slot={`bar-${categoria}-${ciudad}-${barrio}`} className="min-h-[200px]" />
-                    ) : (
-                      <AdSlot slot="barrio-grid-4" format="card" className="min-h-[200px]" />
-                    )
+                    <AdSlot slot="barrio-grid-4" format="card" className="min-h-[200px]" />
                   )}
                   {index === 7 && (
                     <AdSlot slot="barrio-grid-8" format="card" className="min-h-[200px]" />
