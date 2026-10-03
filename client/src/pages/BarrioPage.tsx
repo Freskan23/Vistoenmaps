@@ -17,6 +17,7 @@ import { useNegociosCategoria, useAllBarrios, useAllCiudades, filterByBarrio } f
 import Breadcrumb from "@/components/Breadcrumb";
 import NegocioCard from "@/components/NegocioCard";
 import AdSlot from "@/components/ads/AdSlot";
+import LimpitroPromo from "@/components/ads/LimpitroPromo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NotFound from "./NotFound";
@@ -479,7 +480,11 @@ export default function BarrioPage() {
                     <NegocioCard negocio={negocio} />
                   </motion.div>
                   {index === 3 && (
-                    <AdSlot slot="barrio-grid-4" format="card" className="min-h-[200px]" />
+                    categoria === "limpieza" ? (
+                      <LimpitroPromo ciudadSlug={ciudad} slot={`bar-${categoria}-${ciudad}-${barrio}`} className="min-h-[200px]" />
+                    ) : (
+                      <AdSlot slot="barrio-grid-4" format="card" className="min-h-[200px]" />
+                    )
                   )}
                   {index === 7 && (
                     <AdSlot slot="barrio-grid-8" format="card" className="min-h-[200px]" />

@@ -17,6 +17,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ParaAgencias from "@/components/ParaAgencias";
 import EventosCiudad from "@/components/EventosCiudad";
+import LimpitroPromo from "@/components/ads/LimpitroPromo";
 import NotFound from "./NotFound";
 import { motion } from "framer-motion";
 import SEOHead from "@/components/SEOHead";
@@ -253,6 +254,9 @@ export default function CiudadPage() {
               Aun no hay barrios registrados para {cat.nombre} en {ciu.nombre}.
             </p>
           </div>
+        )}
+        {categoria === "limpieza" && (
+          <LimpitroPromo ciudadSlug={ciudad} slot={`ciu-${categoria}-${ciudad}`} className="mb-8" />
         )}
         <ParaAgencias
           ciudadNombre={ciu.nombre}
