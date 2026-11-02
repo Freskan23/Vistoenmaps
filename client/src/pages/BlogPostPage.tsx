@@ -188,6 +188,7 @@ export default function BlogPostPage() {
         title={`${post.titulo} | Visto en Maps`}
         description={post.extracto}
         canonical={`https://vistoenmaps.com/blog/${post.slug}`}
+        ogType="article"
       />
       <Header />
 

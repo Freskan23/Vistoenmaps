@@ -1,43 +1,35 @@
 import { useEffect } from "react";
 
+const DEFAULT_OG_IMAGE = "https://vistoenmaps.com/icon-512.png";
+
 interface SEOHeadProps {
   title: string;
   description: string;
   canonical?: string;
   ogImage?: string;
+  ogType?: string;
 }
 
-/**
- * SEO component that updates document head tags.
- * In a real Next.js project, this would use generateMetadata.
- * For this SPA, we dynamically update the head.
- */
-export default function SEOHead({ title, description, canonical, ogImage }: SEOHeadProps) {
+export default function SEOHead({ title, description, canonical, ogImage, ogType }: SEOHeadProps) {
   useEffect(() => {
-    // Update title
     document.title = title;
 
-    // Update or create meta description
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement("meta");
-      metaDesc.setAttribute("name", "description");
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.setAttribute("content", description);
+    setMeta("name", "description", description);
 
-    // Update or create OG tags
+    const image = ogImage || DEFAULT_OG_IMAGE;
+
     const ogTags: Record<string, string> = {
       "og:title": title,
       "og:description": description,
-      "og:type": "website",
+      "og:type": ogType || "website",
       "og:site_name": "Visto en Maps",
+      "og:locale": "es_ES",
+      "og:image": image,
     };
 
     if (canonical) {
       ogTags["og:url"] = canonical;
 
-      // Update or create canonical link
       let canonicalLink = document.querySelector('link[rel="canonical"]');
       if (!canonicalLink) {
         canonicalLink = document.createElement("link");
@@ -45,10 +37,6 @@ export default function SEOHead({ title, description, canonical, ogImage }: SEOH
         document.head.appendChild(canonicalLink);
       }
       canonicalLink.setAttribute("href", canonical);
-    }
-
-    if (ogImage) {
-      ogTags["og:image"] = ogImage;
     }
 
     Object.entries(ogTags).forEach(([property, content]) => {
@@ -60,7 +48,22 @@ export default function SEOHead({ title, description, canonical, ogImage }: SEOH
       }
       meta.setAttribute("content", content);
     });
-  }, [title, description, canonical, ogImage]);
+
+    setMeta("name", "twitter:card", ogImage ? "summary_large_image" : "summary");
+    setMeta("name", "twitter:title", title);
+    setMeta("name", "twitter:description", description);
+    setMeta("name", "twitter:image", image);
+  }, [title, description, canonical, ogImage, ogType]);
 
   return null;
+}
+
+function setMeta(attr: "name" | "property", key: string, content: string) {
+  let el = document.querySelector(`meta[${attr}="${key}"]`);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, key);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
 }

@@ -475,6 +475,8 @@ export default function NegocioPage() {
             .join(" ")
         }
         canonical={`https://vistoenmaps.com/${cat.slug}/${ciu.slug}/${bar.slug}/${neg.slug}`}
+        ogImage={neg.fotos && neg.fotos.length > 0 ? neg.fotos[0] : undefined}
+        ogType="business.business"
       />
       <Header />
 
