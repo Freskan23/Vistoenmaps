@@ -27,9 +27,14 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- Analitica: pendiente de decidir (GA4 o Umami). Antes habia un script
-         de Umami con las variables sin sustituir: pedia
-         %VITE_ANALYTICS_ENDPOINT%/umami en cada carga y daba 404. -->
+    <!-- Google tag (gtag.js) — GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-TYZJMJDFP8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-TYZJMJDFP8');
+    </script>
   </body>
 
 </html>
