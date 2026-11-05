@@ -1,3 +1,4 @@
+import { aggregateRating } from "@/lib/aggregateRating";
 import { useState, useCallback, useRef, useMemo } from "react";
 import { useParams, Link } from "wouter";
 import {
@@ -362,15 +363,7 @@ export default function NegocioPage() {
           longitude: neg.coordenadas.lng,
         }
       : undefined,
-    aggregateRating:
-      neg.valoracion_media && neg.num_resenas
-        ? {
-            "@type": "AggregateRating",
-            ratingValue: neg.valoracion_media,
-            reviewCount: neg.num_resenas,
-            bestRating: 5,
-          }
-        : undefined,
+    aggregateRating: aggregateRating(neg.valoracion_media, neg.num_resenas),
     openingHours: neg.horario || undefined,
     url: neg.web || neg.url_google_maps,
     sameAs: sameAsUrls.length > 0 ? sameAsUrls : undefined,

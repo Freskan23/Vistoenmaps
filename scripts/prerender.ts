@@ -1,3 +1,4 @@
+import { aggregateRating } from "../client/src/lib/aggregateRating";
 /**
  * Pre-rendering script for SEO.
  * Generates static HTML files with REAL visible content inside <div id="root">
@@ -919,7 +920,7 @@ for (const cat of categorias) {
           address: { "@type": "PostalAddress", streetAddress: n.direccion || undefined, addressLocality: ciu.nombre, addressCountry: "ES" },
           telephone: n.telefono || undefined,
           geo: n.coordenadas ? { "@type": "GeoCoordinates", latitude: n.coordenadas.lat, longitude: n.coordenadas.lng } : undefined,
-          aggregateRating: n.num_resenas > 0 ? { "@type": "AggregateRating", ratingValue: n.valoracion_media, reviewCount: n.num_resenas } : undefined,
+          aggregateRating: aggregateRating(n.valoracion_media, n.num_resenas),
           openingHours: n.horario || undefined,
         })),
         ssrHtml: `
@@ -950,7 +951,7 @@ for (const cat of categorias) {
             address: { "@type": "PostalAddress", streetAddress: neg.direccion || undefined, addressLocality: ciu.nombre, addressCountry: "ES" },
             telephone: neg.telefono || undefined,
             geo: neg.coordenadas ? { "@type": "GeoCoordinates", latitude: neg.coordenadas.lat, longitude: neg.coordenadas.lng } : undefined,
-            aggregateRating: neg.num_resenas > 0 ? { "@type": "AggregateRating", ratingValue: neg.valoracion_media, reviewCount: neg.num_resenas, bestRating: 5 } : undefined,
+            aggregateRating: aggregateRating(neg.valoracion_media, neg.num_resenas),
             openingHours: neg.horario || undefined,
             ...(neg.web ? { url: neg.web } : {}),
           }, {

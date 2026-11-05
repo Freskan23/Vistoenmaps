@@ -1,3 +1,4 @@
+import { aggregateRating } from "@/lib/aggregateRating";
 /*
   DESIGN: Cartografia Urbana — Barrio Page
   - Lists businesses in a specific neighborhood
@@ -207,11 +208,7 @@ export default function BarrioPage() {
           longitude: n.coordenadas.lng,
         }
       : undefined,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: n.valoracion_media,
-      reviewCount: n.num_resenas,
-    },
+    aggregateRating: aggregateRating(n.valoracion_media, n.num_resenas),
     openingHours: n.horario,
     url: n.url_google_maps,
   }));
