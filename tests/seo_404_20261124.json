@@ -1,0 +1,194 @@
+[
+  {
+    "source": "/bares/malaga/centro-malaga/antigua-casa-de-guardia-malaga",
+    "destination": "/bares/malaga/distrito-centro/antigua-casa-de-guardia-malaga"
+  },
+  {
+    "source": "/cafeterias/granada/centro-granada/mummo-cafe-desayuno-granada-granada",
+    "destination": "/cafeterias/granada/centro/mummo-cafe-desayuno-granada-granada"
+  },
+  {
+    "source": "/cafeterias/granada/centro-granada/sur-coffee-corner-granada",
+    "destination": "/cafeterias/granada/centro/sur-coffee-corner-granada"
+  },
+  {
+    "source": "/cafeterias/murcia/centro-murcia/mariantonietta-cafe-murcia",
+    "destination": "/cafeterias/murcia/centro/mariantonietta-cafe-murcia"
+  },
+  {
+    "source": "/cafeterias/zaragoza/centro-zaragoza/el-criollo-coffee-store-zaragoza",
+    "destination": "/cafeterias/zaragoza/casco-antiguo/el-criollo-coffee-store-zaragoza"
+  },
+  {
+    "source": "/cerrajeros/alicante/centro-alicante/cerrajero-alicante-24h-daniel-miro-alicante",
+    "destination": "/cerrajeros/alicante/centro/cerrajero-alicante-24h-daniel-miro-alicante"
+  },
+  {
+    "source": "/cerrajeros/barcelona/gracia/cerrajero-sagrada-familia-barcelona-barcelona",
+    "destination": "/cerrajeros/barcelona/eixample/cerrajero-sagrada-familia-barcelona-barcelona"
+  },
+  {
+    "source": "/cines/palma/centro-palma/cineciutat-palma",
+    "destination": "/cines/palma/norte/cineciutat-palma"
+  },
+  {
+    "source": "/cines/palma/el-molinar/mallorca-fashion-outlet-festival-park-palma",
+    "destination": "/cines/palma/centro/mallorca-fashion-outlet-festival-park-palma"
+  },
+  {
+    "source": "/cines/valladolid/parquesol/ocine-rio-shopping-valladolid",
+    "destination": "/cines/valladolid/centro/ocine-rio-shopping-valladolid"
+  },
+  {
+    "source": "/dentistas/bilbao/casco-viejo-bilbao/clinica-dental-ibaiondo-bilbao",
+    "destination": "/dentistas/bilbao/ibaiondo/clinica-dental-ibaiondo-bilbao"
+  },
+  {
+    "source": "/dentistas/granada/ronda-granada/clinica-asisa-dental-granada",
+    "destination": "/dentistas/granada/beiro/clinica-asisa-dental-granada"
+  },
+  {
+    "source": "/dentistas/palma/centro-palma/clinica-dental-emardental-palma",
+    "destination": "/dentistas/palma/nord/clinica-dental-emardental-palma"
+  },
+  {
+    "source": "/dentistas/sevilla/nervion/clinica-dental-de-castro-implantes-y-periodoncia-en-sevilla-sevilla",
+    "destination": "/dentistas/sevilla/centro/clinica-dental-de-castro-implantes-y-periodoncia-en-sevilla-sevilla"
+  },
+  {
+    "source": "/electricistas/alicante/benalua/electricista-time-alicante-alicante",
+    "destination": "/electricistas/alicante/centro/electricista-time-alicante-alicante"
+  },
+  {
+    "source": "/electricistas/alicante/benalua/electrovatio-alicante",
+    "destination": "/electricistas/alicante/centro/electrovatio-alicante"
+  },
+  {
+    "source": "/electricistas/alicante/carolinas/marcu-electric-company-alicante",
+    "destination": "/electricistas/alicante/centro/marcu-electric-company-alicante"
+  },
+  {
+    "source": "/electricistas/bilbao/casco-viejo-bilbao/electricidad-benito-electricista-en-bilbao-bilbao",
+    "destination": "/electricistas/bilbao/centro/electricidad-benito-electricista-en-bilbao-bilbao"
+  },
+  {
+    "source": "/electricistas/madrid/centro/telelectric-madrid",
+    "destination": "/electricistas/madrid/carabanchel/telelectric-madrid"
+  },
+  {
+    "source": "/electricistas/murcia/vistalegre/amc-instalaciones-electricas-murcia",
+    "destination": "/electricistas/murcia/centro/amc-instalaciones-electricas-murcia"
+  },
+  {
+    "source": "/electricistas/zaragoza/san-jose-zaragoza/instalaciones-y-reparaciones-daniel-zaragoza",
+    "destination": "/electricistas/zaragoza/centro/instalaciones-y-reparaciones-daniel-zaragoza"
+  },
+  {
+    "source": "/electricistas/zaragoza/torrero/meljavi-electricistas-zaragoza-zaragoza",
+    "destination": "/electricistas/zaragoza/centro/meljavi-electricistas-zaragoza-zaragoza"
+  },
+  {
+    "source": "/fisioterapeutas/bilbao/abando/clinica-igon-fisioterapia-y-osteopatia-bilbao",
+    "destination": "/fisioterapeutas/bilbao/centro/clinica-igon-fisioterapia-y-osteopatia-bilbao"
+  },
+  {
+    "source": "/fisioterapeutas/palma/santa-catalina/prosana-fisioterapia-palma-palma",
+    "destination": "/fisioterapeutas/palma/centro/prosana-fisioterapia-palma-palma"
+  },
+  {
+    "source": "/fisioterapeutas/sevilla/nervion/clinica-de-fisioterapia-y-osteopatia-ecofisio-sevilla",
+    "destination": "/fisioterapeutas/sevilla/centro/clinica-de-fisioterapia-y-osteopatia-ecofisio-sevilla"
+  },
+  {
+    "source": "/gimnasios/granada/ronda-granada/yo10-sport-club-granada-granada",
+    "destination": "/gimnasios/granada/centro/yo10-sport-club-granada-granada"
+  },
+  {
+    "source": "/gimnasios/valencia/benimaclet/fitness-park-valencia-maritim-valencia",
+    "destination": "/gimnasios/valencia/centro/fitness-park-valencia-maritim-valencia"
+  },
+  {
+    "source": "/limpieza/valladolid/centro-valladolid/interdomicilio-valladolid-servicios-de-limpieza-y-cuidados-a-domicilio-valladolid",
+    "destination": "/limpieza/valladolid/centro/interdomicilio-valladolid-servicios-de-limpieza-y-cuidados-a-domicilio-valladolid"
+  },
+  {
+    "source": "/parques/granada/realejo/carmen-de-los-martires-granada",
+    "destination": "/parques/granada/centro/carmen-de-los-martires-granada"
+  },
+  {
+    "source": "/parques/granada/zaidin/parque-nacional-de-sierra-nevada-granada",
+    "destination": "/parques/granada/centro/parque-nacional-de-sierra-nevada-granada"
+  },
+  {
+    "source": "/pintores/madrid/centro/grupo-pintores-madrid-madrid",
+    "destination": "/pintores/madrid/usera/grupo-pintores-madrid-madrid"
+  },
+  {
+    "source": "/pintores/madrid/salamanca/jr-pintores-madrid",
+    "destination": "/pintores/madrid/centro/jr-pintores-madrid"
+  },
+  {
+    "source": "/pintores/malaga/teatinos/malaga-pintores-teatinos",
+    "destination": "/pintores/malaga/centro/malaga-pintores-teatinos"
+  },
+  {
+    "source": "/pintores/murcia/la-flota/pintores-santiamen-murcia",
+    "destination": "/pintores/murcia/centro/pintores-santiamen-murcia"
+  },
+  {
+    "source": "/pintores/zaragoza/delicias-zaragoza/pintores-rulato-zaragoza",
+    "destination": "/pintores/zaragoza/centro/pintores-rulato-zaragoza"
+  },
+  {
+    "source": "/psicologos/alicante/benalua/llum-clinica-de-psicologia-alicante",
+    "destination": "/psicologos/alicante/entrl-a/llum-clinica-de-psicologia-alicante"
+  },
+  {
+    "source": "/psicologos/murcia/centro-murcia/elisa-sanchez-psicologa-murcia",
+    "destination": "/psicologos/murcia/centro/elisa-sanchez-psicologa-murcia"
+  },
+  {
+    "source": "/reformas/alicante/carolinas/mejores-reformas-alicante-alicante",
+    "destination": "/reformas/alicante/centro/mejores-reformas-alicante-alicante"
+  },
+  {
+    "source": "/restaurantes/alicante/carolinas/bacacay-restaurante-argentino-alicante-alicante",
+    "destination": "/restaurantes/alicante/centro/bacacay-restaurante-argentino-alicante-alicante"
+  },
+  {
+    "source": "/restaurantes/alicante/centro-alicante/templo-restaurante-alicante",
+    "destination": "/restaurantes/alicante/centro/templo-restaurante-alicante"
+  },
+  {
+    "source": "/restaurantes/granada/ronda-granada/restaurante-cala-granada",
+    "destination": "/restaurantes/granada/centro/restaurante-cala-granada"
+  },
+  {
+    "source": "/restaurantes/valladolid/centro-valladolid/gastrobar-pasion-valladolid",
+    "destination": "/restaurantes/valladolid/centro/gastrobar-pasion-valladolid"
+  },
+  {
+    "source": "/teatros/sevilla/macarena/teatro-alameda-sevilla",
+    "destination": "/teatros/sevilla/casco-antiguo/teatro-alameda-sevilla"
+  },
+  {
+    "source": "/veterinarios/alicante/carolinas/clinica-veterinaria-santo-domingo-alicante",
+    "destination": "/veterinarios/alicante/centro/clinica-veterinaria-santo-domingo-alicante"
+  },
+  {
+    "source": "/veterinarios/malaga/teatinos/hospital-veterinario-sos-animal-malaga",
+    "destination": "/veterinarios/malaga/cruz-de-humilladero/hospital-veterinario-sos-animal-malaga"
+  },
+  {
+    "source": "/veterinarios/murcia/centro-murcia/la-clinica-veterinaria-de-manuela-murcia",
+    "destination": "/veterinarios/murcia/centro/la-clinica-veterinaria-de-manuela-murcia"
+  },
+  {
+    "source": "/veterinarios/murcia/infante-juan-manuel/hospital-de-urgencias-veterinarias-region-de-murcia-murcia",
+    "destination": "/veterinarios/murcia/centro/hospital-de-urgencias-veterinarias-region-de-murcia-murcia"
+  },
+  {
+    "source": "/veterinarios/murcia/infante-juan-manuel/vetter-hospital-veterinario-24h-murcia-murcia",
+    "destination": "/veterinarios/murcia/centro/vetter-hospital-veterinario-24h-murcia-murcia"
+  }
+]
