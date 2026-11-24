@@ -24,7 +24,6 @@ const negocios = JSON.parse(
 );
 
 const BASE_URL = "https://vistoenmaps.com";
-const today = new Date().toISOString().split("T")[0];
 
 const urls: { loc: string; priority: string; changefreq: string }[] = [];
 
@@ -136,7 +135,6 @@ ${urls
   .map(
     (u) => `  <url>
     <loc>${BASE_URL}${u.loc}</loc>
-    <lastmod>${today}</lastmod>
     <changefreq>${u.changefreq}</changefreq>
     <priority>${u.priority}</priority>
   </url>`
