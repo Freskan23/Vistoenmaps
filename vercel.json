@@ -18,6 +18,7 @@
     }
   ],
   "redirects": [
+    {"source": "/gimnasios/granada/centro-granada", "destination": "/gimnasios/granada/centro", "permanent": true},
     {"source": "/bares/malaga/centro-malaga/antigua-casa-de-guardia-malaga", "destination": "/bares/malaga/distrito-centro/antigua-casa-de-guardia-malaga", "permanent": true},
     {"source": "/cafeterias/granada/centro-granada/mummo-cafe-desayuno-granada-granada", "destination": "/cafeterias/granada/centro/mummo-cafe-desayuno-granada-granada", "permanent": true},
     {"source": "/cafeterias/granada/centro-granada/sur-coffee-corner-granada", "destination": "/cafeterias/granada/centro/sur-coffee-corner-granada", "permanent": true},

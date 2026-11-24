@@ -17,6 +17,15 @@ class LegacyBusinessRedirects(unittest.TestCase):
                 self.assertEqual(redirects[item['source']]['destination'], item['destination'])
                 self.assertIs(redirects[item['source']].get('permanent'), True)
 
+    def test_neighborhood_alias_with_same_three_businesses_redirects(self):
+        config = json.loads((ROOT / 'vercel.json').read_text(encoding='utf-8'))
+        source = '/gimnasios/granada/centro-granada'
+        target = '/gimnasios/granada/centro'
+        matches = [r for r in config.get('redirects', []) if r['source'] == source]
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(matches[0]['destination'], target)
+        self.assertIs(matches[0]['permanent'], True)
+
     def test_unmatched_requests_are_not_rewritten_to_home(self):
         config = json.loads((ROOT / 'vercel.json').read_text(encoding='utf-8'))
         self.assertFalse(any(r['source'] in ('/(.*)', '/:path*') for r in config.get('redirects', [])))
